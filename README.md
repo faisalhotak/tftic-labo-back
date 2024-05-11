@@ -12,6 +12,9 @@ Java Backend Project Using Spring Boot
 * [Teams](https://www.microsoft.com/fr-be/microsoft-teams/group-chat-software) - Meetings, Daily Scrums
 * [Lucidchart](https://www.lucidchart.com/) - Sketching, Diagrams
 
-## Authors
+## Contributors
 
+* **Kevin JOEGHMANS** [@kevinjoeghmans](https://github.com/)
 * **Faisal HOTAK** [@faisalhotak](https://github.com/faisalhotak)
+* **Nathan SANCKE** [@nathansancke](https://github.com/)
+* **Tomas MENDES** [@tomasmendes](https://github.com/)
