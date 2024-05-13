@@ -1,11 +1,25 @@
 FROM ubuntu:18.04 AS build
-RUN apt-get update && sudo apt-get install java-common -y
-RUN dpkg --install java-21-amazon-corretto-jdk_21.0.3.9-1_amd64.deb
-COPY . .
+
+# Install necessary dependencies
+RUN apt-get update && apt-get install -y wget
+
+# Download and install Amazon Corretto JDK
+RUN wget https://corretto.aws/downloads/latest/amazon-corretto-21-x64-linux-jdk.tar.gz
+RUN dpkg -i amazon-corretto-11-x64-linux-jdk.deb
+
+# Set JAVA_HOME environment variable
+ENV JAVA_HOME /usr/lib/jvm/java-11-amazon-corretto
+
+# Copy the application source code
+COPY . /app
+WORKDIR /app
+
+# Build the application
 RUN ./mvnw clean package
 
-FROM amazoncorretto:21
+# Final stage: Run the application
+FROM amazoncorretto:11
 EXPOSE 8080
-COPY --from=build /target/*.jar app.jar
-
+COPY --from=build /app/target/*.jar /app/app.jar
+WORKDIR /app
 ENTRYPOINT ["java", "-jar", "app.jar"]
