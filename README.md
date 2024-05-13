@@ -4,6 +4,10 @@
 
 Java Backend Project Using Spring Boot
 
+## Entity Relationship Diagram - v1
+
+![ERD](/docs/diagrams/ERD_v1.png)
+
 ## Technologies used
 
 * [Spring Boot](https://start.spring.io/) - Framework Java (back-end)
@@ -21,7 +25,7 @@ Java Backend Project Using Spring Boot
 
 ## Contributors
 
-* **Kevin JOEGHMANS** [@kevinjoeghmans](https://github.com/)
+* **Kevin JOEGHMANS** [@kevinjoeghmans](https://github.com/keivy-git)
 * **Faisal HOTAK** [@faisalhotak](https://github.com/faisalhotak)
-* **Nathan SANCKE** [@nathansancke](https://github.com/)
-* **Tomas MENDES** [@tomasmendes](https://github.com/)
+* **Nathan SANCKE** [@nathansancke](https://github.com/Lopidurs)
+* **Tomas MENDES** [@tomasmendes](https://github.com/tomashm9)
