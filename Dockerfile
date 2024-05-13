@@ -5,7 +5,7 @@ RUN apt-get update && apt-get install -y wget
 
 # Download and install Amazon Corretto JDK
 RUN wget https://corretto.aws/downloads/latest/amazon-corretto-21-x64-linux-jdk.deb
-RUN dpkg -i java-21-amazon-corretto-jdk_21.0.3.9-1_amd64.deb
+RUN dpkg -i /tmp/java-21-amazon-corretto-jdk_21.0.3.9-1_amd64.deb
 
 # Set JAVA_HOME environment variable
 ENV JAVA_HOME /usr/lib/jvm/java-21-amazon-corretto
