@@ -4,10 +4,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class TfticLaboBackApplication {
-
+public class JobPortalApplication {
     public static void main(String[] args) {
-        SpringApplication.run(TfticLaboBackApplication.class, args);
+        SpringApplication.run(JobPortalApplication.class, args);
     }
-
 }

@@ -11,8 +11,16 @@
     <groupId>be.portal.job</groupId>
     <artifactId>tftic-labo-back</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
     <name>tftic-labo-back</name>
     <description>tftic-labo-back</description>
+    <modules>
+        <module>pl</module>
+        <module>bll</module>
+        <module>dal</module>
+        <module>domain</module>
+        <module>il</module>
+    </modules>
     <properties>
         <java.version>21</java.version>
     </properties>
