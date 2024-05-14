@@ -25,6 +25,5 @@ public class Social extends BaseEntity<Long>{
     private String logoUrl;
 
     @OneToMany(mappedBy = "social")
-    @Column(name = "social_link")
     private Set<SocialLink> socialLinks;
 }
