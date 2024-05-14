@@ -18,7 +18,11 @@
     </properties>
 
     <dependencies>
-
+        <dependency>
+            <groupId>be.portal.job</groupId>
+            <artifactId>il</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
         <dependency>
             <groupId>be.portal.job</groupId>
             <artifactId>domain</artifactId>
