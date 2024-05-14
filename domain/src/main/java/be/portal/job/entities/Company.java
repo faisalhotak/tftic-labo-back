@@ -17,30 +17,25 @@ import java.util.List;
 @Table(name = "company")
 public class Company extends BaseEntity<Long> {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "company_id")
-    private Long id;
-
-    @Column(name = "company_name")
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "company_website_url")
+    @Column(name = "website_url", nullable = false)
     private String webSiteUrl;
 
-    @Column(name = "company_establishment_date")
+    @Column(name = "establishment_date", nullable = false)
     private LocalDateTime establishmentDate;
 
-    @Column(name = "company_contact_name")
+    @Column(name = "contact_name", nullable = false)
     private String contactName;
 
-    @Column(name = "company_contact_phone_numb")
+    @Column(name = "contact_phone_numb", nullable = false)
     private int contactPhoneNumber;
 
-    @Column(name = "company_contact_department")
+    @Column(name = "contact_department", nullable = false)
     private String contactDepartment;
 
-    @Column(name = "company_is_verified")
+    @Column(name = "is_verified", nullable = false)
     private boolean isVerified;
 
     @OneToMany(mappedBy = "company")
