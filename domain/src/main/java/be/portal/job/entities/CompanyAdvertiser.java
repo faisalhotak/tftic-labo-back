@@ -14,12 +14,7 @@ import lombok.Setter;
 @Table(name = "company_advertiser")
 public class CompanyAdvertiser extends BaseEntity<Long>{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "comp_adv_id")
-    private Long id;
-
-    @Column(name = "comp_adv_role", nullable = false)
+    @Column(name = "role", nullable = false)
     @Enumerated(EnumType.STRING)
     private AdvertiserRole advertiserRole;
 
