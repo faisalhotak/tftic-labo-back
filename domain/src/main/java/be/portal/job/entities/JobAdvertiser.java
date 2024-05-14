@@ -12,11 +12,9 @@ import java.util.Set;
 @Setter
 @Entity
 @ToString
-@Table(name = "Job_Advertiser")
-@Inheritance(strategy = InheritanceType.JOINED)
-public class JobAdvertiser extends BaseEntity<Long>, User {
+@Table(name = "job_advertiser")
+public class JobAdvertiser extends User {
 
-    @OneToMany(mappedBy = "Job_Advertiser")
+    @OneToMany(mappedBy = "job_advertiser")
     private Set<CompanyAdvertiser> companyAdvertisers;
-
 }
