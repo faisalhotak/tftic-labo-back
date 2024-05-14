@@ -15,13 +15,8 @@ import org.hibernate.validator.constraints.URL;
 @Table(name = "social_link")
 public class SocialLink extends BaseEntity<Long>{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "soc_id")
-    private Long id;
-
     @URL(protocol = "https", message = "Le champ doit être une URL avec le protocole HTTPS.")
-    @Column(name = "soc_url")
+    @Column(name = "url", nullable = false)
     private String url;
 
     @ManyToOne
