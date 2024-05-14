@@ -21,4 +21,8 @@ public class SocialLink extends BaseEntity<Long>{
     @ManyToOne
     @JoinColumn(name = "social_id")
     private Social social;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }

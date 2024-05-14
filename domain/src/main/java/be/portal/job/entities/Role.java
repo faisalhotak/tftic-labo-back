@@ -2,6 +2,9 @@ package be.portal.job.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
+
+import java.util.Set;
 
 
 @NoArgsConstructor
@@ -11,7 +14,7 @@ import lombok.*;
 @Entity
 @ToString
 @Table(name = "role")
-public class Role extends BaseEntity {
+public class Role extends BaseEntity<Long> implements GrantedAuthority {
 
     @Column(name = "name", nullable = false)
     private String name;
@@ -19,6 +22,11 @@ public class Role extends BaseEntity {
     @Column(name = "description", nullable = false)
     private String description;
 
-    @OneToOne(mappedBy = "role")
-    private User user;
+    @ManyToMany(mappedBy = "roles")
+    private Set<User> users;
+
+    @Override
+    public String getAuthority() {
+        return name;
+    }
 }
