@@ -13,7 +13,7 @@ import org.hibernate.validator.constraints.URL;
 @Getter
 @Setter
 @Table(name = "social_link")
-public class SocialLink {
+public class SocialLink extends BaseEntity<Long>{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
