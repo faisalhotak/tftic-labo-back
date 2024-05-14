@@ -8,6 +8,7 @@ import lombok.Setter;
 import org.hibernate.validator.constraints.URL;
 
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @NoArgsConstructor
@@ -21,10 +22,9 @@ public class Social extends BaseEntity<Long>{
     private String name;
 
     @Column(name = "logo_url", nullable = false)
-    @URL(protocol = "https", message = "Le champ doit être une URL avec le protocole HTTPS.")
     private String logoUrl;
 
     @OneToMany(mappedBy = "social")
-    @Column(name = "soc_social_link")
-    private List<SocialLink> socialLinks;
+    @Column(name = "social_link")
+    private Set<SocialLink> socialLinks;
 }
