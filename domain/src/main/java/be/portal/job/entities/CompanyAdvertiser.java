@@ -14,12 +14,12 @@ import lombok.Setter;
 @Table(name = "company_advertiser")
 public class CompanyAdvertiser extends BaseEntity<Long>{
 
-    @Column(name = "role", nullable = false)
+    @Column(name = "advertiser_role", nullable = false)
     @Enumerated(EnumType.STRING)
     private AdvertiserRole advertiserRole;
 
     @ManyToOne
-    @JoinColumn(name = "comp_adv_company_id")
+    @JoinColumn(name = "company_id")
     private Company company;
 
 
