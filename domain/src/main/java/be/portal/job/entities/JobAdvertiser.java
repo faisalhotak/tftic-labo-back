@@ -15,6 +15,6 @@ import java.util.Set;
 @Table(name = "job_advertiser")
 public class JobAdvertiser extends User {
 
-    @OneToMany(mappedBy = "job_advertiser")
+    @OneToMany(mappedBy = "jobAdvertiser")
     private Set<CompanyAdvertiser> companyAdvertisers;
 }
