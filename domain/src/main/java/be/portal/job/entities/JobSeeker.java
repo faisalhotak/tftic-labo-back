@@ -28,4 +28,7 @@ public class JobSeeker extends BaseEntity<Long> {
 
     @OneToMany(mappedBy = "jobSeeker")
     private Set<ExperienceDetail> experienceDetails;
+
+    @OneToMany(mappedBy = "jobSeeker")
+    private Set<CertificationDetail> certificationDetails;
 }
