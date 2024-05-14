@@ -17,15 +17,10 @@ import java.util.List;
 @Table(name = "social")
 public class Social extends BaseEntity<Long>{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "soc_id")
-    private Long id;
-
-    @Column(name = "soc_name")
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "soc_logo_url")
+    @Column(name = "logo_url", nullable = false)
     @URL(protocol = "https", message = "Le champ doit être une URL avec le protocole HTTPS.")
     private String logoUrl;
 
