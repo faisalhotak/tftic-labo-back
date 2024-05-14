@@ -15,11 +15,10 @@ import org.hibernate.validator.constraints.URL;
 @Table(name = "social_link")
 public class SocialLink extends BaseEntity<Long>{
 
-    @URL(protocol = "https", message = "Le champ doit être une URL avec le protocole HTTPS.")
     @Column(name = "url", nullable = false)
     private String url;
 
     @ManyToOne
-    @JoinColumn(name = "soc_link_social_id")
+    @JoinColumn(name = "social_id")
     private Social social;
 }
