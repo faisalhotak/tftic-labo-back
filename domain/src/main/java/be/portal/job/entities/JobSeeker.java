@@ -26,6 +26,6 @@ public class JobSeeker extends BaseEntity<Long> {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    @OneToMany(mappedBy = "jobSeeker")
+    @OneToMany(mappedBy = "job_seeker")
     private Set<ExperienceDetail> experienceDetails;
 }
