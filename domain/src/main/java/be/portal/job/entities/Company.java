@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @NoArgsConstructor
@@ -21,7 +22,7 @@ public class Company extends BaseEntity<Long> {
     private String name;
 
     @Column(name = "website_url", nullable = false)
-    private String webSiteUrl;
+    private String websiteUrl;
 
     @Column(name = "establishment_date", nullable = false)
     private LocalDateTime establishmentDate;
@@ -29,7 +30,7 @@ public class Company extends BaseEntity<Long> {
     @Column(name = "contact_name", nullable = false)
     private String contactName;
 
-    @Column(name = "contact_phone_numb", nullable = false)
+    @Column(name = "contact_phone_number", nullable = false)
     private int contactPhoneNumber;
 
     @Column(name = "contact_department", nullable = false)
@@ -39,6 +40,5 @@ public class Company extends BaseEntity<Long> {
     private boolean isVerified;
 
     @OneToMany(mappedBy = "company")
-    @Column(name = "company_comp_adv")
-    private List<CompanyAdvertiser> companyAdvertisers;
+    private Set<CompanyAdvertiser> companyAdvertisers;
 }
