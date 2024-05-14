@@ -13,7 +13,7 @@ import org.hibernate.validator.constraints.URL;
 @Getter
 @Setter
 @Table(name = "social_link")
-public class SocialLink extends BaseEntity<Long>{
+public class SocialLink extends BaseEntity<Long> {
 
     @Column(name = "url", nullable = false)
     private String url;

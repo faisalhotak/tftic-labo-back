@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Table(name = "driving_licence")
-public class DrivingLicence extends BaseEntity<Long>{
+public class DrivingLicence extends BaseEntity<Long> {
 
     @Column(name = "driving_licence_category", nullable = false)
     @Enumerated(EnumType.STRING)

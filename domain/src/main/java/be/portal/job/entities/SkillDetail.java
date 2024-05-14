@@ -14,7 +14,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Table(name = "skill_detail")
-public class SkillDetail extends BaseEntity<Long>{
+public class SkillDetail extends BaseEntity<Long> {
 
     @Column
     private String name;
