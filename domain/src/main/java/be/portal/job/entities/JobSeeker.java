@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 @NoArgsConstructor
@@ -25,4 +26,6 @@ public class JobSeeker extends BaseEntity<Long> {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
+    @OneToMany(mappedBy = "jobSeeker")
+    private Set<ExperienceDetail> experienceDetails;
 }
