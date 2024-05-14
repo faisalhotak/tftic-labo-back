@@ -9,10 +9,10 @@ import lombok.*;
 @Getter @Setter
 @Entity
 @ToString
-@Table(name = "Company_Advertiser")
+@Table(name = "company_advertiser")
 public class CompanyAdvertiser extends BaseEntity<Long> {
 
-    @Column(nullable = false, name = "advertiser_role")
+    @Column(name = "advertiser_role", nullable = false)
     @Enumerated(EnumType.STRING)
     private AdvertiserRole advertiserRole;
 

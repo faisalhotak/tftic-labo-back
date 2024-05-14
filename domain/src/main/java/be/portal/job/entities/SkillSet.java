@@ -20,6 +20,13 @@ public class SkillSet extends BaseEntity<Long> {
     private SkillLevel skillLevel;
 
     @Column(name = "years", nullable = false)
-    private Integer years;
+    private int years;
 
+    @ManyToOne
+    @JoinColumn(name = "job_seeker_id", nullable = false)
+    private JobSeeker jobSeeker;
+
+    @ManyToOne
+    @JoinColumn(name = "skill_detail", nullable = false)
+    private SkillDetail skillDetail;
 }
