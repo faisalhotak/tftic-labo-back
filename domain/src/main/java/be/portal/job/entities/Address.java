@@ -26,7 +26,4 @@ public class Address extends BaseEntity<Long> {
     @Column(name = "country", nullable = false)
     private String country;
 
-    @OneToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
 }
