@@ -10,7 +10,6 @@ import java.util.Optional;
  * Interface de service pour la gestion des rôles dans le système.
  * Fournit les opérations CRUD de base pour les rôles.
  */
-@Service
 public interface IRoleService {
 
     /**
