@@ -23,6 +23,7 @@ public class RoleServiceImpl implements IRoleService {
     @Override
     public Optional<Role> getRoleByName(String name) {
         Optional<Role> role = roleRepository.findByName(name);
+
         return role.isPresent() ? role : Optional.empty();
     }
 
