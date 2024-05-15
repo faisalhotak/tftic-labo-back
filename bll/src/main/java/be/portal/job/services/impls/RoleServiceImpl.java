@@ -28,9 +28,10 @@ public class RoleServiceImpl implements IRoleService {
     }
 
     @Override
-    public Role getRoleById(Long id) {
-        return roleRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Role not found with id: " + id));
+    public Optional<Role> getRoleById(Long id) {
+        Optional<Role> role = roleRepository.findById(id);
+        return Optional.ofNullable(roleRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Role not found with id: " + id)));
     }
 
     @Override
@@ -52,10 +53,7 @@ public class RoleServiceImpl implements IRoleService {
 
     @Override
     public void deleteRole(Long id) {
-        if (roleRepository.existsById(id)) {
-            roleRepository.deleteById(id);
-        } else {
-            throw new RuntimeException("Role not found with id: " + id);
+        if (!roleRepository.existsById(id)) throw new RuntimeException("Role not found with id: " + id);
         }
     }
-}
+
