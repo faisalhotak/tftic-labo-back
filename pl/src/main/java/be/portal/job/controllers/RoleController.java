@@ -16,12 +16,13 @@ import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/role")
+@RequestMapping("/api/v1/role")
 @CrossOrigin("*")
 public class RoleController {
 
     public final IRoleService roleService;
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping
     public ResponseEntity<List<RoleDTO>> getRoles() {
         List<RoleDTO> roles = roleService.getRoles()
@@ -32,19 +33,21 @@ public class RoleController {
         return ResponseEntity.ok(roles);
     }
 
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<RoleDTO> getRoleById(@PathVariable Long id) {
-        RoleDTO roles = RoleDTO.fromEntity(roleService.getRoleById(id));
+        RoleDTO roleDTO = RoleDTO.fromEntity(roleService.getRoleById(id));
 
-        return ResponseEntity.ok(roles);
+        return ResponseEntity.ok(roleDTO);
     }
 
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/post")
     public ResponseEntity<RoleDTO> addRole(@Valid @RequestBody RoleForm roleForm, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().build();
         }
+
         RoleDTO newRole = RoleDTO.fromEntity(roleService.addRole(roleForm.toEntity()));
 
         return ResponseEntity.ok(newRole);
@@ -56,6 +59,7 @@ public class RoleController {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().build();
         }
+
         RoleDTO updatedRole = RoleDTO.fromEntity(roleService.updateRole(id, roleForm.toEntity()));
 
         return ResponseEntity.ok(updatedRole);
