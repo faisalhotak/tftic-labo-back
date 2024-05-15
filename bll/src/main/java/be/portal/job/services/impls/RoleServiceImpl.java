@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -21,17 +20,13 @@ public class RoleServiceImpl implements IRoleService {
     }
 
     @Override
-    public Optional<Role> getRoleByName(String name) {
-        Optional<Role> role = roleRepository.findByName(name);
-
-        return role;
+    public Role getRoleByName(String name) {
+        return roleRepository.findByName(name).orElseThrow();
     }
 
     @Override
-    public Optional<Role> getRoleById(Long id) {
-        Optional<Role> role = roleRepository.findById(id);
-        return Optional.ofNullable(roleRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Role not found with id: " + id)));
+    public Role getRoleById(Long id) {
+        return roleRepository.findById(id).orElseThrow();
     }
 
     @Override
@@ -48,12 +43,14 @@ public class RoleServiceImpl implements IRoleService {
         existingRole.setDescription(role.getDescription());
         existingRole.setUsers(role.getUsers());
 
-        return roleRepository.save(existingRole); // Save the updated role
+        return roleRepository.save(existingRole);
     }
 
     @Override
     public void deleteRole(Long id) {
-        if (!roleRepository.existsById(id)) throw new RuntimeException("Role not found with id: " + id);
+        if (!roleRepository.existsById(id)) {
+            throw new RuntimeException("Role not found with id: " + id);
         }
+        roleRepository.deleteById(id);
     }
-
+}

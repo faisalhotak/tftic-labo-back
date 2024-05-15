@@ -53,7 +53,7 @@ public class RoleController {
         return ResponseEntity.ok(newRole);
     }
 
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<RoleDTO> updateRole(@PathVariable Long id, @Valid @RequestBody RoleForm roleForm, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -65,4 +65,11 @@ public class RoleController {
         return ResponseEntity.ok(updatedRole);
     }
 
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<RoleDTO> deleteRole(@PathVariable Long id) {
+        roleService.deleteRole(id);
+
+        return ResponseEntity.noContent().build();
+    }
 }
