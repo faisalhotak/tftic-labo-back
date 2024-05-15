@@ -22,9 +22,6 @@ public class Role extends BaseEntity<Long> implements GrantedAuthority {
     @Column(name = "description", nullable = false)
     private String description;
 
-    @ManyToMany(mappedBy = "roles")
-    private Set<User> users;
-
     @Override
     public String getAuthority() {
         return name;
