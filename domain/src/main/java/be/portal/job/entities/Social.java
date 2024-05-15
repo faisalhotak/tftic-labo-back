@@ -16,7 +16,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Table(name = "social")
-public class Social extends BaseEntity<Long>{
+public class Social extends BaseEntity<Long> {
 
     @Column(name = "name", nullable = false)
     private String name;
