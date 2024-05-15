@@ -33,7 +33,7 @@ public interface IJobFunctionService {
      * @param jobFunction The job function to create.
      * @return The newly created job function.
      */
-    JobFunction createJobFunction(JobFunction jobFunction);
+    JobFunction addJobFunction(JobFunction jobFunction);
 
     /**
      * Updates an existing job function.

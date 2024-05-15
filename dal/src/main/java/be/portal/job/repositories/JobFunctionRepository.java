@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface JobFunctionRepository extends JpaRepository<JobFunction, Long> {
+
+    JobFunction findByName(String name);
 }
