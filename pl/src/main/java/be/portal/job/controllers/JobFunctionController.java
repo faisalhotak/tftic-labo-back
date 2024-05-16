@@ -41,7 +41,7 @@ public class JobFunctionController {
         return ResponseEntity.ok(jobFunctionDTO);
     }
 
-    @PreAuthorize("hasAnyAuthority('SEEKER', 'ADVERTISER', 'ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/post")
     public ResponseEntity<JobFunctionDTO> addJobFunction(
             @Valid @RequestBody JobFunctionForm jobFunctionForm,
@@ -55,7 +55,7 @@ public class JobFunctionController {
         return ResponseEntity.ok(newJobFunction);
     }
 
-    @PreAuthorize("hasAnyAuthority('SEEKER', 'ADVERTISER', 'ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/{id")
     public ResponseEntity<JobFunctionDTO> updateJobFunction(@PathVariable Long id, @Valid @RequestBody JobFunctionForm jobFunctionForm, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
