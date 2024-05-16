@@ -22,7 +22,7 @@ public class RoleController {
 
     public final IRoleService roleService;
 
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping
     public ResponseEntity<List<RoleDTO>> getRoles() {
         List<RoleDTO> roles = roleService.getRoles()
@@ -33,7 +33,7 @@ public class RoleController {
         return ResponseEntity.ok(roles);
     }
 
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<RoleDTO> getRoleById(@PathVariable Long id) {
         RoleDTO roleDTO = RoleDTO.fromEntity(roleService.getRoleById(id));
@@ -41,7 +41,7 @@ public class RoleController {
         return ResponseEntity.ok(roleDTO);
     }
 
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/post")
     public ResponseEntity<RoleDTO> addRole(@Valid @RequestBody RoleForm roleForm, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -53,7 +53,7 @@ public class RoleController {
         return ResponseEntity.ok(newRole);
     }
 
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<RoleDTO> updateRole(@PathVariable Long id, @Valid @RequestBody RoleForm roleForm, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -65,7 +65,7 @@ public class RoleController {
         return ResponseEntity.ok(updatedRole);
     }
 
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<RoleDTO> deleteRole(@PathVariable Long id) {
         roleService.deleteRole(id);

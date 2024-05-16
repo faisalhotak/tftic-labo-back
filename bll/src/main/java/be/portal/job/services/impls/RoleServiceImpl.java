@@ -21,7 +21,7 @@ public class RoleServiceImpl implements IRoleService {
 
     @Override
     public Role getRoleByName(String name) {
-        return roleRepository.findByName(name).orElseThrow();
+        return roleRepository.findByName(name);
     }
 
     @Override
