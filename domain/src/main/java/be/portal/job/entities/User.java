@@ -6,12 +6,12 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
 public abstract class User extends BaseEntity<Long> implements UserDetails {
@@ -51,6 +51,12 @@ public abstract class User extends BaseEntity<Long> implements UserDetails {
 
     @OneToMany(mappedBy = "user")
     private Set<SocialLink> socialLinks;
+
+    public User() {
+        this.isActive = true;
+        this.roles = new HashSet<>();
+        this.socialLinks = new HashSet<>();
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
