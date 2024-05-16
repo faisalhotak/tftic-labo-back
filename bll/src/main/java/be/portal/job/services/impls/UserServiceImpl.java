@@ -1,6 +1,7 @@
 package be.portal.job.services.impls;
 
 import be.portal.job.entities.User;
+import be.portal.job.enums.UserType;
 import be.portal.job.repositories.UserRepository;
 import be.portal.job.services.UserService;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +29,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User register(User user) {
+    public User register(User user, UserType userType) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
 

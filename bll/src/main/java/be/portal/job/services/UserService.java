@@ -1,6 +1,7 @@
 package be.portal.job.services;
 
 import be.portal.job.entities.User;
+import be.portal.job.enums.UserType;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 public interface UserService extends UserDetailsService {
@@ -20,5 +21,5 @@ public interface UserService extends UserDetailsService {
      * @param user The User object containing the details of the user to be registered.
      * @return The registered User object if the registration is successful.
      */
-    User register(User user);
+    User register(User user, UserType userType);
 }
