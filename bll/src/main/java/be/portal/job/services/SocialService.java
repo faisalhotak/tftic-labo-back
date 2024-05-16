@@ -1,7 +1,6 @@
 package be.portal.job.services;
 
 import be.portal.job.entities.Social;
-
 import java.util.List;
 
 public interface SocialService {
