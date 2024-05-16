@@ -22,7 +22,7 @@ public class JobFunctionController {
 
     public final IJobFunctionService jobFunctionService;
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('SEEKER', 'ADVERTISER', 'ADMIN')")
     @GetMapping
     public ResponseEntity<List<JobFunctionDTO>> getAllJobFunctions() {
         List<JobFunctionDTO> jobFunctionDTOS = jobFunctionService.getJobFunction()
@@ -33,14 +33,15 @@ public class JobFunctionController {
         return ResponseEntity.ok(jobFunctionDTOS);
     }
 
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('SEEKER', 'ADVERTISER', 'ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<JobFunctionDTO> getJobFunctionById(@PathVariable Long id) {
         JobFunctionDTO jobFunctionDTO = JobFunctionDTO.fromEntity(jobFunctionService.getJobFunctionById(id));
 
         return ResponseEntity.ok(jobFunctionDTO);
     }
-    
+
+    @PreAuthorize("hasAnyAuthority('SEEKER', 'ADVERTISER', 'ADMIN')")
     @PostMapping("/post")
     public ResponseEntity<JobFunctionDTO> addJobFunction(
             @Valid @RequestBody JobFunctionForm jobFunctionForm,
@@ -52,5 +53,25 @@ public class JobFunctionController {
         JobFunctionDTO newJobFunction = JobFunctionDTO.fromEntity(jobFunctionService.addJobFunction(jobFunctionForm.toEntity()));
 
         return ResponseEntity.ok(newJobFunction);
+    }
+
+    @PreAuthorize("hasAnyAuthority('SEEKER', 'ADVERTISER', 'ADMIN')")
+    @PutMapping("/{id")
+    public ResponseEntity<JobFunctionDTO> updateJobFunction(@PathVariable Long id, @Valid @RequestBody JobFunctionForm jobFunctionForm, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        JobFunctionDTO jobFunctionDTO = JobFunctionDTO.fromEntity(jobFunctionService.updateJobFunction(id, jobFunctionForm.toEntity()));
+
+        return ResponseEntity.ok(jobFunctionDTO);
+    }
+
+    @PreAuthorize("hasAnyAuthority('SEEKER', 'ADVERTISER', 'ADMIN')")
+    @DeleteMapping("/{id")
+    public ResponseEntity<JobFunctionDTO> deleteJobFunction(@PathVariable Long id) {
+        jobFunctionService.deleteJobFunction(id);
+
+        return ResponseEntity.noContent().build();
     }
 }
