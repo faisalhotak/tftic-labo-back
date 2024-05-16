@@ -21,7 +21,7 @@ public class JobFunctionServiceImpl implements IJobFunctionService {
 
     @Override
     public JobFunction getJobFunctionByName(String name) {
-        return jobFunctionRepository.findByName(name);
+        return jobFunctionRepository.findByName(name).orElseThrow();
     }
 
     @Override

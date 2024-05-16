@@ -2,12 +2,11 @@ package be.portal.job.models.forms;
 
 import be.portal.job.entities.Role;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 
-public record RoleForm(
-        @NotBlank(message = "Le nom du rôle ne peut pas être vide")
+public record RoleForm (
+        @NotBlank(message = "The role name cannot be empty.")
         String name,
-
+        @NotBlank(message = "The role description cannot be empty.")
         String description
 ) {
     public Role toEntity() {
