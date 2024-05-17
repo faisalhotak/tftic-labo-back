@@ -31,6 +31,7 @@ public class SocialServiceImpl implements SocialService {
 
     @Override
     public Social updateSocial(Long id, Social social) {
+
         Social existingSocial = socialRepository.findById(id).orElseThrow();
         existingSocial.setName(social.getName());
         existingSocial.setLogoUrl(social.getLogoUrl());

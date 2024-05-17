@@ -29,8 +29,11 @@ public class JobOffer extends BaseEntity<Long> {
     @Column(name = "active_days", nullable = false)
     private int activeDays;
 
+    @Column(name = "expiring_date", nullable = false)
+    private LocalDateTime expiringDate;
+
     @Column(name = "is_active", nullable = false)
-    private boolean isActive;
+    private boolean isActive = true;
 
     @ManyToOne
     @JoinColumn(nullable = false, name = "agent_id")

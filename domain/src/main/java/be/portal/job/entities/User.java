@@ -35,7 +35,7 @@ public abstract class User extends BaseEntity<Long> implements UserDetails {
     private String contactEmail;
 
     @Column(name = "is_active", nullable = false)
-    private boolean isActive;
+    private boolean isActive = true;
 
     @ManyToMany
     @JoinTable(

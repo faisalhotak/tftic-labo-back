@@ -44,8 +44,8 @@ public class SocialController {
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    @PostMapping("/create")
-    public ResponseEntity<SocialDTO> createSocial(@RequestBody SocialForm form) {
+    @PostMapping()
+    public ResponseEntity<SocialDTO> addSocial(@RequestBody SocialForm form) {
         Social social = socialService.addSocial(form.toEntity());
 
         return ResponseEntity.ok(SocialDTO.fromEntity(social));
