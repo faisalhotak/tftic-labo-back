@@ -1,6 +1,6 @@
 package be.portal.job.configs;
 
-import be.portal.job.services.UserService;
+import be.portal.job.services.impls.CompositeUserDetailsServiceImpl;
 import be.portal.job.utils.JwtUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -21,7 +21,7 @@ import java.io.IOException;
 public class JwtFilter extends OncePerRequestFilter {
 
     private final JwtUtils jwtUtils;
-    private final UserService userService;
+    private final CompositeUserDetailsServiceImpl compositeUserDetailsServiceImpl;
 
     @Override
     protected void doFilterInternal(
@@ -31,21 +31,20 @@ public class JwtFilter extends OncePerRequestFilter {
     ) throws ServletException, IOException {
         String authHeader = request.getHeader("Authorization");
 
-        if (!authHeader.isBlank() && authHeader.startsWith("Bearer ")) {
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
             String token = authHeader.substring(7);
 
             if (!token.isBlank() && jwtUtils.validateToken(token)) {
-                    String username = jwtUtils.getUsername(token);
-                    UserDetails userDetails = userService.loadUserByUsername(username);
-                    UsernamePasswordAuthenticationToken upt = new UsernamePasswordAuthenticationToken(
-                            userDetails,
-                            null,
-                            userDetails.getAuthorities()
-                    );
+                String username = jwtUtils.getUsername(token);
+                UserDetails userDetails = compositeUserDetailsServiceImpl.loadUserByUsername(username);
+                UsernamePasswordAuthenticationToken upt = new UsernamePasswordAuthenticationToken(
+                        userDetails,
+                        null,
+                        userDetails.getAuthorities()
+                );
 
-                    SecurityContextHolder.getContext().setAuthentication(upt);
-                }
-
+                SecurityContextHolder.getContext().setAuthentication(upt);
+            }
         }
 
         filterChain.doFilter(request, response);
