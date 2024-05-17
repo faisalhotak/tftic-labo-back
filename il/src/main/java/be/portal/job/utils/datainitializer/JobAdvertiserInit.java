@@ -9,6 +9,7 @@ import be.portal.job.repositories.JobAdvertiserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
@@ -24,6 +25,8 @@ public class JobAdvertiserInit implements CommandLineRunner {
     private final AddressRepository addressRepository;
     private final RoleRepository roleRepository;
 
+    private final PasswordEncoder passwordEncoder;
+
     @Override
     public void run(String... args) throws Exception {
         List<Role> userRoles = roleRepository.findAll();
@@ -34,7 +37,7 @@ public class JobAdvertiserInit implements CommandLineRunner {
         // Job Advertiser 1
         JobAdvertiser jobAdvertiser1 = new JobAdvertiser();
         jobAdvertiser1.setEmail("user1@example.com");
-        jobAdvertiser1.setPassword("password123");
+        jobAdvertiser1.setPassword(passwordEncoder.encode("password123"));
         jobAdvertiser1.setFirstname("John");
         jobAdvertiser1.setLastname("Doe");
         jobAdvertiser1.setPhoneNumber(123456789);
@@ -50,7 +53,7 @@ public class JobAdvertiserInit implements CommandLineRunner {
         // Job Advertiser 2
         JobAdvertiser jobAdvertiser2 = new JobAdvertiser();
         jobAdvertiser2.setEmail("user2@example.com");
-        jobAdvertiser2.setPassword("password456");
+        jobAdvertiser2.setPassword(passwordEncoder.encode("password456"));
         jobAdvertiser2.setFirstname("Jane");
         jobAdvertiser2.setLastname("Smith");
         jobAdvertiser2.setPhoneNumber(987654321);
@@ -66,7 +69,7 @@ public class JobAdvertiserInit implements CommandLineRunner {
         // Job Advertiser 3
         JobAdvertiser jobAdvertiser3 = new JobAdvertiser();
         jobAdvertiser3.setEmail("user3@example.com");
-        jobAdvertiser3.setPassword("password789");
+        jobAdvertiser3.setPassword(passwordEncoder.encode("password789"));
         jobAdvertiser3.setFirstname("Michael");
         jobAdvertiser3.setLastname("Johnson");
         jobAdvertiser3.setPhoneNumber(555444333);
@@ -82,7 +85,7 @@ public class JobAdvertiserInit implements CommandLineRunner {
         // Job Advertiser 4
         JobAdvertiser jobAdvertiser4 = new JobAdvertiser();
         jobAdvertiser4.setEmail("user4@example.com");
-        jobAdvertiser4.setPassword("passwordabc");
+        jobAdvertiser4.setPassword(passwordEncoder.encode("passwordabc"));
         jobAdvertiser4.setFirstname("Emily");
         jobAdvertiser4.setLastname("Brown");
         jobAdvertiser4.setPhoneNumber(111222333);
@@ -93,7 +96,7 @@ public class JobAdvertiserInit implements CommandLineRunner {
         // Job Advertiser 5
         JobAdvertiser jobAdvertiser5 = new JobAdvertiser();
         jobAdvertiser5.setEmail("user5@example.com");
-        jobAdvertiser5.setPassword("passwordxyz");
+        jobAdvertiser5.setPassword(passwordEncoder.encode("passwordxyz"));
         jobAdvertiser5.setFirstname("David");
         jobAdvertiser5.setLastname("Martinez");
         jobAdvertiser5.setPhoneNumber(999888777);
