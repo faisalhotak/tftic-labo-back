@@ -7,16 +7,15 @@ import be.portal.job.services.ContractTypeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Comparator;
 import java.util.List;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/contract-type")
+@RequestMapping("/api/v1/contract-types")
 public class ContractTypeController {
 
     private final ContractTypeService contractTypeService;
@@ -61,7 +60,7 @@ public class ContractTypeController {
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    @PutMapping("/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<ContractTypeDTO> deleteContractType(@PathVariable Long id) {
         contractTypeService.deleteContractType(id);
 

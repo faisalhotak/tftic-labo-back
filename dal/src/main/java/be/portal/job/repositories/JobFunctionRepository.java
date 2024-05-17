@@ -14,4 +14,4 @@ public interface JobFunctionRepository extends JpaRepository<JobFunction, Long> 
 
     @Query("SELECT jf FROM JobFunction jf WHERE jf.name = :name")
     Optional<JobFunction> findByName(@Param("name") String name);
-
+}

@@ -7,16 +7,15 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/jobfunction")
+@RequestMapping("/api/v1/job-functions")
 @CrossOrigin("*")
 public class JobFunctionController {
 
@@ -56,7 +55,7 @@ public class JobFunctionController {
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    @PutMapping("/{id")
+    @PutMapping("/{id}")
     public ResponseEntity<JobFunctionDTO> updateJobFunction(@PathVariable Long id, @Valid @RequestBody JobFunctionForm jobFunctionForm, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().build();
@@ -68,7 +67,7 @@ public class JobFunctionController {
     }
 
     @PreAuthorize("hasAnyAuthority('SEEKER', 'ADVERTISER', 'ADMIN')")
-    @DeleteMapping("/{id")
+    @DeleteMapping("/{id}")
     public ResponseEntity<JobFunctionDTO> deleteJobFunction(@PathVariable Long id) {
         jobFunctionService.deleteJobFunction(id);
 

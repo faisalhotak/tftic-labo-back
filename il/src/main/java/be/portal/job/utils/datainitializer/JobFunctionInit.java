@@ -1,4 +1,4 @@
-package be.portal.job.utils.dataInitializer;
+package be.portal.job.utils.datainitializer;
 
 import be.portal.job.entities.JobFunction;
 import be.portal.job.repositories.JobFunctionRepository;
@@ -11,7 +11,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-@Order(7)
+@Order(6)
 public class JobFunctionInit implements CommandLineRunner {
 
     private final JobFunctionRepository jobFunctionRepository;

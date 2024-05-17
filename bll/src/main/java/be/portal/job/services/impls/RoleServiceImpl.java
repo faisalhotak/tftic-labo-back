@@ -41,7 +41,6 @@ public class RoleServiceImpl implements IRoleService {
 
         existingRole.setName(role.getName());
         existingRole.setDescription(role.getDescription());
-        existingRole.setUsers(role.getUsers());
 
         return roleRepository.save(existingRole);
     }

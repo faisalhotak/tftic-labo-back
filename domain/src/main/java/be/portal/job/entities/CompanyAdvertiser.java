@@ -4,6 +4,9 @@ import be.portal.job.enums.AdvertiserRole;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter @Setter
