@@ -20,7 +20,4 @@ public class ContractType extends BaseEntity<Long> {
 
     @Column(name = "description", nullable = false)
     private String description;
-
-    @OneToMany(mappedBy = "contractType")
-    private Set<JobOffer> jobOffers;
 }

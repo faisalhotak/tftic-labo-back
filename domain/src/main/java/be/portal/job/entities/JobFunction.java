@@ -19,7 +19,4 @@ public class JobFunction extends BaseEntity<Long> {
 
     @Column(name = "title", nullable = false)
     private String title;
-
-    @OneToMany(mappedBy = "jobFunction")
-    private Set<JobOffer> jobOffers;
 }

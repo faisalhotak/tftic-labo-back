@@ -37,8 +37,5 @@ public class Company extends BaseEntity<Long> {
     private String contactDepartment;
 
     @Column(name = "is_verified", nullable = false)
-    private boolean isVerified;
-
-    @OneToMany(mappedBy = "company")
-    private Set<CompanyAdvertiser> companyAdvertisers;
+    private boolean isVerified = false;
 }
