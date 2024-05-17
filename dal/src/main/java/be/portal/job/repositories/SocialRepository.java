@@ -1,10 +1,10 @@
 package be.portal.job.repositories;
 
-import be.portal.job.entities.ContractType;
+import be.portal.job.entities.Social;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ContractTypeRepository extends JpaRepository<ContractType, Long> {
-}
+public interface SocialRepository extends JpaRepository<Social, Long> {
 
+}

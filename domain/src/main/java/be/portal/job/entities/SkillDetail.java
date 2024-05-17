@@ -1,21 +1,26 @@
 package be.portal.job.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @Table(name = "skill_detail")
-public class SkillDetail extends BaseEntity<Long>{
+public class SkillDetail extends BaseEntity<Long> {
 
-    @Column
+    @Column(name = "name", nullable = false)
     private String name;
+
+    @OneToMany(mappedBy = "skill_detail")
+    private Set<SkillSet> skillSets;
+
+    public SkillDetail() {
+        this.skillSets = new HashSet<>();
+    }
 }

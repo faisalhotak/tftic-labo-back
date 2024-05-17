@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Table(name = "application")
-public class Application extends BaseEntity<Long>{
+public class Application extends BaseEntity<Long> {
 
     @Column(name = "apply_date", nullable = false)
     private LocalDateTime applyDate;
