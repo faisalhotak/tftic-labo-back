@@ -7,11 +7,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 @Entity
-@NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
@@ -38,4 +38,22 @@ public class Company extends BaseEntity<Long> {
 
     @Column(name = "is_verified", nullable = false)
     private boolean isVerified = false;
+
+    @OneToMany(mappedBy = "company")
+    private Set<CompanyAdvertiser> companyAdvertisers = new HashSet<>();
+
+    public Company() {
+        this.companyAdvertisers = new HashSet<>();
+    }
+
+    public Company(String name, String websiteUrl, LocalDateTime establishmentDate, String contactName, int contactPhoneNumber, String contactDepartment, boolean isVerified) {
+        this();
+        this.name = name;
+        this.websiteUrl = websiteUrl;
+        this.establishmentDate = establishmentDate;
+        this.contactName = contactName;
+        this.contactPhoneNumber = contactPhoneNumber;
+        this.contactDepartment = contactDepartment;
+        this.isVerified = isVerified;
+    }
 }

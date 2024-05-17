@@ -7,16 +7,15 @@ import be.portal.job.services.SkillDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Comparator;
 import java.util.List;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/skill-detail")
+@RequestMapping("/api/v1/skill-details")
 public class SkillDetailController {
 
     private final SkillDetailService skillDetailService;

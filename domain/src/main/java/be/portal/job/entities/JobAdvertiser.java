@@ -12,4 +12,11 @@ import java.util.Set;
 @ToString
 @Table(name = "job_advertiser")
 public class JobAdvertiser extends User {
+
+    @OneToMany(mappedBy = "jobAdvertiser")
+    private Set<CompanyAdvertiser> companyAdvertisers;
+
+    public JobAdvertiser() {
+        this.companyAdvertisers = new HashSet<>();
+    }
 }

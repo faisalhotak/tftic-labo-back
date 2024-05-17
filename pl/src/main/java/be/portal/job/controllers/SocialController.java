@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/social")
+@RequestMapping("/api/v1/socials")
 public class SocialController {
 
     private final SocialService socialService;

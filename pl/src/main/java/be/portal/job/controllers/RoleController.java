@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/role")
+@RequestMapping("/api/v1/roles")
 @CrossOrigin("*")
 public class RoleController {
 

@@ -1,4 +1,4 @@
-package be.portal.job.utils.dataInitializer;
+package be.portal.job.utils.datainitializer;
 
 import be.portal.job.entities.ContractType;
 import be.portal.job.repositories.ContractTypeRepository;
@@ -11,7 +11,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-@Order(6)
+@Order(5)
 public class ContractTypeInit implements CommandLineRunner {
 
     private final ContractTypeRepository contractTypeRepository;

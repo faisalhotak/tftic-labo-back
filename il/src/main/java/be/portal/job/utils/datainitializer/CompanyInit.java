@@ -1,4 +1,4 @@
-package be.portal.job.utils.dataInitializer;
+package be.portal.job.utils.datainitializer;
 
 import be.portal.job.entities.Company;
 import be.portal.job.repositories.CompanyRepository;
@@ -12,7 +12,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-@Order(4)
+@Order(2)
 public class CompanyInit implements CommandLineRunner {
 
     private final CompanyRepository companyRepository;

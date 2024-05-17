@@ -17,7 +17,7 @@ public class SkillDetail extends BaseEntity<Long> {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "skill_detail")
+    @OneToMany(mappedBy = "skillDetail")
     private Set<SkillSet> skillSets;
 
     public SkillDetail() {

@@ -1,4 +1,4 @@
-package be.portal.job.utils.dataInitializer;
+package be.portal.job.utils.datainitializer;
 
 import be.portal.job.entities.Role;
 import be.portal.job.repositories.RoleRepository;
@@ -11,7 +11,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-@Order(2)
+@Order(1)
 public class RoleInit implements CommandLineRunner {
 
     private final RoleRepository roleRepository;
