@@ -20,10 +20,12 @@ public class RoleInit implements CommandLineRunner {
     public void run(String... args) throws Exception {
         // Créer quelques rôles avec des valeurs arbitraires
         List<Role> roles = List.of(
-                new Role("ROLE_ADMIN", "Administrateur"),
-                new Role("ROLE_USER", "Utilisateur"),
-                new Role("ROLE_MANAGER", "Manager"),
-                new Role("ROLE_SUPERVISOR", "Superviseur")
+                new Role("ADMIN", "Administrateur"),
+                new Role("USER", "Utilisateur"),
+                new Role("MANAGER", "Manager"),
+                new Role("SUPERVISOR", "Superviseur"),
+                new Role("SEEKER", "Chercheur"),
+                new Role("ADVERTISER", "Promoteur")
         );
 
         roleRepository.saveAll(roles);
