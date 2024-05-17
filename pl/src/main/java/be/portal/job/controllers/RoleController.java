@@ -7,14 +7,13 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/role")
 @CrossOrigin("*")
@@ -34,7 +33,7 @@ public class RoleController {
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    @GetMapping("/{id}")
+    @GetMapping("/{id:^[0-9]+$}")
     public ResponseEntity<RoleDTO> getRoleById(@PathVariable Long id) {
         RoleDTO roleDTO = RoleDTO.fromEntity(roleService.getRoleById(id));
 
@@ -54,7 +53,7 @@ public class RoleController {
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    @PutMapping("/{id}")
+    @PutMapping("/{id:^[0-9]+$}")
     public ResponseEntity<RoleDTO> updateRole(@PathVariable Long id, @Valid @RequestBody RoleForm roleForm, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().build();
@@ -66,7 +65,7 @@ public class RoleController {
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{id:^[0-9]+$}")
     public ResponseEntity<RoleDTO> deleteRole(@PathVariable Long id) {
         roleService.deleteRole(id);
 

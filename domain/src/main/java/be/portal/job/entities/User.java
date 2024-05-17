@@ -45,14 +45,14 @@ public abstract class User extends BaseEntity<Long> implements UserDetails {
     )
     private Set<Role> roles;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id", nullable = false)
     private Address address;
 
     @OneToMany(mappedBy = "user")
     private Set<SocialLink> socialLinks;
 
-    public User() {
+    protected User() {
         this.isActive = true;
         this.roles = new HashSet<>();
         this.socialLinks = new HashSet<>();

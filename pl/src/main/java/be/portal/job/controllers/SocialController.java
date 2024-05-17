@@ -7,14 +7,13 @@ import be.portal.job.services.SocialService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Comparator;
 import java.util.List;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/social")
 public class SocialController {
@@ -53,7 +52,7 @@ public class SocialController {
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    @PutMapping("/{id}")
+    @PutMapping("/{id:^[0-9]+$}")
     public ResponseEntity<SocialDTO> updateSocial(@PathVariable Long id, @RequestBody SocialForm form) {
         Social social = socialService.updateSocial(id, form.toEntity());
 
@@ -61,7 +60,7 @@ public class SocialController {
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{id:^[0-9]+$}")
     public ResponseEntity<SocialDTO> deleteSocial(@PathVariable Long id) {
         socialService.deleteSocial(id);
 

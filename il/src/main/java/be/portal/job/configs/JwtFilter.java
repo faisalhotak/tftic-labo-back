@@ -1,6 +1,6 @@
 package be.portal.job.configs;
 
-import be.portal.job.services.UserService;
+import be.portal.job.services.impls.CompositeUserDetailsServiceImpl;
 import be.portal.job.utils.JwtUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -21,7 +21,7 @@ import java.io.IOException;
 public class JwtFilter extends OncePerRequestFilter {
 
     private final JwtUtils jwtUtils;
-    private final UserService userService;
+    private final CompositeUserDetailsServiceImpl compositeUserDetailsServiceImpl;
 
     @Override
     protected void doFilterInternal(
@@ -36,7 +36,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
             if (!token.isBlank() && jwtUtils.validateToken(token)) {
                 String username = jwtUtils.getUsername(token);
-                UserDetails userDetails = userService.loadUserByUsername(username);
+                UserDetails userDetails = compositeUserDetailsServiceImpl.loadUserByUsername(username);
                 UsernamePasswordAuthenticationToken upt = new UsernamePasswordAuthenticationToken(
                         userDetails,
                         null,

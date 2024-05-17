@@ -1,4 +1,4 @@
-package be.portal.job.models.forms;
+package be.portal.job.models.requests;
 
 import be.portal.job.entities.Address;
 import be.portal.job.entities.JobAdvertiser;
@@ -8,13 +8,14 @@ import be.portal.job.enums.Gender;
 import be.portal.job.enums.UserType;
 import be.portal.job.exceptions.auth.InvalidUserType;
 import jakarta.annotation.Nullable;
-import jakarta.persistence.Column;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
-public record RegisterForm(
+public record UserAddRequest(
 
         @NotBlank(message = "There must be an email")
         @Email(message = "The email is not valid")
@@ -58,35 +59,35 @@ public record RegisterForm(
         @NotNull(message = "There must be a user type, ${validatedValue} is not valid")
         UserType userType
 ) {
-        public User toEntity() {
-                User user = null;
+    public User toEntity() {
+        User user = null;
 
-                if (userType.name().equals("SEEKER")) {
-                        JobSeeker jobSeeker = new JobSeeker();
+        if (userType.name().equals("SEEKER")) {
+            JobSeeker jobSeeker = new JobSeeker();
 
-                        jobSeeker.setGender(gender);
-                        jobSeeker.setBirthDate(birthDate);
+            jobSeeker.setGender(gender);
+            jobSeeker.setBirthDate(birthDate);
 
-                        user = jobSeeker;
-                }
-
-                if (userType.name().equals("ADVERTISER")) {
-                    user = new JobAdvertiser();
-                }
-
-                if (user == null) {
-                        throw new InvalidUserType();
-                }
-
-                user.setEmail(email);
-                user.setPassword(password);
-                user.setFirstname(firstname);
-                user.setLastname(lastname);
-                user.setPhoneNumber(phoneNumber);
-                user.setContactEmail(contactEmail);
-
-                user.setAddress(new Address(street, city, zip, country));
-
-                return user;
+            user = jobSeeker;
         }
+
+        if (userType.name().equals("ADVERTISER")) {
+            user = new JobAdvertiser();
+        }
+
+        if (user == null) {
+            throw new InvalidUserType();
+        }
+
+        user.setEmail(email);
+        user.setPassword(password);
+        user.setFirstname(firstname);
+        user.setLastname(lastname);
+        user.setPhoneNumber(phoneNumber);
+        user.setContactEmail(contactEmail);
+
+        user.setAddress(new Address(street, city, zip, country));
+
+        return user;
+    }
 }

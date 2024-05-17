@@ -1,25 +1,20 @@
 package be.portal.job.services;
 
-import be.portal.job.entities.User;
-import be.portal.job.enums.UserType;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import be.portal.job.models.requests.UserAddRequest;
+import be.portal.job.models.requests.UserUpdateRequest;
+import be.portal.job.models.responses.UserResponse;
 
-public interface UserService extends UserDetailsService {
+import java.util.List;
 
-    /**
-     * Authenticates a user with the provided email and password.
-     *
-     * @param email The email of the user trying to log in.
-     * @param password The password of the user trying to log in.
-     * @return The authenticated User object if the login is successful.
-     */
-    User login(String email, String password);
+public interface UserService {
 
-    /**
-     * Registers a new user in the system.
-     *
-     * @param user The User object containing the details of the user to be registered.
-     * @return The registered User object if the registration is successful.
-     */
-    User register(User user, UserType userType);
+    List<UserResponse> getAll();
+
+    UserResponse getUserById(Long id);
+
+    UserResponse addUser(UserAddRequest request);
+
+    UserResponse updateUser(Long id, UserUpdateRequest request);
+
+    UserResponse deleteUser(Long id);
 }
