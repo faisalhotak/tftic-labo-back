@@ -3,7 +3,7 @@ package be.portal.job.dtos.certification_detail.requests;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 public record CertificationDetailUpdateRequest(
 
@@ -14,6 +14,6 @@ public record CertificationDetailUpdateRequest(
         String description,
 
         @NotNull(message = "Completion date cannot be blank")
-        LocalDateTime completionDate
+        LocalDate completionDate
 ) {
 }
