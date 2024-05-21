@@ -15,20 +15,16 @@ public record ExperienceDetailAddRequest(
         String companyName,
 
         @NotBlank(message = "Description cannot be blank")
-        @Size(min = 1, max = 500, message = "Description must be between 1 and 500 characters")
         String description,
 
         @NotNull(message = "Start date cannot be null")
         LocalDateTime startDate,
 
         @Nullable
-        LocalDateTime endDate,
-
-        @NotNull
-        JobSeeker jobSeeker
+        LocalDateTime endDate
 
 ) {
-    public ExperienceDetail toEntity() {
+    public ExperienceDetail toEntity(JobSeeker jobSeeker) {
         return new ExperienceDetail(
                 companyName,
                 description,
