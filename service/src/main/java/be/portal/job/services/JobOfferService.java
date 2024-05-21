@@ -7,4 +7,6 @@ import java.util.List;
 public interface JobOfferService {
 
     List<JobOfferResponse> getAll();
+
+    JobOfferResponse getJobOfferById(Long id);
 }

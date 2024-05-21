@@ -20,4 +20,11 @@ public class JobOfferServiceImpl implements JobOfferService {
                 .map(JobOfferResponse::fromEntity)
                 .toList();
     }
+
+    @Override
+    public JobOfferResponse getJobOfferById(Long id) {
+        return jobOfferRepository.findById(id)
+                .map(JobOfferResponse::fromEntity)
+                .orElseThrow();
+    }
 }

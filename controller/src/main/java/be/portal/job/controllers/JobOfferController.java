@@ -1,10 +1,12 @@
 package be.portal.job.controllers;
 
 import be.portal.job.dtos.jobOffer.responses.JobOfferResponse;
+import be.portal.job.dtos.user.responses.AbstractUserResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import be.portal.job.services.JobOfferService;
@@ -14,13 +16,19 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/job-offers")
+@PreAuthorize("hasAnyAuthority('SEEKER', 'ADVERTISER', 'ADMIN')")
 public class JobOfferController {
 
     private final JobOfferService jobOfferService;
 
-    @PreAuthorize("hasAnyAuthority('SEEKER', 'ADVERTISER', 'ADMIN')")
     @GetMapping
     public ResponseEntity<List<JobOfferResponse>> getAllJobOffers() {
         return ResponseEntity.ok(jobOfferService.getAll());
+    }
+
+
+    @GetMapping("/{id:^[0-9]+$}")
+    public ResponseEntity<JobOfferResponse> getJobOfferById(@PathVariable Long id) {
+        return ResponseEntity.ok(jobOfferService.getJobOfferById(id));
     }
 }
