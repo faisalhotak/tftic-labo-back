@@ -14,7 +14,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/job-offers")
-@PreAuthorize("hasAnyAuthority('SEEKER', 'ADVERTISER', 'ADMIN')")
+@PreAuthorize("hasAnyAuthority('ADVERTISER', 'ADMIN')")
 public class JobOfferController {
 
     private final JobOfferService jobOfferService;
