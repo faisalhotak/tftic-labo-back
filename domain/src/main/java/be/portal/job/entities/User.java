@@ -29,13 +29,22 @@ public abstract class User extends BaseEntity<Long> implements UserDetails {
     private String lastname;
 
     @Column(name = "phone_number", nullable = false)
-    private int phoneNumber;
+    private String phoneNumber;
 
     @Column(name = "contact_email", nullable = false)
     private String contactEmail;
 
-    @Column(name = "is_active", nullable = false)
-    private boolean isActive;
+    @Column(name = "is_enabled", nullable = false)
+    private boolean isEnabled;
+
+    @Column(name = "is_expired", nullable = false)
+    private boolean isExpired;
+
+    @Column(name = "is_locked", nullable = false)
+    private boolean isLocked;
+
+    @Column(name = "is_credentials_expired", nullable = false)
+    private boolean isCredentialsExpired;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -53,9 +62,19 @@ public abstract class User extends BaseEntity<Long> implements UserDetails {
     private Set<SocialLink> socialLinks;
 
     protected User() {
-        this.isActive = true;
+        this.isExpired = false;
+        this.isLocked = false;
+        this.isCredentialsExpired = false;
+        this.isEnabled = true;
         this.roles = new HashSet<>();
         this.socialLinks = new HashSet<>();
+    }
+
+    protected User(String email, String password, Role role) {
+        this();
+        this.email = email;
+        this.password = password;
+        this.roles.add(role);
     }
 
     @Override
@@ -70,21 +89,21 @@ public abstract class User extends BaseEntity<Long> implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return true;
+        return !isExpired;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return !isLocked;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return true;
+        return !isCredentialsExpired;
     }
 
     @Override
     public boolean isEnabled() {
-        return isActive;
+        return isEnabled;
     }
 }
