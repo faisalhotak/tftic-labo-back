@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 public record ExperienceDetailUpdateRequest(
 
@@ -17,8 +17,8 @@ public record ExperienceDetailUpdateRequest(
         String description,
 
         @NotNull(message = "Start date cannot be null")
-        LocalDateTime startDate,
+        LocalDate startDate,
 
         @Nullable
-        LocalDateTime endDate
+        LocalDate endDate
 ) { }
