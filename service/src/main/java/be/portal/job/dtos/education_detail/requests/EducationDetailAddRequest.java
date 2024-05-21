@@ -27,12 +27,9 @@ public record EducationDetailAddRequest(
         LocalDateTime startDate,
 
         @NotNull(message = "Completion date cannot be null")
-        LocalDateTime completionDate,
-
-        @NotNull
-        JobSeeker jobSeeker
+        LocalDateTime completionDate
 ) {
-    public EducationDetail toEntity() {
+    public EducationDetail toEntity(JobSeeker jobSeeker) {
         return new EducationDetail(
                 instituteName,
                 major,
