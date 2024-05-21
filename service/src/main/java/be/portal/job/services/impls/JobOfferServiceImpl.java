@@ -27,4 +27,14 @@ public class JobOfferServiceImpl implements JobOfferService {
                 .map(JobOfferResponse::fromEntity)
                 .orElseThrow();
     }
+
+    @Override
+    public JobOfferResponse deleteJobOffer(Long id) {
+        return jobOfferRepository.findById(id)
+                .map(jobOffer -> {
+                    jobOfferRepository.delete(jobOffer);
+                    return JobOfferResponse.fromEntity(jobOffer);
+                })
+                .orElseThrow();
+    }
 }

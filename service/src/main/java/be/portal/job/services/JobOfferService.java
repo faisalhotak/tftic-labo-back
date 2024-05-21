@@ -9,4 +9,6 @@ public interface JobOfferService {
     List<JobOfferResponse> getAll();
 
     JobOfferResponse getJobOfferById(Long id);
+
+    JobOfferResponse deleteJobOffer(Long id);
 }

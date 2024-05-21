@@ -1,14 +1,12 @@
 package be.portal.job.controllers;
 
+import be.portal.job.dtos.jobOffer.requests.JobOfferPostRequest;
 import be.portal.job.dtos.jobOffer.responses.JobOfferResponse;
 import be.portal.job.dtos.user.responses.AbstractUserResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import be.portal.job.services.JobOfferService;
 
 import java.util.List;
@@ -30,5 +28,10 @@ public class JobOfferController {
     @GetMapping("/{id:^[0-9]+$}")
     public ResponseEntity<JobOfferResponse> getJobOfferById(@PathVariable Long id) {
         return ResponseEntity.ok(jobOfferService.getJobOfferById(id));
+    }
+
+    @DeleteMapping("/{id:^[0-9]+$}")
+    public ResponseEntity<JobOfferResponse> deleteJobOffer(@PathVariable Long id) {
+        return ResponseEntity.ok(jobOfferService.deleteJobOffer(id));
     }
 }
