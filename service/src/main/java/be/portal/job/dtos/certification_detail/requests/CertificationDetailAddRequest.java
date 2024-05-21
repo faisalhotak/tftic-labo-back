@@ -5,7 +5,7 @@ import be.portal.job.entities.JobSeeker;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 public record CertificationDetailAddRequest(
 
@@ -16,7 +16,7 @@ public record CertificationDetailAddRequest(
         String description,
 
         @NotNull(message = "Completion date cannot be blank")
-        LocalDateTime completionDate
+        LocalDate completionDate
 ) {
     public CertificationDetail toEntity(JobSeeker jobSeeker) {
         return new CertificationDetail(name, description, completionDate, jobSeeker);
