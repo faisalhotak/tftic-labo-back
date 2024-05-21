@@ -57,4 +57,14 @@ public class JobOfferServiceImpl implements JobOfferService {
         jobOffer.setContractType(contractTypeRepository.findById(jobOfferPostRequest.contractTypeId()).orElseThrow());
         return JobOfferResponse.fromEntity(jobOfferRepository.save(jobOffer));
     }
+
+    @Override
+    public JobOfferResponse updateJobOffer(Long id, JobOfferPostRequest jobOfferPostRequest) {
+        JobOffer jobOffer = jobOfferRepository.findById(id).orElseThrow();
+        jobOfferPostRequest.toEntity(jobOffer);
+        jobOffer.setAgent(companyAdvertiserRepository.findById(jobOfferPostRequest.agentId()).orElseThrow());
+        jobOffer.setJobFunction(jobFunctionRepository.findById(jobOfferPostRequest.jobFunctionId()).orElseThrow());
+        jobOffer.setContractType(contractTypeRepository.findById(jobOfferPostRequest.contractTypeId()).orElseThrow());
+        return JobOfferResponse.fromEntity(jobOfferRepository.save(jobOffer));
+    }
 }

@@ -39,4 +39,9 @@ public class JobOfferController {
     public ResponseEntity<JobOfferResponse> addJobOffer(@RequestBody JobOfferPostRequest jobOfferPostRequest) {
         return ResponseEntity.ok(jobOfferService.addJobOffer(jobOfferPostRequest));
     }
+
+    @PutMapping("/{id:^[0-9]+$}")
+    public ResponseEntity<JobOfferResponse> updateJobOffer(@PathVariable Long id, @RequestBody JobOfferPostRequest jobOfferPostRequest) {
+        return ResponseEntity.ok(jobOfferService.updateJobOffer(id, jobOfferPostRequest));
+    }
 }
