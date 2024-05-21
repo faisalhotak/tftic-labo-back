@@ -34,4 +34,9 @@ public class JobOfferController {
     public ResponseEntity<JobOfferResponse> deleteJobOffer(@PathVariable Long id) {
         return ResponseEntity.ok(jobOfferService.deleteJobOffer(id));
     }
+
+    @PostMapping()
+    public ResponseEntity<JobOfferResponse> addJobOffer(@RequestBody JobOfferPostRequest jobOfferPostRequest) {
+        return ResponseEntity.ok(jobOfferService.addJobOffer(jobOfferPostRequest));
+    }
 }
