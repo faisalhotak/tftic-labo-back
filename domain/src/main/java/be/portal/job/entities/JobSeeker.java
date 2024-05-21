@@ -30,8 +30,23 @@ public class JobSeeker extends User {
     @OneToMany(mappedBy = "jobSeeker")
     private Set<CertificationDetail> certificationDetails;
 
+    @OneToMany(mappedBy = "jobSeeker")
+    private Set<EducationDetail> educationDetails;
+
+    @OneToMany(mappedBy = "jobSeeker")
+    private Set<SkillSet> skillSets;
+
+    @OneToMany(mappedBy = "jobSeeker")
+    private Set<Application> applications;
+
+    @OneToMany(mappedBy = "jobSeeker")
+    private Set<DrivingLicence> drivingLicences;
+
     public JobSeeker() {
         this.experienceDetails = new HashSet<>();
         this.certificationDetails = new HashSet<>();
+        this.educationDetails = new HashSet<>();
+        this.skillSets = new HashSet<>();
+        this.applications = new HashSet<>();
     }
 }

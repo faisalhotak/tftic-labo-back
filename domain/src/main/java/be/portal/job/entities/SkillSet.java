@@ -27,6 +27,6 @@ public class SkillSet extends BaseEntity<Long> {
     private JobSeeker jobSeeker;
 
     @ManyToOne
-    @JoinColumn(name = "skill_detail", nullable = false)
+    @JoinColumn(name = "skill_detail_id", nullable = false)
     private SkillDetail skillDetail;
 }
