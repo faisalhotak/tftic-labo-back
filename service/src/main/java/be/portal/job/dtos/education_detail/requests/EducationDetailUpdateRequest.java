@@ -5,7 +5,7 @@ import be.portal.job.enums.Mention;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 public record EducationDetailUpdateRequest(
 
@@ -22,8 +22,8 @@ public record EducationDetailUpdateRequest(
         Mention mention,
 
         @NotNull(message = "Start date cannot be null")
-        LocalDateTime startDate,
+        LocalDate startDate,
 
         @NotNull(message = "Completion date cannot be null")
-        LocalDateTime completionDate
+        LocalDate completionDate
 ) { }
