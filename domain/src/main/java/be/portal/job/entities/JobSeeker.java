@@ -48,5 +48,6 @@ public class JobSeeker extends User {
         this.educationDetails = new HashSet<>();
         this.skillSets = new HashSet<>();
         this.applications = new HashSet<>();
+        this.drivingLicences = new HashSet<>();
     }
 }
