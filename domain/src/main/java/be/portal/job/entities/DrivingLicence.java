@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @NoArgsConstructor
@@ -22,7 +22,7 @@ public class DrivingLicence extends BaseEntity<Long> {
     private DrivingLicenceCategory drivingLicenceCategory;
 
     @Column(name = "issue_date", nullable = false)
-    private LocalDateTime issueDate;
+    private LocalDate issueDate;
 
     @ManyToOne
     @JoinColumn(name = "job_seeker_id", nullable = false)
