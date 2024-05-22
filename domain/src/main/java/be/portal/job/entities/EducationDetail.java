@@ -5,7 +5,7 @@ import be.portal.job.enums.Mention;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -29,10 +29,10 @@ public class EducationDetail extends BaseEntity<Long> {
     private Mention mention;
 
     @Column(name = "start_date", nullable = false)
-    private LocalDateTime startDate;
+    private LocalDate startDate;
 
     @Column(name = "completion_date", nullable = false)
-    private LocalDateTime completionDate;
+    private LocalDate completionDate;
 
     @ManyToOne()
     @JoinColumn(name = "job_seeker_id")
