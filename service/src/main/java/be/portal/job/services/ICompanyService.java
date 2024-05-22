@@ -31,4 +31,12 @@ public interface ICompanyService {
      * @return The newly created job function.
      */
     CompanyResponse addCompany(CompanyRequest company);
+
+    /**
+     * Updates an existing company.
+     * @param id the identifier of the company to update.
+     * @param company the new information for the company.
+     * @return the updated company, or null if the company does not exist.
+     */
+    CompanyResponse updateCompany(Long id, CompanyRequest company);
 }

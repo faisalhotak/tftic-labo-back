@@ -32,4 +32,9 @@ public class CompanyController {
     public ResponseEntity<CompanyResponse> addCompany(@RequestBody CompanyRequest company) {
         return ResponseEntity.ok(companyService.addCompany(company));
     }
+
+    @PutMapping("/{id:^[0-9]+$}")
+    public ResponseEntity<CompanyResponse> updateCompany(@PathVariable Long id, @RequestBody CompanyRequest company) {
+        return ResponseEntity.ok(companyService.updateCompany(id, company));
+    }
 }
