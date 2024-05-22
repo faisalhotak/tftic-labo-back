@@ -39,4 +39,10 @@ public interface ICompanyService {
      * @return the updated company, or null if the company does not exist.
      */
     CompanyResponse updateCompany(Long id, CompanyRequest company);
+
+    /**
+     * Deletes a company by its identifier.
+     * @param id the identifier of the company to delete.
+     */
+    CompanyResponse deleteCompany(Long id);
 }

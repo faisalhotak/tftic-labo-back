@@ -8,6 +8,7 @@ import be.portal.job.entities.JobAdvertiser;
 import be.portal.job.enums.AdvertiserRole;
 import be.portal.job.repositories.CompanyAdvertiserRepository;
 import be.portal.job.repositories.CompanyRepository;
+import be.portal.job.repositories.JobOfferRepository;
 import be.portal.job.services.ICompanyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,6 +25,7 @@ public class CompanyServiceImpl implements ICompanyService {
 
     private final CompanyRepository companyRepository;
     private final CompanyAdvertiserRepository companyAdvertiserRepository;
+    private final JobOfferRepository jobOfferRepository;
 
     @Override
     public List<CompanyResponse> getAll() {
@@ -63,4 +65,26 @@ public class CompanyServiceImpl implements ICompanyService {
         companyRequest.toEntity(company);
         return CompanyResponse.fromEntity(companyRepository.save(company));
     }
+
+    @Override
+    public CompanyResponse deleteCompany(Long id) {
+        Company company = companyRepository.findById(id).orElseThrow();
+        JobAdvertiser currentUser = (JobAdvertiser) SecurityContextHolder.getContext()
+                .getAuthentication().getPrincipal();
+        CompanyAdvertiser companyAdvertiser = companyAdvertiserRepository.findByCompanyAndAgent(company.getId(), currentUser.getId());
+
+        if (companyAdvertiser == null || companyAdvertiser.getAdvertiserRole() != AdvertiserRole.OWNER
+                && currentUser.getAuthorities().stream().noneMatch(a -> a.getAuthority().equals(ADMIN_ROLE))) {
+            throw new RuntimeException("You are not allowed to delete this company.");
+        }
+
+        List<CompanyAdvertiser> agents = companyAdvertiserRepository.findAllbyCompany(company.getId());
+        agents.forEach(agent -> {
+            jobOfferRepository.deleteByAgent(agent.getId());
+            companyAdvertiserRepository.delete(agent);
+        });
+        companyRepository.delete(company);
+        return CompanyResponse.fromEntity(company);
+    }
+
 }

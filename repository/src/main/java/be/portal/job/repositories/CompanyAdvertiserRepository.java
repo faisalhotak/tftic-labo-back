@@ -4,8 +4,13 @@ import be.portal.job.entities.CompanyAdvertiser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
+
 public interface CompanyAdvertiserRepository extends JpaRepository<CompanyAdvertiser, Long> {
 
     @Query("SELECT ca FROM CompanyAdvertiser ca WHERE ca.company.id = :companyId AND ca.jobAdvertiser.id = :agentId")
     CompanyAdvertiser findByCompanyAndAgent(Long companyId, Long agentId);
+
+    @Query("SELECT ca FROM CompanyAdvertiser ca WHERE ca.company.id = :companyId")
+    List<CompanyAdvertiser> findAllbyCompany(Long companyId);
 }
