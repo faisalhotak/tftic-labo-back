@@ -1,14 +1,12 @@
 package be.portal.job.controllers;
 
+import be.portal.job.dtos.company.requests.CompanyRequest;
 import be.portal.job.dtos.company.responses.CompanyResponse;
 import be.portal.job.services.ICompanyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -28,5 +26,10 @@ public class CompanyController {
     @GetMapping("/{id:^[0-9]+$}")
     public ResponseEntity<CompanyResponse> getCompanyById(@PathVariable Long id) {
         return ResponseEntity.ok(companyService.getCompanyById(id));
+    }
+
+    @PostMapping
+    public ResponseEntity<CompanyResponse> addCompany(@RequestBody CompanyRequest company) {
+        return ResponseEntity.ok(companyService.addCompany(company));
     }
 }

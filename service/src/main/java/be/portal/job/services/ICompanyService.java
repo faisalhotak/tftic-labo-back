@@ -1,5 +1,6 @@
 package be.portal.job.services;
 
+import be.portal.job.dtos.company.requests.CompanyRequest;
 import be.portal.job.dtos.company.responses.CompanyResponse;
 
 import java.util.List;
@@ -22,4 +23,12 @@ public interface ICompanyService {
      * @return the company corresponding to the provided identifier, or null if not found.
      */
     CompanyResponse getCompanyById(Long id);
+
+    /**
+     * Creates a new company in the system.
+     *
+     * @param company the company to add.
+     * @return The newly created job function.
+     */
+    CompanyResponse addCompany(CompanyRequest company);
 }
