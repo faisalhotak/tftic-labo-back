@@ -1,10 +1,10 @@
-package be.portal.job.models.forms;
+package be.portal.job.dtos.social.responses;
 
 import be.portal.job.entities.Social;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-public record SocialForm(
+public record SocialResponse(
 
         @NotBlank(message = "Social Network name")
         @Size(min = 1, max = 100)
@@ -14,12 +14,10 @@ public record SocialForm(
         @Size(min = 1, max = 255)
         String logoUrl
 ) {
-    public Social toEntity() {
-        Social social = new Social();
-
-        social.setName(name);
-        social.setLogoUrl(logoUrl);
-
-        return social;
+    public static SocialResponse fromEntity(Social social) {
+        return new SocialResponse(
+                social.getName(),
+                social.getLogoUrl()
+        );
     }
 }
