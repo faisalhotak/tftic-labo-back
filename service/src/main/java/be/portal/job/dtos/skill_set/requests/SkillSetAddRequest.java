@@ -13,7 +13,10 @@ public record SkillSetAddRequest(
         SkillLevel skillLevel,
 
         @Min(value = 0)
-        int years
+        int years,
+
+        @NotNull
+        Long skillDetailId
 ) {
     public SkillSet toEntity(JobSeeker jobSeeker, SkillDetail skillDetail) {
         return new SkillSet(
