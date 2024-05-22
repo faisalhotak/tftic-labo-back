@@ -2,12 +2,11 @@ package be.portal.job.controllers;
 
 import be.portal.job.dtos.jobOffer.requests.JobOfferPostRequest;
 import be.portal.job.dtos.jobOffer.responses.JobOfferResponse;
-import be.portal.job.dtos.user.responses.AbstractUserResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import be.portal.job.services.JobOfferService;
+import be.portal.job.services.IJobOfferService;
 
 import java.util.List;
 
@@ -17,7 +16,7 @@ import java.util.List;
 @PreAuthorize("hasAnyAuthority('ADVERTISER', 'ADMIN')")
 public class JobOfferController {
 
-    private final JobOfferService jobOfferService;
+    private final IJobOfferService jobOfferService;
 
     @GetMapping
     public ResponseEntity<List<JobOfferResponse>> getAllJobOffers() {

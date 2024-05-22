@@ -8,7 +8,7 @@ import be.portal.job.repositories.CompanyAdvertiserRepository;
 import be.portal.job.repositories.ContractTypeRepository;
 import be.portal.job.repositories.JobFunctionRepository;
 import be.portal.job.repositories.JobOfferRepository;
-import be.portal.job.services.JobOfferService;
+import be.portal.job.services.IJobOfferService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -20,7 +20,7 @@ import static be.portal.job.utils.Constants.ADMIN_ROLE;
 
 @Service
 @RequiredArgsConstructor
-public class JobOfferServiceImpl implements JobOfferService {
+public class JobOfferServiceImpl implements IJobOfferService {
 
     private final JobOfferRepository jobOfferRepository;
     private final JobFunctionRepository jobFunctionRepository;
