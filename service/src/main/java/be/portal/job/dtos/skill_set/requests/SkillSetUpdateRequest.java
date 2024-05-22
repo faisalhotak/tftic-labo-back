@@ -10,5 +10,8 @@ public record SkillSetUpdateRequest(
         SkillLevel skillLevel,
 
         @Min(value = 0)
-        int years
+        int years,
+
+        @NotNull
+        Long skillDetailId
 ) { }
