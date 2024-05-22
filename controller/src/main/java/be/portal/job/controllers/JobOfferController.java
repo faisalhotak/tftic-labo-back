@@ -23,16 +23,15 @@ public class JobOfferController {
     public ResponseEntity<List<JobOfferResponse>> getAllJobOffers() {
         return ResponseEntity.ok(jobOfferService.getAll());
     }
-
+    
+    @GetMapping("/agent/{id:^[0-9]+$}")
+    public ResponseEntity<List<JobOfferResponse>> getAllJobOffersByJobAdvertiser(@PathVariable Long id) {
+        return ResponseEntity.ok(jobOfferService.getAllByAgent(id));
+    }
 
     @GetMapping("/{id:^[0-9]+$}")
     public ResponseEntity<JobOfferResponse> getJobOfferById(@PathVariable Long id) {
         return ResponseEntity.ok(jobOfferService.getJobOfferById(id));
-    }
-
-    @DeleteMapping("/{id:^[0-9]+$}")
-    public ResponseEntity<JobOfferResponse> deleteJobOffer(@PathVariable Long id) {
-        return ResponseEntity.ok(jobOfferService.deleteJobOffer(id));
     }
 
     @PostMapping()
@@ -43,5 +42,10 @@ public class JobOfferController {
     @PutMapping("/{id:^[0-9]+$}")
     public ResponseEntity<JobOfferResponse> updateJobOffer(@PathVariable Long id, @RequestBody JobOfferPostRequest jobOfferPostRequest) {
         return ResponseEntity.ok(jobOfferService.updateJobOffer(id, jobOfferPostRequest));
+    }
+
+    @DeleteMapping("/{id:^[0-9]+$}")
+    public ResponseEntity<JobOfferResponse> deleteJobOffer(@PathVariable Long id) {
+        return ResponseEntity.ok(jobOfferService.deleteJobOffer(id));
     }
 }

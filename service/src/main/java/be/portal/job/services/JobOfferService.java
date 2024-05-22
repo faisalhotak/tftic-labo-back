@@ -9,6 +9,8 @@ public interface JobOfferService {
 
     List<JobOfferResponse> getAll();
 
+    List<JobOfferResponse> getAllByAgent(Long id);
+
     JobOfferResponse getJobOfferById(Long id);
 
     JobOfferResponse deleteJobOffer(Long id);
@@ -16,4 +18,5 @@ public interface JobOfferService {
     JobOfferResponse addJobOffer(JobOfferPostRequest jobOfferPostRequest);
 
     JobOfferResponse updateJobOffer(Long id, JobOfferPostRequest jobOfferPostRequest);
+
 }
