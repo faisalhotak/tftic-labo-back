@@ -20,4 +20,11 @@ public class CompanyServiceImpl implements ICompanyService {
                 .map(CompanyResponse::fromEntity)
                 .toList();
     }
+
+    @Override
+    public CompanyResponse getCompanyById(Long id) {
+        return companyRepository.findById(id)
+                .map(CompanyResponse::fromEntity)
+                .orElseThrow();
+    }
 }

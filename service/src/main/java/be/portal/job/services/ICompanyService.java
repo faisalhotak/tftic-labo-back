@@ -14,4 +14,12 @@ public interface ICompanyService {
      * @return a list of all companies.
      */
     List<CompanyResponse> getAll();
+
+    /**
+     * Retrieves a company by its unique identifier.
+     *
+     * @param id the identifier of the company to search for.
+     * @return the company corresponding to the provided identifier, or null if not found.
+     */
+    CompanyResponse getCompanyById(Long id);
 }
