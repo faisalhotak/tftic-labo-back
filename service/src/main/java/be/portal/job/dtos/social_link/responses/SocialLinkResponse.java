@@ -4,7 +4,6 @@ import be.portal.job.dtos.social.responses.SocialResponse;
 import be.portal.job.entities.SocialLink;
 
 public record SocialLinkResponse(
-
         String url,
         SocialResponse social
 ) {

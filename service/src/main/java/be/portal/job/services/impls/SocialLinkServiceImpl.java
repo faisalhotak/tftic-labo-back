@@ -33,7 +33,7 @@ public class SocialLinkServiceImpl implements SocialLinkService {
     public SocialLinkResponse getById(Long id) {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        SocialLink socialLink = socialLinkRepository.findById(user.getId())
+        SocialLink socialLink = socialLinkRepository.findByIdAndUserId(id, user.getId())
                 .orElseThrow(() -> new NotFoundException("Social link could not be found"));
 
         return SocialLinkResponse.fromEntity(socialLink);
@@ -48,7 +48,7 @@ public class SocialLinkServiceImpl implements SocialLinkService {
 
         SocialLink socialLink = request.toEntity(social, user);
 
-        return SocialLinkResponse.fromEntity(socialLink);
+        return SocialLinkResponse.fromEntity(socialLinkRepository.save(socialLink));
     }
 
     @Override
