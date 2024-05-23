@@ -1,23 +1,27 @@
 package be.portal.job.dtos.application.responses;
 
 import be.portal.job.entities.Application;
+import be.portal.job.entities.JobOffer;
+import be.portal.job.entities.JobSeeker;
 import be.portal.job.enums.ApplicationStatus;
-import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 
-public record ApplicationResponse(
-
-        @NotNull(message = "Apply date cannot be null")
-        LocalDateTime applyDate,
-
-        @NotNull(message = "Application status cannot be null")
-        ApplicationStatus applicationStatus
+public  record ApplicationResponse(
+        Long id,
+        LocalDateTime apply_date,
+        ApplicationStatus applicationStatus,
+        JobOffer jobOffer,
+        JobSeeker jobSeeker
 ) {
     public static ApplicationResponse fromEntity(Application application) {
         return new ApplicationResponse(
+
+                application.getId(),
                 application.getApplyDate(),
-                application.getApplicationStatus()
+                application.getApplicationStatus(),
+                application.getJobOffer(),
+                application.getJobSeeker()
         );
     }
 }
