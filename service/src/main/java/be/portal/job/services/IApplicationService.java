@@ -2,7 +2,6 @@ package be.portal.job.services;
 
 import be.portal.job.dtos.application.requests.ApplicationRequest;
 import be.portal.job.dtos.application.responses.ApplicationResponse;
-import be.portal.job.entities.Application;
 
 import java.util.List;
 
@@ -12,7 +11,7 @@ public interface IApplicationService {
      * Retrieves a list of all applications.
      * @return a List of Application objects representing all applications.
      */
-    List<ApplicationResponse> getAll();
+    List<ApplicationResponse> getAllBySeeker(Long id);
 
     /**
      * Retrieves an application by its unique identifier.

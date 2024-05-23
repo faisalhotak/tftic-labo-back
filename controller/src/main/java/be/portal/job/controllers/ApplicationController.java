@@ -17,14 +17,14 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/application")
 @CrossOrigin("*")
+@PreAuthorize("hasAuthority('SEEKER')")
 public class ApplicationController {
 
     public final IApplicationService applicationService;
 
-    @PreAuthorize("hasAuthority('ADMIN')")
-    @GetMapping
-    public ResponseEntity<List<ApplicationResponse>> getAllApplication() {
-        return ResponseEntity.ok(applicationService.getAll());
+    @GetMapping("/{id:^[0-9]+$}")
+    public ResponseEntity<List<ApplicationResponse>> getAllApplication(@PathVariable Long id) {
+        return ResponseEntity.ok(applicationService.getAllBySeeker(id));
     }
 
     @GetMapping("/{id:^[0-9]+$}")
