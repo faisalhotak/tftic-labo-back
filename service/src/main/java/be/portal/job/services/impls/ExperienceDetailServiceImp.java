@@ -1,8 +1,6 @@
 package be.portal.job.services.impls;
 
-import be.portal.job.dtos.experience_detail.requests.ExperienceDetailAddRequest;
 import be.portal.job.dtos.experience_detail.responses.ExperienceDetailResponse;
-import be.portal.job.entities.ExperienceDetail;
 import be.portal.job.entities.JobSeeker;
 import be.portal.job.repositories.ExperienceDetailRepository;
 import be.portal.job.services.IExperienceDetailService;
@@ -17,7 +15,6 @@ import java.util.List;
 public class ExperienceDetailServiceImp implements IExperienceDetailService {
 
     private final ExperienceDetailRepository experienceDetailRepository;
-    private final AuthServiceImpl authService;
 
     @Override
     public List<ExperienceDetailResponse> getAllByCurrentSeeker() {
@@ -25,32 +22,5 @@ public class ExperienceDetailServiceImp implements IExperienceDetailService {
         return experienceDetailRepository.findAllByJobSeekerId(currentUser.getId()).stream()
                 .map(ExperienceDetailResponse::fromEntity)
                 .toList();
-    }
-
-    @Override
-    public ExperienceDetailResponse addExperienceDetail(ExperienceDetailAddRequest experienceDetailRequest) {
-        JobSeeker currentUser = authService.getAuthenticatedSeeker();
-        return ExperienceDetailResponse.fromEntity(experienceDetailRepository.save(experienceDetailRequest.toEntity(currentUser)));
-    }
-
-    @Override
-    public ExperienceDetailResponse updateExperienceDetail(Long id, ExperienceDetailAddRequest experienceDetailRequest) {
-        JobSeeker currentUser = authService.getAuthenticatedSeeker();
-        ExperienceDetail experienceDetail = experienceDetailRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Experience detail notfound"));
-        if (!experienceDetail.getJobSeeker().getId().equals(currentUser.getId())) {
-            throw new IllegalArgumentException("You are not allowed to update experience details for other job seekers");
-        }
-        return ExperienceDetailResponse.fromEntity(experienceDetailRepository.save(experienceDetailRequest.toEntity(currentUser)));
-    }
-
-    @Override
-    public ExperienceDetailResponse deleteExperienceDetail(Long id) {
-        JobSeeker currentUser = authService.getAuthenticatedSeeker();
-        ExperienceDetail experienceDetail = experienceDetailRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Experience detail notfound"));
-        if (!experienceDetail.getJobSeeker().getId().equals(currentUser.getId())) {
-            throw new IllegalArgumentException("You are not allowed to delete experience details for other job seekers");
-        }
-        experienceDetailRepository.delete(experienceDetail);
-        return ExperienceDetailResponse.fromEntity(experienceDetail);
     }
 }

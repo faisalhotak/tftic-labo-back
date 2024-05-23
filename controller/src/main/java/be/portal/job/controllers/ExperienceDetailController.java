@@ -1,13 +1,13 @@
 package be.portal.job.controllers;
 
-import be.portal.job.dtos.experience_detail.requests.ExperienceDetailAddRequest;
 import be.portal.job.dtos.experience_detail.responses.ExperienceDetailResponse;
 import be.portal.job.services.IExperienceDetailService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -22,23 +22,5 @@ public class ExperienceDetailController {
     @GetMapping
     public ResponseEntity<List<ExperienceDetailResponse>> getAllExperienceDetailsOfCurrentUser() {
         return ResponseEntity.ok(experienceDetailService.getAllByCurrentSeeker());
-    }
-
-    @PreAuthorize("hasAnyAuthority('SEEKER')")
-    @PostMapping
-    public ResponseEntity<ExperienceDetailResponse> addExperienceDetail(@RequestBody @Valid ExperienceDetailAddRequest experienceDetailRequest) {
-        return ResponseEntity.ok(experienceDetailService.addExperienceDetail(experienceDetailRequest));
-    }
-
-    @PreAuthorize("hasAnyAuthority('SEEKER')")
-    @PutMapping("/{id}")
-    public ResponseEntity<ExperienceDetailResponse> updateExperienceDetail(@PathVariable Long id, @RequestBody @Valid ExperienceDetailAddRequest experienceDetailRequest) {
-        return ResponseEntity.ok(experienceDetailService.updateExperienceDetail(id, experienceDetailRequest));
-    }
-
-    @PreAuthorize("hasAnyAuthority('SEEKER')")
-    @DeleteMapping("/{id}")
-    public ResponseEntity<ExperienceDetailResponse> deleteExperienceDetail(@PathVariable Long id) {
-        return ResponseEntity.ok(experienceDetailService.deleteExperienceDetail(id));
     }
 }
