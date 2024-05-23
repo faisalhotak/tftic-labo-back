@@ -13,7 +13,6 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/companies")
-@PreAuthorize("hasAnyAuthority('SEEKER','ADVERTISER', 'ADMIN')")
 public class CompanyController {
 
     private final ICompanyService companyService;
@@ -28,16 +27,19 @@ public class CompanyController {
         return ResponseEntity.ok(companyService.getCompanyById(id));
     }
 
+    @PreAuthorize("hasAnyAuthority('ADVERTISER', 'ADMIN')")
     @PostMapping
     public ResponseEntity<CompanyResponse> addCompany(@RequestBody CompanyRequest company) {
         return ResponseEntity.ok(companyService.addCompany(company));
     }
 
+    @PreAuthorize("hasAnyAuthority('ADVERTISER', 'ADMIN')")
     @PutMapping("/{id:^[0-9]+$}")
     public ResponseEntity<CompanyResponse> updateCompany(@PathVariable Long id, @RequestBody CompanyRequest company) {
         return ResponseEntity.ok(companyService.updateCompany(id, company));
     }
 
+    @PreAuthorize("hasAnyAuthority('ADVERTISER', 'ADMIN')")
     @DeleteMapping("/{id:^[0-9]+$}")
     public ResponseEntity<CompanyResponse> deleteCompany(@PathVariable Long id) {
         return ResponseEntity.ok(companyService.deleteCompany(id));
