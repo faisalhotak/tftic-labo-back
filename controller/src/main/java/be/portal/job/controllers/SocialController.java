@@ -1,13 +1,12 @@
 package be.portal.job.controllers;
 
+import be.portal.job.dtos.social.requests.SocialRequest;
+import be.portal.job.dtos.social.responses.SocialResponse;
 import be.portal.job.entities.Social;
-import be.portal.job.models.dtos.SocialDTO;
-import be.portal.job.models.forms.SocialForm;
 import be.portal.job.services.SocialService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Comparator;
@@ -22,46 +21,42 @@ public class SocialController {
 
     @PreAuthorize("hasAnyAuthority('SEEKER', 'ADVERTISER', 'ADMIN')")
     @GetMapping
-    public ResponseEntity<List<SocialDTO>> getAllSocials(Model model) {
-        List<SocialDTO> socials = socialService.getAllSocial().stream()
+    public ResponseEntity<List<SocialResponse>> getAllSocials() {
+        List<SocialResponse> socials = socialService.getAllSocial().stream()
                 .sorted(Comparator.comparing(Social::getId))
-                .map(SocialDTO::fromEntity)
+                .map(SocialResponse::fromEntity)
                 .toList();
-
-        model.addAttribute("socials", socials);
 
         return ResponseEntity.ok().body(socials);
     }
 
     @PreAuthorize("hasAnyAuthority('SEEKER', 'ADVERTISER', 'ADMIN')")
     @GetMapping("/{id:^[0-9]+$}")
-    public ResponseEntity<SocialDTO> getSocialById(@PathVariable Long id, Model model) {
-        SocialDTO socialDto = SocialDTO.fromEntity(socialService.getSocialById(id));
+    public ResponseEntity<SocialResponse> getSocialById(@PathVariable Long id) {
+        SocialResponse socialResponse = SocialResponse.fromEntity(socialService.getSocialById(id));
 
-        model.addAttribute("social", socialDto);
-
-        return ResponseEntity.ok(socialDto);
+        return ResponseEntity.ok(socialResponse);
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping()
-    public ResponseEntity<SocialDTO> addSocial(@RequestBody SocialForm form) {
-        Social social = socialService.addSocial(form.toEntity());
+    public ResponseEntity<SocialResponse> addSocial(@RequestBody SocialRequest request) {
+        Social social = socialService.addSocial(request.toEntity());
 
-        return ResponseEntity.ok(SocialDTO.fromEntity(social));
+        return ResponseEntity.ok(SocialResponse.fromEntity(social));
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/{id:^[0-9]+$}")
-    public ResponseEntity<SocialDTO> updateSocial(@PathVariable Long id, @RequestBody SocialForm form) {
-        Social social = socialService.updateSocial(id, form.toEntity());
+    public ResponseEntity<SocialResponse> updateSocial(@PathVariable Long id, @RequestBody SocialRequest request) {
+        Social social = socialService.updateSocial(id, request.toEntity());
 
-        return ResponseEntity.ok(SocialDTO.fromEntity(social));
+        return ResponseEntity.ok(SocialResponse.fromEntity(social));
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/{id:^[0-9]+$}")
-    public ResponseEntity<SocialDTO> deleteSocial(@PathVariable Long id) {
+    public ResponseEntity<SocialResponse> deleteSocial(@PathVariable Long id) {
         socialService.deleteSocial(id);
 
         return ResponseEntity.ok().build();

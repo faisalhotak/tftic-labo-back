@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @AllArgsConstructor
@@ -23,7 +23,7 @@ public class CertificationDetail extends BaseEntity<Long> {
     private String description;
 
     @Column(name = "completion_date", nullable = false)
-    private LocalDateTime completionDate;
+    private LocalDate completionDate;
 
     @ManyToOne
     @JoinColumn(name = "job_seeker_id", nullable = false)

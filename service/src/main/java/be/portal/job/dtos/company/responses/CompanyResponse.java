@@ -1,5 +1,6 @@
 package be.portal.job.dtos.company.responses;
 
+import be.portal.job.entities.Company;
 import jakarta.persistence.Column;
 
 import java.time.LocalDateTime;
@@ -14,7 +15,7 @@ public record CompanyResponse(
         String contactDepartment,
         boolean isVerified
 ) {
-    public static CompanyResponse fromEntity(be.portal.job.entities.Company company) {
+    public static CompanyResponse fromEntity(Company company) {
         return new CompanyResponse(
                 company.getId(),
                 company.getName(),

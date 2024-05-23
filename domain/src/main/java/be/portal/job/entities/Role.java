@@ -16,7 +16,7 @@ import java.util.Set;
 @Table(name = "role")
 public class Role extends BaseEntity<Long> implements GrantedAuthority {
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false, unique = true)
     private String name;
 
     @Column(name = "description", nullable = false)
