@@ -26,7 +26,7 @@ public record CompanyRequest(
         String contactDepartment
 ) {
 
-    public void toEntity(Company company) {
+    public void updateEntity(Company company) {
         company.setName(name);
         company.setWebsiteUrl(websiteUrl);
         company.setEstablishmentDate(establishmentDate);
