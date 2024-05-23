@@ -1,6 +1,6 @@
 package be.portal.job.controllers;
 
-import be.portal.job.dtos.jobOffer.requests.JobOfferPostRequest;
+import be.portal.job.dtos.jobOffer.requests.JobOfferRequest;
 import be.portal.job.dtos.jobOffer.responses.JobOfferResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +13,6 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/job-offers")
-@PreAuthorize("hasAnyAuthority('ADVERTISER', 'ADMIN')")
 public class JobOfferController {
 
     private final IJobOfferService jobOfferService;
@@ -33,16 +32,19 @@ public class JobOfferController {
         return ResponseEntity.ok(jobOfferService.getJobOfferById(id));
     }
 
+    @PreAuthorize("hasAnyAuthority('ADVERTISER', 'ADMIN')")
     @PostMapping()
-    public ResponseEntity<JobOfferResponse> addJobOffer(@RequestBody JobOfferPostRequest jobOfferPostRequest) {
-        return ResponseEntity.ok(jobOfferService.addJobOffer(jobOfferPostRequest));
+    public ResponseEntity<JobOfferResponse> addJobOffer(@RequestBody JobOfferRequest jobOfferRequest) {
+        return ResponseEntity.ok(jobOfferService.addJobOffer(jobOfferRequest));
     }
 
+    @PreAuthorize("hasAnyAuthority('ADVERTISER', 'ADMIN')")
     @PutMapping("/{id:^[0-9]+$}")
-    public ResponseEntity<JobOfferResponse> updateJobOffer(@PathVariable Long id, @RequestBody JobOfferPostRequest jobOfferPostRequest) {
-        return ResponseEntity.ok(jobOfferService.updateJobOffer(id, jobOfferPostRequest));
+    public ResponseEntity<JobOfferResponse> updateJobOffer(@PathVariable Long id, @RequestBody JobOfferRequest jobOfferRequest) {
+        return ResponseEntity.ok(jobOfferService.updateJobOffer(id, jobOfferRequest));
     }
 
+    @PreAuthorize("hasAnyAuthority('ADVERTISER', 'ADMIN')")
     @DeleteMapping("/{id:^[0-9]+$}")
     public ResponseEntity<JobOfferResponse> deleteJobOffer(@PathVariable Long id) {
         return ResponseEntity.ok(jobOfferService.deleteJobOffer(id));

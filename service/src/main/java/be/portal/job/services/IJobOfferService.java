@@ -1,6 +1,6 @@
 package be.portal.job.services;
 
-import be.portal.job.dtos.jobOffer.requests.JobOfferPostRequest;
+import be.portal.job.dtos.jobOffer.requests.JobOfferRequest;
 import be.portal.job.dtos.jobOffer.responses.JobOfferResponse;
 
 import java.util.List;
@@ -41,17 +41,17 @@ public interface IJobOfferService {
 
     /**
      * Adds a new job offer to the system.
-     * @param jobOfferPostRequest the job offer to add.
+     * @param jobOfferRequest the job offer to add.
      * @return the added job offer with its generated identifier.
      */
-    JobOfferResponse addJobOffer(JobOfferPostRequest jobOfferPostRequest);
+    JobOfferResponse addJobOffer(JobOfferRequest jobOfferRequest);
 
     /**
      * Updates an existing job offer.
      * @param id the identifier of the job offer to update.
-     * @param jobOfferPostRequest the new information for the job offer.
+     * @param jobOfferRequest the new information for the job offer.
      * @return the updated job offer, or null if the job offer does not exist.
      */
-    JobOfferResponse updateJobOffer(Long id, JobOfferPostRequest jobOfferPostRequest);
+    JobOfferResponse updateJobOffer(Long id, JobOfferRequest jobOfferRequest);
 
 }

@@ -1,6 +1,6 @@
 package be.portal.job.services.impls;
 
-import be.portal.job.dtos.jobOffer.requests.JobOfferPostRequest;
+import be.portal.job.dtos.jobOffer.requests.JobOfferRequest;
 import be.portal.job.dtos.jobOffer.responses.JobOfferResponse;
 import be.portal.job.entities.JobAdvertiser;
 import be.portal.job.entities.JobOffer;
@@ -40,7 +40,7 @@ public class JobOfferServiceImpl implements IJobOfferService {
                 .map(JobOfferResponse::fromEntity)
                 .orElseThrow();
     }
-    
+
     @Override
     public List<JobOfferResponse> getAllByAgent(Long id) {
         return jobOfferRepository.findAllByAgent(id).stream()
@@ -50,51 +50,55 @@ public class JobOfferServiceImpl implements IJobOfferService {
 
     @Override
     public JobOfferResponse deleteJobOffer(Long id) {
-        return jobOfferRepository.findById(id)
-                .map(jobOffer -> {
-                    JobAdvertiser currentUser = (JobAdvertiser) SecurityContextHolder.getContext()
-                            .getAuthentication().getPrincipal();
+        JobAdvertiser currentUser = (JobAdvertiser) SecurityContextHolder.getContext()
+                .getAuthentication().getPrincipal();
+        JobOffer jobOffer = jobOfferRepository.findById(id).orElseThrow();
 
-                    if (!Objects.equals(currentUser.getId(), jobOffer.getAgent().getJobAdvertiser().getId())
-                            && currentUser.getAuthorities().stream().noneMatch(a -> a.getAuthority().equals(ADMIN_ROLE))) {
-                        throw new RuntimeException("You are not allowed to delete job offers for other job advertisers");
-                    }
-                    jobOfferRepository.delete(jobOffer);
-                    return JobOfferResponse.fromEntity(jobOffer);
-                })
-                .orElseThrow();
+        if (!Objects.equals(currentUser.getId(), jobOffer.getAgent().getJobAdvertiser().getId())
+                && currentUser.getAuthorities().stream().noneMatch(a -> a.getAuthority().equals(ADMIN_ROLE))) {
+            throw new RuntimeException("You are not allowed to delete job offers for other job advertisers");
+        }
+        
+        jobOfferRepository.delete(jobOffer);
+        
+        return JobOfferResponse.fromEntity(jobOffer);
     }
 
     @Override
-    public JobOfferResponse addJobOffer(JobOfferPostRequest jobOfferPostRequest) {
-        JobOffer jobOffer = new JobOffer();
-        jobOfferPostRequest.toEntity(jobOffer);
-        jobOffer.setAgent(companyAdvertiserRepository.findById(jobOfferPostRequest.agentId()).orElseThrow());
+    public JobOfferResponse addJobOffer(JobOfferRequest jobOfferRequest) {
         JobAdvertiser currentUser = (JobAdvertiser) SecurityContextHolder.getContext()
                 .getAuthentication().getPrincipal();
+        JobOffer jobOffer = new JobOffer();
+        jobOfferRequest.updateEntity(jobOffer);
+        jobOffer.setAgent(companyAdvertiserRepository.findById(jobOfferRequest.agentId()).orElseThrow());
 
         if (!Objects.equals(currentUser.getId(), jobOffer.getAgent().getJobAdvertiser().getId())
                 && currentUser.getAuthorities().stream().noneMatch(a -> a.getAuthority().equals(ADMIN_ROLE))) {
             throw new RuntimeException("You are not allowed to create job offers for other job advertisers");
         }
-        jobOffer.setJobFunction(jobFunctionRepository.findById(jobOfferPostRequest.jobFunctionId()).orElseThrow());
-        jobOffer.setContractType(contractTypeRepository.findById(jobOfferPostRequest.contractTypeId()).orElseThrow());
+
+        jobOffer.setJobFunction(jobFunctionRepository.findById(jobOfferRequest.jobFunctionId()).orElseThrow());
+        jobOffer.setContractType(contractTypeRepository.findById(jobOfferRequest.contractTypeId()).orElseThrow());
+
         return JobOfferResponse.fromEntity(jobOfferRepository.save(jobOffer));
     }
 
     @Override
-    public JobOfferResponse updateJobOffer(Long id, JobOfferPostRequest jobOfferPostRequest) {
-        JobOffer jobOffer = jobOfferRepository.findById(id).orElseThrow();
-        jobOfferPostRequest.toEntity(jobOffer);
+    public JobOfferResponse updateJobOffer(Long id, JobOfferRequest jobOfferRequest) {
         JobAdvertiser currentUser = (JobAdvertiser) SecurityContextHolder.getContext()
                 .getAuthentication().getPrincipal();
+        JobOffer jobOffer = jobOfferRepository.findById(id).orElseThrow();
+        jobOfferRequest.updateEntity(jobOffer);
+
         if (!Objects.equals(currentUser.getId(), jobOffer.getAgent().getJobAdvertiser().getId())
                 && currentUser.getAuthorities().stream().noneMatch(a -> a.getAuthority().equals(ADMIN_ROLE))) {
             throw new RuntimeException("You are not allowed to update job offers for other job advertisers");
         }
-        jobOffer.setAgent(companyAdvertiserRepository.findById(jobOfferPostRequest.agentId()).orElseThrow());
-        jobOffer.setJobFunction(jobFunctionRepository.findById(jobOfferPostRequest.jobFunctionId()).orElseThrow());
-        jobOffer.setContractType(contractTypeRepository.findById(jobOfferPostRequest.contractTypeId()).orElseThrow());
+        
+        jobOffer.setAgent(companyAdvertiserRepository.findById(jobOfferRequest.agentId()).orElseThrow());
+        jobOffer.setJobFunction(jobFunctionRepository.findById(jobOfferRequest.jobFunctionId()).orElseThrow());
+        jobOffer.setContractType(contractTypeRepository.findById(jobOfferRequest.contractTypeId()).orElseThrow());
+
         return JobOfferResponse.fromEntity(jobOfferRepository.save(jobOffer));
     }
 }

@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 
-public record JobOfferPostRequest(
+public record JobOfferRequest(
 
         @NotBlank(message = "Description is mandatory")
         String description,
@@ -27,7 +27,7 @@ public record JobOfferPostRequest(
         LocalDateTime expiringDate,
 
         @NotNull(message = "Active is mandatory")
-        boolean isActive,
+        Boolean isActive,
 
         @NotNull(message = "Agent id is mandatory")
         Long agentId,
@@ -38,7 +38,7 @@ public record JobOfferPostRequest(
         @NotNull(message = "Job function id is mandatory")
         Long jobFunctionId
 ) {
-    public void toEntity( JobOffer jobOffer) {
+    public void updateEntity( JobOffer jobOffer) {
         jobOffer.setDescription(this.description);
         jobOffer.setAnnualGrossSalaryMin(this.annualGrossSalaryMin);
         jobOffer.setAnnualGrossSalaryMax(this.annualGrossSalaryMax);
