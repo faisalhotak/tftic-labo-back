@@ -1,4 +1,4 @@
-package be.portal.job.dtos.jobFunction.responses;
+package be.portal.job.dtos.job_function.responses;
 
 import be.portal.job.entities.JobFunction;
 
