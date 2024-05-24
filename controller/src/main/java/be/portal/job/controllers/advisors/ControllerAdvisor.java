@@ -1,6 +1,7 @@
 package be.portal.job.controllers.advisors;
 
 import be.portal.job.exceptions.AlreadyExistsException;
+import be.portal.job.exceptions.NotAllowedException;
 import be.portal.job.exceptions.NotFoundException;
 import be.portal.job.exceptions.ResourceAccessDeniedException;
 import io.jsonwebtoken.JwtException;
@@ -53,6 +54,13 @@ public class ControllerAdvisor {
 
     @ExceptionHandler(ResourceAccessDeniedException.class)
     public ResponseEntity<String> handleResourceAccessDeniedException(final ResourceAccessDeniedException e) {
+        log.error(e.toString());
+
+        return ResponseEntity.status(403).body(e.getMessage());
+    }
+
+    @ExceptionHandler(NotAllowedException.class)
+    public ResponseEntity<String> handleNotAllowedException(final NotAllowedException e){
         log.error(e.toString());
 
         return ResponseEntity.status(403).body(e.getMessage());

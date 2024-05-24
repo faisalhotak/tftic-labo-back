@@ -1,4 +1,4 @@
-package be.portal.job.dtos.contractType.responses;
+package be.portal.job.dtos.contract_type.responses;
 
 import be.portal.job.entities.ContractType;
 

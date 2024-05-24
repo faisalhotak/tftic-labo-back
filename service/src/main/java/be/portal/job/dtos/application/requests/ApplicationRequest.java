@@ -11,25 +11,19 @@ import java.time.LocalDateTime;
 public record ApplicationRequest(
 
         @NotNull(message = "The date is required")
-        LocalDateTime apply_date,
+        LocalDateTime applyDate,
 
-        @NotNull(message = "The status is required")
-        ApplicationStatus applicationStatus,
-
-        @NotNull(message = "The id is required")
+        @NotNull(message = "The job offer id is required")
         Long jobOfferId
-
 ) {
-    public Application toEntity(JobSeeker jobSeeker, JobOffer jobOffer) {
-
+    public Application toEntity(JobSeeker jobSeeker, JobOffer jobOffer, ApplicationStatus applicationStatus) {
         Application application = new Application();
 
-        application.setApplyDate(apply_date);
-        application.setApplicationStatus(applicationStatus);
+        application.setApplyDate(applyDate);
         application.setJobOffer(jobOffer);
         application.setJobSeeker(jobSeeker);
+        application.setApplicationStatus(applicationStatus);
 
         return application;
-
     }
 }

@@ -1,9 +1,10 @@
 package be.portal.job.services.impls;
 
-import be.portal.job.dtos.jobOffer.requests.JobOfferRequest;
-import be.portal.job.dtos.jobOffer.responses.JobOfferResponse;
+import be.portal.job.dtos.job_offer.requests.JobOfferRequest;
+import be.portal.job.dtos.job_offer.responses.JobOfferResponse;
 import be.portal.job.entities.JobAdvertiser;
 import be.portal.job.entities.JobOffer;
+import be.portal.job.exceptions.NotAllowedException;
 import be.portal.job.repositories.CompanyAdvertiserRepository;
 import be.portal.job.repositories.ContractTypeRepository;
 import be.portal.job.repositories.JobFunctionRepository;
@@ -56,7 +57,7 @@ public class JobOfferServiceImpl implements IJobOfferService {
 
         if (!Objects.equals(currentUser.getId(), jobOffer.getAgent().getJobAdvertiser().getId())
                 && currentUser.getAuthorities().stream().noneMatch(a -> a.getAuthority().equals(ADMIN_ROLE))) {
-            throw new RuntimeException("You are not allowed to delete job offers for other job advertisers");
+            throw new NotAllowedException("You are not allowed to delete job offers for other job advertisers");
         }
         
         jobOfferRepository.delete(jobOffer);
@@ -74,7 +75,7 @@ public class JobOfferServiceImpl implements IJobOfferService {
 
         if (!Objects.equals(currentUser.getId(), jobOffer.getAgent().getJobAdvertiser().getId())
                 && currentUser.getAuthorities().stream().noneMatch(a -> a.getAuthority().equals(ADMIN_ROLE))) {
-            throw new RuntimeException("You are not allowed to create job offers for other job advertisers");
+            throw new NotAllowedException("You are not allowed to create job offers for other job advertisers");
         }
 
         jobOffer.setJobFunction(jobFunctionRepository.findById(jobOfferRequest.jobFunctionId()).orElseThrow());
@@ -92,7 +93,7 @@ public class JobOfferServiceImpl implements IJobOfferService {
 
         if (!Objects.equals(currentUser.getId(), jobOffer.getAgent().getJobAdvertiser().getId())
                 && currentUser.getAuthorities().stream().noneMatch(a -> a.getAuthority().equals(ADMIN_ROLE))) {
-            throw new RuntimeException("You are not allowed to update job offers for other job advertisers");
+            throw new NotAllowedException("You are not allowed to update job offers for other job advertisers");
         }
         
         jobOffer.setAgent(companyAdvertiserRepository.findById(jobOfferRequest.agentId()).orElseThrow());

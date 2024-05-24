@@ -1,4 +1,4 @@
-package be.portal.job.dtos.jobOffer.requests;
+package be.portal.job.dtos.job_offer.requests;
 
 import be.portal.job.entities.JobOffer;
 import jakarta.validation.constraints.NotBlank;

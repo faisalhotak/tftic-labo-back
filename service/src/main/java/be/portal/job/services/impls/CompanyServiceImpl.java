@@ -6,10 +6,14 @@ import be.portal.job.entities.Company;
 import be.portal.job.entities.CompanyAdvertiser;
 import be.portal.job.entities.JobAdvertiser;
 import be.portal.job.enums.AdvertiserRole;
+import be.portal.job.exceptions.NotAllowedException;
+import be.portal.job.exceptions.NotFoundException;
+import be.portal.job.exceptions.company.CompanyNotFoundException;
 import be.portal.job.repositories.CompanyAdvertiserRepository;
 import be.portal.job.repositories.CompanyRepository;
 import be.portal.job.repositories.JobOfferRepository;
 import be.portal.job.services.ICompanyService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -37,16 +41,21 @@ public class CompanyServiceImpl implements ICompanyService {
     public CompanyResponse getCompanyById(Long id) {
         return companyRepository.findById(id)
                 .map(CompanyResponse::fromEntity)
-                .orElseThrow();
+                .orElseThrow(CompanyNotFoundException::new);
     }
 
     @Override
+    @Transactional
     public CompanyResponse addCompany(CompanyRequest companyRequest) {
         JobAdvertiser currentUser = (JobAdvertiser) SecurityContextHolder.getContext()
                 .getAuthentication().getPrincipal();
+
         Company company = new Company();
         companyRequest.updateEntity(company);
-        companyAdvertiserRepository.save(new CompanyAdvertiser(AdvertiserRole.OWNER, currentUser, companyRepository.save(company)));
+        companyRepository.save(company);
+
+        CompanyAdvertiser companyAdvertiser = new CompanyAdvertiser(AdvertiserRole.OWNER, currentUser, company);
+        companyAdvertiserRepository.save(companyAdvertiser);
 
         return CompanyResponse.fromEntity(company);
     }
@@ -55,12 +64,16 @@ public class CompanyServiceImpl implements ICompanyService {
     public CompanyResponse updateCompany(Long id, CompanyRequest companyRequest) {
         JobAdvertiser currentUser = (JobAdvertiser) SecurityContextHolder.getContext()
                 .getAuthentication().getPrincipal();
-        Company company = companyRepository.findById(id).orElseThrow();
-        CompanyAdvertiser companyAdvertiser = companyAdvertiserRepository.findByCompanyAndAgent(company.getId(), currentUser.getId());
+
+        Company company = companyRepository.findById(id).orElseThrow(CompanyNotFoundException::new);
+
+        CompanyAdvertiser companyAdvertiser = companyAdvertiserRepository
+                .findByCompanyAndAgent(company.getId(), currentUser.getId())
+                .orElseThrow(() -> new NotFoundException("Agent not found."));
 
         if (companyAdvertiser == null || companyAdvertiser.getAdvertiserRole() != AdvertiserRole.OWNER
                 && currentUser.getAuthorities().stream().noneMatch(a -> a.getAuthority().equals(ADMIN_ROLE))) {
-            throw new RuntimeException("You are not allowed to update this company.");
+            throw new NotAllowedException("You are not allowed to update this company.");
         }
 
         companyRequest.updateEntity(company);
@@ -69,22 +82,26 @@ public class CompanyServiceImpl implements ICompanyService {
     }
 
     @Override
+    @Transactional
     public CompanyResponse deleteCompany(Long id) {
         JobAdvertiser currentUser = (JobAdvertiser) SecurityContextHolder.getContext()
                 .getAuthentication().getPrincipal();
-        Company company = companyRepository.findById(id).orElseThrow();
-        CompanyAdvertiser companyAdvertiser = companyAdvertiserRepository.findByCompanyAndAgent(company.getId(), currentUser.getId());
+
+        Company company = companyRepository.findById(id).orElseThrow(CompanyNotFoundException::new);
+
+        CompanyAdvertiser companyAdvertiser = companyAdvertiserRepository.
+                findByCompanyAndAgent(company.getId(), currentUser.getId())
+                .orElseThrow(() -> new NotAllowedException("You are not part of this company."));
 
         if (companyAdvertiser == null || companyAdvertiser.getAdvertiserRole() != AdvertiserRole.OWNER
                 && currentUser.getAuthorities().stream().noneMatch(a -> a.getAuthority().equals(ADMIN_ROLE))) {
-            throw new RuntimeException("You are not allowed to delete this company.");
+            throw new NotAllowedException("You are not allowed to delete this company.");
         }
 
-        List<CompanyAdvertiser> agents = companyAdvertiserRepository.findAllbyCompany(company.getId());
-        agents.forEach(agent -> {
-            jobOfferRepository.deleteByAgent(agent.getId());
-            companyAdvertiserRepository.delete(agent);
-        });
+        List<Long> agentsIds = companyAdvertiserRepository.findAllAgentsIdsByCompany(company.getId());
+
+        jobOfferRepository.deleteByAgentsIds(agentsIds);
+        companyAdvertiserRepository.deleteByIds(agentsIds);
         companyRepository.delete(company);
 
         return CompanyResponse.fromEntity(company);
