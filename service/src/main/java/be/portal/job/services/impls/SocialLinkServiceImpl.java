@@ -7,9 +7,9 @@ import be.portal.job.exceptions.NotFoundException;
 import be.portal.job.mappers.social_link.SocialLinkMapper;
 import be.portal.job.repositories.SocialLinkRepository;
 import be.portal.job.repositories.SocialRepository;
+import be.portal.job.services.IAuthService;
 import be.portal.job.services.SocialLinkService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,10 +21,11 @@ public class SocialLinkServiceImpl implements SocialLinkService {
     private final SocialRepository socialRepository;
     private final SocialLinkRepository socialLinkRepository;
     private final SocialLinkMapper socialLinkMapper;
+    private final IAuthService authService;
 
     @Override
     public List<SocialLinkResponse> getAll() {
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = authService.getAuthenticatedUser();
 
         return socialLinkRepository.findAllByUserId(user.getId()).stream()
                 .map(socialLinkMapper::fromEntity)
@@ -33,7 +34,7 @@ public class SocialLinkServiceImpl implements SocialLinkService {
 
     @Override
     public SocialLinkResponse getById(Long id) {
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = authService.getAuthenticatedUser();
 
         SocialLink socialLink = socialLinkRepository.findByIdAndUserId(id, user.getId())
                 .orElseThrow(() -> new NotFoundException("Social link could not be found"));
@@ -43,7 +44,7 @@ public class SocialLinkServiceImpl implements SocialLinkService {
 
     @Override
     public SocialLinkResponse add(SocialLinkRequest request) {
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = authService.getAuthenticatedUser();
 
         Social social = socialRepository.findById(request.socialId())
                 .orElseThrow(() -> new NotFoundException("Social not found"));
@@ -55,7 +56,7 @@ public class SocialLinkServiceImpl implements SocialLinkService {
 
     @Override
     public SocialLinkResponse update(Long id, SocialLinkRequest request) {
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = authService.getAuthenticatedUser();
 
         SocialLink existingSocialLink = socialLinkRepository.findByIdAndUserId(id, user.getId())
                 .orElseThrow(() -> new NotFoundException("Social link not found"));
@@ -72,7 +73,7 @@ public class SocialLinkServiceImpl implements SocialLinkService {
 
     @Override
     public SocialLinkResponse delete(Long id) {
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = authService.getAuthenticatedUser();
 
         SocialLink socialLink = socialLinkRepository.findByIdAndUserId(id, user.getId())
                 .orElseThrow(() -> new NotFoundException("Social link not found"));

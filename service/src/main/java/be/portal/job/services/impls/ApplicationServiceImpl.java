@@ -14,7 +14,6 @@ import be.portal.job.repositories.ApplicationRepository;
 import be.portal.job.repositories.JobOfferRepository;
 import be.portal.job.services.IApplicationService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,13 +25,11 @@ public class ApplicationServiceImpl implements IApplicationService {
 
     private final ApplicationRepository applicationRepository;
     private final JobOfferRepository jobOfferRepository;
+    private final AuthServiceImpl authService;
 
     @Override
     public List<ApplicationResponse> getAllBySeeker() {
-        JobSeeker jobSeeker = (JobSeeker) SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getPrincipal();
+        JobSeeker jobSeeker = authService.getAuthenticatedSeeker();
 
         return applicationRepository.findByJobSeekerId(jobSeeker.getId())
                 .stream()
@@ -42,10 +39,7 @@ public class ApplicationServiceImpl implements IApplicationService {
 
     @Override
     public ApplicationResponse getApplicationById(Long id) {
-        JobSeeker jobSeeker = (JobSeeker) SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getPrincipal();
+        JobSeeker jobSeeker = authService.getAuthenticatedSeeker();
 
         Application application = applicationRepository.findByIdAndJobSeekerId(id, jobSeeker.getId())
                 .orElseThrow(ApplicationNotFoundException::new);
@@ -55,10 +49,7 @@ public class ApplicationServiceImpl implements IApplicationService {
 
     @Override
     public ApplicationResponse addApplication(ApplicationRequest applicationRequest) {
-        JobSeeker jobSeeker = (JobSeeker) SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getPrincipal();
+        JobSeeker jobSeeker = authService.getAuthenticatedSeeker();
 
         Optional<Application> existingApplication = applicationRepository
                 .findByJobSeekerIdAndJobOfferId(jobSeeker.getId(), applicationRequest.jobOfferId());
@@ -77,10 +68,7 @@ public class ApplicationServiceImpl implements IApplicationService {
 
     @Override
     public ApplicationResponse updateApplication(Long id, ApplicationUpdateRequest request) {
-        JobSeeker jobSeeker = (JobSeeker) SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getPrincipal();
+        JobSeeker jobSeeker = authService.getAuthenticatedSeeker();
 
         Application application = applicationRepository
                 .findByIdAndJobSeekerId(id, jobSeeker.getId())
@@ -94,10 +82,7 @@ public class ApplicationServiceImpl implements IApplicationService {
 
     @Override
     public ApplicationResponse deleteApplication(Long id) {
-        JobSeeker jobSeeker = (JobSeeker) SecurityContextHolder
-                .getContext()
-                .getAuthentication()
-                .getPrincipal();
+        JobSeeker jobSeeker = authService.getAuthenticatedSeeker();
 
         Application application = applicationRepository.findByIdAndJobSeekerId(id, jobSeeker.getId())
                 .orElseThrow(ApplicationNotFoundException::new);
