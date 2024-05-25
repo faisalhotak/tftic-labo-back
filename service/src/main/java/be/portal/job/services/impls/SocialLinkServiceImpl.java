@@ -4,6 +4,7 @@ import be.portal.job.dtos.social_link.requests.SocialLinkRequest;
 import be.portal.job.dtos.social_link.responses.SocialLinkResponse;
 import be.portal.job.entities.*;
 import be.portal.job.exceptions.NotFoundException;
+import be.portal.job.mappers.social_link.SocialLinkMapper;
 import be.portal.job.repositories.SocialLinkRepository;
 import be.portal.job.repositories.SocialRepository;
 import be.portal.job.services.SocialLinkService;
@@ -19,13 +20,14 @@ public class SocialLinkServiceImpl implements SocialLinkService {
 
     private final SocialRepository socialRepository;
     private final SocialLinkRepository socialLinkRepository;
+    private final SocialLinkMapper socialLinkMapper;
 
     @Override
     public List<SocialLinkResponse> getAll() {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         return socialLinkRepository.findAllByUserId(user.getId()).stream()
-                .map(SocialLinkResponse::fromEntity)
+                .map(socialLinkMapper::fromEntity)
                 .toList();
     }
 
@@ -36,7 +38,7 @@ public class SocialLinkServiceImpl implements SocialLinkService {
         SocialLink socialLink = socialLinkRepository.findByIdAndUserId(id, user.getId())
                 .orElseThrow(() -> new NotFoundException("Social link could not be found"));
 
-        return SocialLinkResponse.fromEntity(socialLink);
+        return socialLinkMapper.fromEntity(socialLink);
     }
 
     @Override
@@ -46,9 +48,9 @@ public class SocialLinkServiceImpl implements SocialLinkService {
         Social social = socialRepository.findById(request.socialId())
                 .orElseThrow(() -> new NotFoundException("Social not found"));
 
-        SocialLink socialLink = request.toEntity(social, user);
+        SocialLink socialLink = socialLinkMapper.toEntity(request, social, user);
 
-        return SocialLinkResponse.fromEntity(socialLinkRepository.save(socialLink));
+        return socialLinkMapper.fromEntity(socialLinkRepository.save(socialLink));
     }
 
     @Override
@@ -61,12 +63,11 @@ public class SocialLinkServiceImpl implements SocialLinkService {
         Social social = socialRepository.findById(request.socialId())
                 .orElseThrow(() -> new NotFoundException("Social not found"));
 
-        existingSocialLink.setUrl(request.url());
-        existingSocialLink.setSocial(social);
+        socialLinkMapper.updateEntityFromRequest(request, social, existingSocialLink);
 
         socialLinkRepository.save(existingSocialLink);
 
-        return SocialLinkResponse.fromEntity(existingSocialLink);
+        return socialLinkMapper.fromEntity(existingSocialLink);
     }
 
     @Override
@@ -78,6 +79,6 @@ public class SocialLinkServiceImpl implements SocialLinkService {
 
         socialLinkRepository.deleteById(id);
 
-        return SocialLinkResponse.fromEntity(socialLink);
+        return socialLinkMapper.fromEntity(socialLink);
     }
 }
