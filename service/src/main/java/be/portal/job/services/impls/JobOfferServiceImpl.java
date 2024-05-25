@@ -11,13 +11,10 @@ import be.portal.job.repositories.JobFunctionRepository;
 import be.portal.job.repositories.JobOfferRepository;
 import be.portal.job.services.IJobOfferService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
-
-import static be.portal.job.utils.Constants.ADMIN_ROLE;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +24,7 @@ public class JobOfferServiceImpl implements IJobOfferService {
     private final JobFunctionRepository jobFunctionRepository;
     private final ContractTypeRepository contractTypeRepository;
     private final CompanyAdvertiserRepository companyAdvertiserRepository;
+    private final AuthServiceImpl authService;
 
     @Override
     public List<JobOfferResponse> getAll() {
@@ -51,12 +49,12 @@ public class JobOfferServiceImpl implements IJobOfferService {
 
     @Override
     public JobOfferResponse deleteJobOffer(Long id) {
-        JobAdvertiser currentUser = (JobAdvertiser) SecurityContextHolder.getContext()
-                .getAuthentication().getPrincipal();
+        JobAdvertiser currentUser = authService.getAuthenticatedAdvertiser();
+
         JobOffer jobOffer = jobOfferRepository.findById(id).orElseThrow();
 
         if (!Objects.equals(currentUser.getId(), jobOffer.getAgent().getJobAdvertiser().getId())
-                && currentUser.getAuthorities().stream().noneMatch(a -> a.getAuthority().equals(ADMIN_ROLE))) {
+                && !authService.isAdmin(currentUser)) {
             throw new NotAllowedException("You are not allowed to delete job offers for other job advertisers");
         }
         
@@ -67,14 +65,14 @@ public class JobOfferServiceImpl implements IJobOfferService {
 
     @Override
     public JobOfferResponse addJobOffer(JobOfferRequest jobOfferRequest) {
-        JobAdvertiser currentUser = (JobAdvertiser) SecurityContextHolder.getContext()
-                .getAuthentication().getPrincipal();
+        JobAdvertiser currentUser = authService.getAuthenticatedAdvertiser();
+
         JobOffer jobOffer = new JobOffer();
         jobOfferRequest.updateEntity(jobOffer);
         jobOffer.setAgent(companyAdvertiserRepository.findById(jobOfferRequest.agentId()).orElseThrow());
 
         if (!Objects.equals(currentUser.getId(), jobOffer.getAgent().getJobAdvertiser().getId())
-                && currentUser.getAuthorities().stream().noneMatch(a -> a.getAuthority().equals(ADMIN_ROLE))) {
+                && !authService.isAdmin(currentUser)) {
             throw new NotAllowedException("You are not allowed to create job offers for other job advertisers");
         }
 
@@ -86,13 +84,13 @@ public class JobOfferServiceImpl implements IJobOfferService {
 
     @Override
     public JobOfferResponse updateJobOffer(Long id, JobOfferRequest jobOfferRequest) {
-        JobAdvertiser currentUser = (JobAdvertiser) SecurityContextHolder.getContext()
-                .getAuthentication().getPrincipal();
+        JobAdvertiser currentUser = authService.getAuthenticatedAdvertiser();
+
         JobOffer jobOffer = jobOfferRepository.findById(id).orElseThrow();
         jobOfferRequest.updateEntity(jobOffer);
 
         if (!Objects.equals(currentUser.getId(), jobOffer.getAgent().getJobAdvertiser().getId())
-                && currentUser.getAuthorities().stream().noneMatch(a -> a.getAuthority().equals(ADMIN_ROLE))) {
+                && !authService.isAdmin(currentUser)) {
             throw new NotAllowedException("You are not allowed to update job offers for other job advertisers");
         }
         

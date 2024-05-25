@@ -15,12 +15,10 @@ import be.portal.job.repositories.JobOfferRepository;
 import be.portal.job.services.ICompanyService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static be.portal.job.utils.Constants.ADMIN_ROLE;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +27,7 @@ public class CompanyServiceImpl implements ICompanyService {
     private final CompanyRepository companyRepository;
     private final CompanyAdvertiserRepository companyAdvertiserRepository;
     private final JobOfferRepository jobOfferRepository;
+    private final AuthServiceImpl authService;
 
     @Override
     public List<CompanyResponse> getAll() {
@@ -47,8 +46,7 @@ public class CompanyServiceImpl implements ICompanyService {
     @Override
     @Transactional
     public CompanyResponse addCompany(CompanyRequest companyRequest) {
-        JobAdvertiser currentUser = (JobAdvertiser) SecurityContextHolder.getContext()
-                .getAuthentication().getPrincipal();
+        JobAdvertiser currentUser = authService.getAuthenticatedAdvertiser();
 
         Company company = new Company();
         companyRequest.updateEntity(company);
@@ -62,8 +60,7 @@ public class CompanyServiceImpl implements ICompanyService {
 
     @Override
     public CompanyResponse updateCompany(Long id, CompanyRequest companyRequest) {
-        JobAdvertiser currentUser = (JobAdvertiser) SecurityContextHolder.getContext()
-                .getAuthentication().getPrincipal();
+        JobAdvertiser currentUser = authService.getAuthenticatedAdvertiser();
 
         Company company = companyRepository.findById(id).orElseThrow(CompanyNotFoundException::new);
 
@@ -71,8 +68,7 @@ public class CompanyServiceImpl implements ICompanyService {
                 .findByCompanyAndAgent(company.getId(), currentUser.getId())
                 .orElseThrow(() -> new NotFoundException("Agent not found."));
 
-        if (companyAdvertiser == null || companyAdvertiser.getAdvertiserRole() != AdvertiserRole.OWNER
-                && currentUser.getAuthorities().stream().noneMatch(a -> a.getAuthority().equals(ADMIN_ROLE))) {
+        if (!isOwner(companyAdvertiser) && !authService.isAdmin(currentUser)) {
             throw new NotAllowedException("You are not allowed to update this company.");
         }
 
@@ -84,8 +80,7 @@ public class CompanyServiceImpl implements ICompanyService {
     @Override
     @Transactional
     public CompanyResponse deleteCompany(Long id) {
-        JobAdvertiser currentUser = (JobAdvertiser) SecurityContextHolder.getContext()
-                .getAuthentication().getPrincipal();
+        JobAdvertiser currentUser = authService.getAuthenticatedAdvertiser();
 
         Company company = companyRepository.findById(id).orElseThrow(CompanyNotFoundException::new);
 
@@ -93,8 +88,7 @@ public class CompanyServiceImpl implements ICompanyService {
                 findByCompanyAndAgent(company.getId(), currentUser.getId())
                 .orElseThrow(() -> new NotAllowedException("You are not part of this company."));
 
-        if (companyAdvertiser == null || companyAdvertiser.getAdvertiserRole() != AdvertiserRole.OWNER
-                && currentUser.getAuthorities().stream().noneMatch(a -> a.getAuthority().equals(ADMIN_ROLE))) {
+        if (!isOwner(companyAdvertiser) && !authService.isAdmin(currentUser)) {
             throw new NotAllowedException("You are not allowed to delete this company.");
         }
 
@@ -107,4 +101,7 @@ public class CompanyServiceImpl implements ICompanyService {
         return CompanyResponse.fromEntity(company);
     }
 
+    private boolean isOwner(CompanyAdvertiser companyAdvertiser) {
+        return companyAdvertiser.getAdvertiserRole().equals(AdvertiserRole.OWNER);
+    }
 }
