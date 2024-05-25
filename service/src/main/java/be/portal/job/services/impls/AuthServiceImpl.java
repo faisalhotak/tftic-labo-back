@@ -9,22 +9,26 @@ import be.portal.job.dtos.auth.requests.LoginRequest;
 import be.portal.job.dtos.auth.requests.AbstractRegisterRequest;
 import be.portal.job.dtos.auth.responses.UserTokenResponse;
 import be.portal.job.exceptions.auth.UserNotFoundException;
+import be.portal.job.mappers.user.UserMapper;
 import be.portal.job.repositories.RoleRepository;
 import be.portal.job.repositories.UserRepository;
-import be.portal.job.services.AuthService;
+import be.portal.job.services.IAuthService;
 import be.portal.job.utils.JwtUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Set;
+
 @Service
 @RequiredArgsConstructor
-public class AuthServiceImpl implements AuthService {
+public class AuthServiceImpl implements IAuthService {
 
     private final PasswordEncoder passwordEncoder;
     private final JwtUtils jwtUtils;
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final UserMapper userMapper;
 
     @Override
     public UserTokenResponse login(LoginRequest request) {
@@ -51,7 +55,7 @@ public class AuthServiceImpl implements AuthService {
 
         request.setPassword(passwordEncoder.encode(request.getPassword()));
 
-        User user = request.toEntity(role);
+        User user = userMapper.toEntity(request, Set.of(role));
 
         userRepository.save(user);
 

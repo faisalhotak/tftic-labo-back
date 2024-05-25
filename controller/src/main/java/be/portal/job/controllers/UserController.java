@@ -6,8 +6,8 @@ import be.portal.job.dtos.user.requests.JobAdvertiserUpdateRequest;
 import be.portal.job.dtos.user.requests.JobSeekerUpdateRequest;
 import be.portal.job.dtos.user.responses.JobAdvertiserResponse;
 import be.portal.job.dtos.user.responses.JobSeekerResponse;
-import be.portal.job.dtos.user.responses.AbstractUserResponse;
-import be.portal.job.services.UserService;
+import be.portal.job.dtos.user.responses.UserResponse;
+import be.portal.job.services.IUserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -23,25 +23,25 @@ import java.util.List;
 @CrossOrigin("*")
 public class UserController {
 
-    private final UserService userService;
+    private final IUserService userService;
 
     @GetMapping("/users")
-    public ResponseEntity<List<AbstractUserResponse>> getAllUsers() {
+    public ResponseEntity<List<UserResponse>> getAllUsers() {
         return ResponseEntity.ok(userService.getAll());
     }
 
     @GetMapping("/users/{id:^[0-9]+$}")
-    public ResponseEntity<AbstractUserResponse> getUserById(@PathVariable Long id) {
+    public ResponseEntity<UserResponse> getUserById(@PathVariable Long id) {
         return ResponseEntity.ok(userService.getUserById(id));
     }
 
     @GetMapping(value= "/users", params = "email")
-    public ResponseEntity<AbstractUserResponse> getUserByEmail(@RequestParam String email) {
+    public ResponseEntity<UserResponse> getUserByEmail(@RequestParam String email) {
         return ResponseEntity.ok(userService.getUserByEmail(email));
     }
 
     @DeleteMapping("/users/{id:^[0-9]+$}")
-    public ResponseEntity<AbstractUserResponse> deleteUser(@PathVariable Long id) {
+    public ResponseEntity<UserResponse> deleteUser(@PathVariable Long id) {
         return ResponseEntity.ok(userService.deleteUser(id));
     }
 
@@ -51,12 +51,12 @@ public class UserController {
     }
 
     @PostMapping("/advertisers")
-    public ResponseEntity<AbstractUserResponse> addAdvertiser(@RequestBody @Valid JobAdvertiserRegisterRequest request) {
+    public ResponseEntity<JobAdvertiserResponse> addAdvertiser(@RequestBody @Valid JobAdvertiserRegisterRequest request) {
         return ResponseEntity.ok(userService.addAdvertiser(request));
     }
 
     @PutMapping("/advertisers/{id:^[0-9]+$}")
-    public ResponseEntity<AbstractUserResponse> updateAdvertiser(
+    public ResponseEntity<JobAdvertiserResponse> updateAdvertiser(
             @PathVariable Long id,
             @RequestBody @Valid JobAdvertiserUpdateRequest request
     ) {
@@ -69,12 +69,12 @@ public class UserController {
     }
 
     @PostMapping("/seekers")
-    public ResponseEntity<AbstractUserResponse> addSeeker(@RequestBody @Valid JobSeekerRegisterRequest request) {
+    public ResponseEntity<JobSeekerResponse> addSeeker(@RequestBody @Valid JobSeekerRegisterRequest request) {
         return ResponseEntity.ok(userService.addSeeker(request));
     }
 
     @PutMapping("/seekers/{id:^[0-9]+$}")
-    public ResponseEntity<AbstractUserResponse> updateSeeker(
+    public ResponseEntity<JobSeekerResponse> updateSeeker(
             @PathVariable Long id,
             @RequestBody @Valid JobSeekerUpdateRequest request
     ) {

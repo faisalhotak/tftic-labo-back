@@ -62,6 +62,7 @@ public abstract class User extends BaseEntity<Long> implements UserDetails {
     private Set<SocialLink> socialLinks;
 
     protected User() {
+        this.address = new Address();
         this.isExpired = false;
         this.isLocked = false;
         this.isCredentialsExpired = false;

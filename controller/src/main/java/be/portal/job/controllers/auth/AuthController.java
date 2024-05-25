@@ -4,7 +4,7 @@ import be.portal.job.dtos.auth.requests.JobAdvertiserRegisterRequest;
 import be.portal.job.dtos.auth.requests.JobSeekerRegisterRequest;
 import be.portal.job.dtos.auth.requests.LoginRequest;
 import be.portal.job.dtos.auth.responses.UserTokenResponse;
-import be.portal.job.services.AuthService;
+import be.portal.job.services.IAuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin("*")
 public class AuthController {
 
-    private final AuthService authService;
+    private final IAuthService authService;
 
     @PreAuthorize("isAnonymous()")
     @PostMapping("/login/advertisers")
