@@ -4,9 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 
-import java.util.Set;
-
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -14,6 +11,7 @@ import java.util.Set;
 @Entity
 @ToString
 @Table(name = "role")
+@EqualsAndHashCode(callSuper = true)
 public class Role extends BaseEntity<Long> implements GrantedAuthority {
 
     @Column(name = "name", nullable = false, unique = true)

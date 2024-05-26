@@ -1,10 +1,7 @@
 package be.portal.job.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @NoArgsConstructor
@@ -12,6 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Table(name = "social_link")
+@EqualsAndHashCode(callSuper = true)
 public class SocialLink extends BaseEntity<Long> {
 
     @Column(name = "url", nullable = false)

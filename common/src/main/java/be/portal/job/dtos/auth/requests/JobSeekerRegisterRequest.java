@@ -3,16 +3,14 @@ package be.portal.job.dtos.auth.requests;
 import be.portal.job.enums.Gender;
 import be.portal.job.enums.UserType;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class JobSeekerRegisterRequest extends AbstractRegisterRequest {
 

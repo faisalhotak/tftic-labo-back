@@ -14,6 +14,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode(callSuper = true)
 public abstract class User extends BaseEntity<Long> implements UserDetails {
 
     @Column(name = "email", nullable = false, unique = true)
