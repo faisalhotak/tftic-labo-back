@@ -11,6 +11,7 @@ import java.util.Set;
 @Entity
 @ToString
 @Table(name = "job_advertiser")
+@EqualsAndHashCode(callSuper = true)
 public class JobAdvertiser extends User {
 
     @OneToMany(mappedBy = "jobAdvertiser")
