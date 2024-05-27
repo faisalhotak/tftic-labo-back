@@ -1,7 +1,7 @@
 package be.portal.job.controllers;
 
-import be.portal.job.models.dtos.JobFunctionDTO;
-import be.portal.job.models.forms.JobFunctionForm;
+import be.portal.job.dtos.job_function.requests.JobFunctionRequest;
+import be.portal.job.dtos.job_function.responses.JobFunctionResponse;
 import be.portal.job.services.IJobFunctionService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,10 +22,10 @@ public class JobFunctionController {
 
     @PreAuthorize("hasAnyAuthority('SEEKER', 'ADVERTISER', 'ADMIN')")
     @GetMapping
-    public ResponseEntity<List<JobFunctionDTO>> getAllJobFunctions() {
-        List<JobFunctionDTO> jobFunctionDTOS = jobFunctionService.getJobFunction()
+    public ResponseEntity<List<JobFunctionResponse>> getAllJobFunctions() {
+        List<JobFunctionResponse> jobFunctionDTOS = jobFunctionService.getJobFunction()
                 .stream()
-                .map(JobFunctionDTO::fromEntity)
+                .map(JobFunctionResponse::fromEntity)
                 .toList();
 
         return ResponseEntity.ok(jobFunctionDTOS);
@@ -33,41 +33,41 @@ public class JobFunctionController {
 
     @PreAuthorize("hasAnyAuthority('SEEKER', 'ADVERTISER', 'ADMIN')")
     @GetMapping("/{id}")
-    public ResponseEntity<JobFunctionDTO> getJobFunctionById(@PathVariable Long id) {
-        JobFunctionDTO jobFunctionDTO = JobFunctionDTO.fromEntity(jobFunctionService.getJobFunctionById(id));
+    public ResponseEntity<JobFunctionResponse> getJobFunctionById(@PathVariable Long id) {
+        JobFunctionResponse jobFunctionDTO = JobFunctionResponse.fromEntity(jobFunctionService.getJobFunctionById(id));
 
         return ResponseEntity.ok(jobFunctionDTO);
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/post")
-    public ResponseEntity<JobFunctionDTO> addJobFunction(
-            @Valid @RequestBody JobFunctionForm jobFunctionForm,
+    public ResponseEntity<JobFunctionResponse> addJobFunction(
+            @Valid @RequestBody JobFunctionRequest jobFunctionForm,
             BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().build();
         }
 
-        JobFunctionDTO newJobFunction = JobFunctionDTO.fromEntity(jobFunctionService.addJobFunction(jobFunctionForm.toEntity()));
+        JobFunctionResponse newJobFunction = JobFunctionResponse.fromEntity(jobFunctionService.addJobFunction(jobFunctionForm.toEntity()));
 
         return ResponseEntity.ok(newJobFunction);
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/{id}")
-    public ResponseEntity<JobFunctionDTO> updateJobFunction(@PathVariable Long id, @Valid @RequestBody JobFunctionForm jobFunctionForm, BindingResult bindingResult) {
+    public ResponseEntity<JobFunctionResponse> updateJobFunction(@PathVariable Long id, @Valid @RequestBody JobFunctionRequest jobFunctionForm, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().build();
         }
 
-        JobFunctionDTO jobFunctionDTO = JobFunctionDTO.fromEntity(jobFunctionService.updateJobFunction(id, jobFunctionForm.toEntity()));
+        JobFunctionResponse jobFunctionDTO = JobFunctionResponse.fromEntity(jobFunctionService.updateJobFunction(id, jobFunctionForm.toEntity()));
 
         return ResponseEntity.ok(jobFunctionDTO);
     }
 
     @PreAuthorize("hasAnyAuthority('SEEKER', 'ADVERTISER', 'ADMIN')")
     @DeleteMapping("/{id}")
-    public ResponseEntity<JobFunctionDTO> deleteJobFunction(@PathVariable Long id) {
+    public ResponseEntity<JobFunctionResponse> deleteJobFunction(@PathVariable Long id) {
         jobFunctionService.deleteJobFunction(id);
 
         return ResponseEntity.noContent().build();
