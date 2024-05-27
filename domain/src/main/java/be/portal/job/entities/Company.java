@@ -2,6 +2,7 @@ package be.portal.job.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,6 +14,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode(callSuper = true)
 @Table(name = "company")
 public class Company extends BaseEntity<Long> {
 
@@ -29,13 +31,16 @@ public class Company extends BaseEntity<Long> {
     private String contactName;
 
     @Column(name = "contact_phone_number", nullable = false)
-    private int contactPhoneNumber;
+    private String contactPhoneNumber;
 
     @Column(name = "contact_department", nullable = false)
     private String contactDepartment;
 
     @Column(name = "is_verified", nullable = false)
     private boolean isVerified = false;
+
+    @Column(name = "is_active", nullable = false)
+    private boolean isActive = false;
 
     @OneToMany(mappedBy = "company")
     private Set<CompanyAdvertiser> companyAdvertisers;
@@ -44,7 +49,16 @@ public class Company extends BaseEntity<Long> {
         this.companyAdvertisers = new HashSet<>();
     }
 
-    public Company(String name, String websiteUrl, LocalDateTime establishmentDate, String contactName, int contactPhoneNumber, String contactDepartment, boolean isVerified) {
+    public Company(
+            String name,
+            String websiteUrl,
+            LocalDateTime establishmentDate,
+            String contactName,
+            String contactPhoneNumber,
+            String contactDepartment,
+            boolean isVerified,
+            boolean isActive
+    ) {
         this();
         this.name = name;
         this.websiteUrl = websiteUrl;
@@ -53,5 +67,6 @@ public class Company extends BaseEntity<Long> {
         this.contactPhoneNumber = contactPhoneNumber;
         this.contactDepartment = contactDepartment;
         this.isVerified = isVerified;
+        this.isActive = isActive;
     }
 }

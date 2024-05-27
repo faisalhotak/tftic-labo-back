@@ -13,6 +13,7 @@ import java.time.LocalDate;
 @Setter
 @Entity
 @ToString
+@EqualsAndHashCode(callSuper = true)
 @Table(name = "education_detail")
 public class EducationDetail extends BaseEntity<Long> {
 

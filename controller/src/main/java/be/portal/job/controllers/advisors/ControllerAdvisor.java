@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -100,7 +101,8 @@ public class ControllerAdvisor {
                 .stream()
                 .collect(Collectors.toMap(
                         FieldError::getField,
-                        FieldError::getDefaultMessage
+                        fieldError -> Optional.ofNullable(fieldError.getDefaultMessage())
+                                .orElse("No error message provided.")
                 ));
 
         return ResponseEntity.status(406).body(errors);
