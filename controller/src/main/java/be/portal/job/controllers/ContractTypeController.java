@@ -1,8 +1,8 @@
 package be.portal.job.controllers;
 
+import be.portal.job.dtos.contract_type.requests.ContractTypeRequest;
+import be.portal.job.dtos.contract_type.responses.ContractTypeResponse;
 import be.portal.job.entities.ContractType;
-import be.portal.job.models.dtos.ContractTypeDTO;
-import be.portal.job.models.forms.ContractTypeForm;
 import be.portal.job.services.ContractTypeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,10 +22,10 @@ public class ContractTypeController {
 
     @PreAuthorize("hasAnyAuthority('SEEKER', 'ADVERTISER', 'ADMIN')")
     @GetMapping
-    public ResponseEntity<List<ContractTypeDTO>> getAllContractTypes(Model model) {
-        List<ContractTypeDTO> contractTypes = contractTypeService.getAllContractType().stream()
+    public ResponseEntity<List<ContractTypeResponse>> getAllContractTypes(Model model) {
+        List<ContractTypeResponse> contractTypes = contractTypeService.getAllContractType().stream()
                 .sorted(Comparator.comparing(ContractType::getId))
-                .map(ContractTypeDTO::fromEntity)
+                .map(ContractTypeResponse::fromEntity)
                 .toList();
 
         model.addAttribute("contractTypes", contractTypes);
@@ -35,8 +35,8 @@ public class ContractTypeController {
 
     @PreAuthorize("hasAnyAuthority('SEEKER', 'ADVERTISER', 'ADMIN')")
     @GetMapping("/{id:^[0-9]+$}")
-    public ResponseEntity<ContractTypeDTO> getContractTypeById(@PathVariable Long id, Model model) {
-        ContractTypeDTO contractTypeDTO =  ContractTypeDTO.fromEntity(contractTypeService.getContractTypeById(id));
+    public ResponseEntity<ContractTypeResponse> getContractTypeById(@PathVariable Long id, Model model) {
+        ContractTypeResponse contractTypeDTO =  ContractTypeResponse.fromEntity(contractTypeService.getContractTypeById(id));
 
         model.addAttribute("contractTypeDTO", contractTypeDTO);
 
@@ -45,23 +45,23 @@ public class ContractTypeController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping()
-    public ResponseEntity<ContractTypeDTO> addContractType(@RequestBody ContractTypeForm form) {
+    public ResponseEntity<ContractTypeResponse> addContractType(@RequestBody ContractTypeRequest form) {
         ContractType contractType = contractTypeService.addContractType(form.toEntity());
 
-        return ResponseEntity.ok(ContractTypeDTO.fromEntity(contractType));
+        return ResponseEntity.ok(ContractTypeResponse.fromEntity(contractType));
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/{id}")
-    public ResponseEntity<ContractTypeDTO> updateContractType(@PathVariable Long id, @RequestBody ContractTypeForm form) {
+    public ResponseEntity<ContractTypeResponse> updateContractType(@PathVariable Long id, @RequestBody ContractTypeRequest form) {
         ContractType contractType = contractTypeService.updateContractType(id, form.toEntity());
 
-        return ResponseEntity.ok(ContractTypeDTO.fromEntity(contractType));
+        return ResponseEntity.ok(ContractTypeResponse.fromEntity(contractType));
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/{id}")
-    public ResponseEntity<ContractTypeDTO> deleteContractType(@PathVariable Long id) {
+    public ResponseEntity<ContractTypeResponse> deleteContractType(@PathVariable Long id) {
         contractTypeService.deleteContractType(id);
 
         return ResponseEntity.ok().build();
