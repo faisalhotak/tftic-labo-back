@@ -1,10 +1,10 @@
-package be.portal.job.models.forms;
+package be.portal.job.dtos.skill_detail.requests;
 
 import be.portal.job.entities.SkillDetail;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-public record SkillDetailForm(
+public record SkillDetailRequest(
 
         @NotBlank(message = "Skill name")
         @Size(min = 1, max = 100)
