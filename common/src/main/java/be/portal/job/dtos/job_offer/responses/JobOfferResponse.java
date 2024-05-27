@@ -3,6 +3,7 @@ package be.portal.job.dtos.job_offer.responses;
 import be.portal.job.dtos.company.responses.CompanyResponse;
 import be.portal.job.dtos.contract_type.responses.ContractTypeResponse;
 import be.portal.job.dtos.job_function.responses.JobFunctionResponse;
+import be.portal.job.dtos.user.responses.JobAdvertiserShortResponse;
 import be.portal.job.entities.JobOffer;
 
 import java.time.LocalDateTime;
@@ -17,7 +18,7 @@ public record JobOfferResponse(
         Integer activeDays,
         LocalDateTime expiringDate,
         boolean isActive,
-//        JobAdvertiserResponse agent,
+        JobAdvertiserShortResponse agent,
         CompanyResponse publishingCompany,
         ContractTypeResponse contractType,
         JobFunctionResponse jobFunction
@@ -34,7 +35,7 @@ public record JobOfferResponse(
                 jobOffer.getActiveDays(),
                 jobOffer.getExpiringDate(),
                 jobOffer.isActive(),
-//                JobAdvertiserResponse.fromEntity(jobOffer.getAgent().getJobAdvertiser()),
+                JobAdvertiserShortResponse.fromEntity(jobOffer.getAgent().getJobAdvertiser()),
                 CompanyResponse.fromEntity(jobOffer.getAgent().getCompany()),
                 ContractTypeResponse.fromEntity(jobOffer.getContractType()),
                 JobFunctionResponse.fromEntity(jobOffer.getJobFunction())
