@@ -1,7 +1,7 @@
 package be.portal.job.services;
 
-import be.portal.job.dtos.jobOffer.requests.JobOfferRequest;
-import be.portal.job.dtos.jobOffer.responses.JobOfferResponse;
+import be.portal.job.dtos.job_offer.requests.JobOfferRequest;
+import be.portal.job.dtos.job_offer.responses.JobOfferResponse;
 
 import java.util.List;
 

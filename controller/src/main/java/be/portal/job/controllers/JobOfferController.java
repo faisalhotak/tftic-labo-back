@@ -1,7 +1,7 @@
 package be.portal.job.controllers;
 
-import be.portal.job.dtos.jobOffer.requests.JobOfferRequest;
-import be.portal.job.dtos.jobOffer.responses.JobOfferResponse;
+import be.portal.job.dtos.job_offer.requests.JobOfferRequest;
+import be.portal.job.dtos.job_offer.responses.JobOfferResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

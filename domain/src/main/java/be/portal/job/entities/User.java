@@ -14,6 +14,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode(callSuper = true)
 public abstract class User extends BaseEntity<Long> implements UserDetails {
 
     @Column(name = "email", nullable = false, unique = true)
@@ -62,6 +63,7 @@ public abstract class User extends BaseEntity<Long> implements UserDetails {
     private Set<SocialLink> socialLinks;
 
     protected User() {
+        this.address = new Address();
         this.isExpired = false;
         this.isLocked = false;
         this.isCredentialsExpired = false;
