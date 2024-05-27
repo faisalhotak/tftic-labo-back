@@ -10,10 +10,12 @@ import be.portal.job.repositories.ContractTypeRepository;
 import be.portal.job.repositories.JobFunctionRepository;
 import be.portal.job.repositories.JobOfferRepository;
 import be.portal.job.services.IJobOfferService;
+import be.portal.job.specifications.JobOfferSpecifications;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @Service
@@ -27,8 +29,10 @@ public class JobOfferServiceImpl implements IJobOfferService {
     private final AuthServiceImpl authService;
 
     @Override
-    public List<JobOfferResponse> getAll() {
-        return jobOfferRepository.findAll().stream()
+    public List<JobOfferResponse> getAll(Map<String, String> params) {
+        return jobOfferRepository
+                .findAll(JobOfferSpecifications.filterByParams(params))
+                .stream()
                 .map(JobOfferResponse::fromEntity)
                 .toList();
     }
@@ -57,9 +61,9 @@ public class JobOfferServiceImpl implements IJobOfferService {
                 && !authService.isAdmin(currentUser)) {
             throw new NotAllowedException("You are not allowed to delete job offers for other job advertisers");
         }
-        
+
         jobOfferRepository.delete(jobOffer);
-        
+
         return JobOfferResponse.fromEntity(jobOffer);
     }
 
@@ -93,7 +97,7 @@ public class JobOfferServiceImpl implements IJobOfferService {
                 && !authService.isAdmin(currentUser)) {
             throw new NotAllowedException("You are not allowed to update job offers for other job advertisers");
         }
-        
+
         jobOffer.setAgent(companyAdvertiserRepository.findById(jobOfferRequest.agentId()).orElseThrow());
         jobOffer.setJobFunction(jobFunctionRepository.findById(jobOfferRequest.jobFunctionId()).orElseThrow());
         jobOffer.setContractType(contractTypeRepository.findById(jobOfferRequest.contractTypeId()).orElseThrow());
