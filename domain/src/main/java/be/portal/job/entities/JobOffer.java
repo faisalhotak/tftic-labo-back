@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @Getter
 @Entity
 @ToString
+@EqualsAndHashCode(callSuper = true)
 @Table(name = "job_offer")
 public class JobOffer extends BaseEntity<Long> {
 
@@ -35,6 +36,9 @@ public class JobOffer extends BaseEntity<Long> {
     @Column(name = "is_active", nullable = false)
     private boolean isActive = true;
 
+    @Column(name = "zip_city", nullable = false)
+    private String zipCity;
+
     @ManyToOne
     @JoinColumn(nullable = false, name = "agent_id")
     private CompanyAdvertiser agent;
@@ -46,5 +50,4 @@ public class JobOffer extends BaseEntity<Long> {
     @ManyToOne
     @JoinColumn(nullable = false, name = "job_function_id")
     private JobFunction jobFunction;
-
 }

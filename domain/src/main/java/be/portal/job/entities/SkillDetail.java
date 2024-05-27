@@ -2,6 +2,7 @@ package be.portal.job.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import java.util.HashSet;
@@ -11,6 +12,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode(callSuper = true)
 @Table(name = "skill_detail")
 public class SkillDetail extends BaseEntity<Long> {
 

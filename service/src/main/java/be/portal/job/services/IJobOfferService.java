@@ -4,6 +4,7 @@ import be.portal.job.dtos.job_offer.requests.JobOfferRequest;
 import be.portal.job.dtos.job_offer.responses.JobOfferResponse;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Service interface for job offer management in the system.
@@ -13,9 +14,10 @@ public interface IJobOfferService {
 
     /**
      * Retrieves a list of all job offers.
+     * @param params the parameters to filter the job offers.
      * @return a list of all job offers.
      */
-    List<JobOfferResponse> getAll();
+    List<JobOfferResponse> getAll(Map<String, String> params);
 
     /**
      * Retrieves a list of all job offers by agent.

@@ -2,10 +2,7 @@ package be.portal.job.entities;
 
 import be.portal.job.enums.DrivingLicenceCategory;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 
@@ -14,6 +11,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode(callSuper = true)
 @Table(name = "driving_licence")
 public class DrivingLicence extends BaseEntity<Long> {
 

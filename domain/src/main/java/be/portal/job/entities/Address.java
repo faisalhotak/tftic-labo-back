@@ -1,16 +1,14 @@
 package be.portal.job.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
+@EqualsAndHashCode(callSuper = true)
 @Table(name = "address")
 public class Address extends BaseEntity<Long> {
 
@@ -25,5 +23,4 @@ public class Address extends BaseEntity<Long> {
 
     @Column(name = "country", nullable = false)
     private String country;
-
 }

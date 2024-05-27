@@ -20,7 +20,7 @@ public record CompanyRequest(
         String contactName,
 
         @NotBlank(message = "The contact phone number of the company is required.")
-        Integer contactPhoneNumber,
+        String contactPhoneNumber,
 
         @NotBlank(message = "The contact department of the company is required.")
         String contactDepartment
