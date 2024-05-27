@@ -10,7 +10,7 @@ public record CompanyResponse(
         String websiteUrl,
         LocalDateTime establishmentDate,
         String contactName,
-        int contactPhoneNumber,
+        String contactPhoneNumber,
         String contactDepartment,
         boolean isVerified
 ) {

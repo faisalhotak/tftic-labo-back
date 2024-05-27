@@ -40,7 +40,6 @@ public class JobFunctionServiceImpl implements IJobFunctionService {
                 .orElseThrow(()-> new RuntimeException("Job function not found: " + id));
 
         existingJobFunction.setName(jobFunction.getName());
-        existingJobFunction.setTitle(jobFunction.getTitle());
 
         return jobFunctionRepository.save(existingJobFunction);
     }
