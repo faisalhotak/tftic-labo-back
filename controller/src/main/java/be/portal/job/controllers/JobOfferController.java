@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import be.portal.job.services.IJobOfferService;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,8 +19,8 @@ public class JobOfferController {
     private final IJobOfferService jobOfferService;
 
     @GetMapping
-    public ResponseEntity<List<JobOfferResponse>> getAllJobOffers() {
-        return ResponseEntity.ok(jobOfferService.getAll());
+    public ResponseEntity<List<JobOfferResponse>> getAllJobOffers(@RequestParam Map<String, String> params) {
+        return ResponseEntity.ok(jobOfferService.getAll(params));
     }
     
     @GetMapping("/agent/{id:^[0-9]+$}")
