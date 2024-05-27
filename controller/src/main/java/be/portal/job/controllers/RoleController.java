@@ -1,7 +1,7 @@
 package be.portal.job.controllers;
 
-import be.portal.job.models.dtos.RoleDTO;
-import be.portal.job.models.forms.RoleForm;
+import be.portal.job.dtos.role.requests.RoleAddRequest;
+import be.portal.job.dtos.role.responses.RoleResponse;
 import be.portal.job.services.IRoleService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,10 +22,10 @@ public class RoleController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping
-    public ResponseEntity<List<RoleDTO>> getRoles() {
-        List<RoleDTO> roles = roleService.getRoles()
+    public ResponseEntity<List<RoleResponse>> getRoles() {
+        List<RoleResponse> roles = roleService.getRoles()
                 .stream()
-                .map(RoleDTO::fromEntity)
+                .map(RoleResponse::fromEntity)
                 .toList();
 
         return ResponseEntity.ok(roles);
@@ -33,39 +33,39 @@ public class RoleController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/{id:^[0-9]+$}")
-    public ResponseEntity<RoleDTO> getRoleById(@PathVariable Long id) {
-        RoleDTO roleDTO = RoleDTO.fromEntity(roleService.getRoleById(id));
+    public ResponseEntity<RoleResponse> getRoleById(@PathVariable Long id) {
+        RoleResponse roleDTO = RoleResponse.fromEntity(roleService.getRoleById(id));
 
         return ResponseEntity.ok(roleDTO);
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/post")
-    public ResponseEntity<RoleDTO> addRole(@Valid @RequestBody RoleForm roleForm, BindingResult bindingResult) {
+    public ResponseEntity<RoleResponse> addRole(@Valid @RequestBody RoleAddRequest roleForm, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().build();
         }
 
-        RoleDTO newRole = RoleDTO.fromEntity(roleService.addRole(roleForm.toEntity()));
+        RoleResponse newRole = RoleResponse.fromEntity(roleService.addRole(roleForm.toEntity()));
 
         return ResponseEntity.ok(newRole);
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/{id:^[0-9]+$}")
-    public ResponseEntity<RoleDTO> updateRole(@PathVariable Long id, @Valid @RequestBody RoleForm roleForm, BindingResult bindingResult) {
+    public ResponseEntity<RoleResponse> updateRole(@PathVariable Long id, @Valid @RequestBody RoleAddRequest roleForm, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().build();
         }
 
-        RoleDTO updatedRole = RoleDTO.fromEntity(roleService.updateRole(id, roleForm.toEntity()));
+        RoleResponse updatedRole = RoleResponse.fromEntity(roleService.updateRole(id, roleForm.toEntity()));
 
         return ResponseEntity.ok(updatedRole);
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/{id:^[0-9]+$}")
-    public ResponseEntity<RoleDTO> deleteRole(@PathVariable Long id) {
+    public ResponseEntity<RoleResponse> deleteRole(@PathVariable Long id) {
         roleService.deleteRole(id);
 
         return ResponseEntity.noContent().build();
