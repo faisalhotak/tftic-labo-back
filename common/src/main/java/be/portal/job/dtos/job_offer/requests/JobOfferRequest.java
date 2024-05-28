@@ -1,6 +1,5 @@
 package be.portal.job.dtos.job_offer.requests;
 
-import be.portal.job.entities.JobOffer;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -37,14 +36,4 @@ public record JobOfferRequest(
 
         @NotNull(message = "Job function id is mandatory")
         Long jobFunctionId
-) {
-    public void updateEntity( JobOffer jobOffer) {
-        jobOffer.setDescription(this.description);
-        jobOffer.setAnnualGrossSalaryMin(this.annualGrossSalaryMin);
-        jobOffer.setAnnualGrossSalaryMax(this.annualGrossSalaryMax);
-        jobOffer.setPublishedDate(this.publishing);
-        jobOffer.setActiveDays(this.activeDays);
-        jobOffer.setExpiringDate(this.expiringDate);
-        jobOffer.setActive(this.isActive);
-    }
-}
+) { }

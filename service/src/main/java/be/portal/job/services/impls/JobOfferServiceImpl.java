@@ -5,6 +5,7 @@ import be.portal.job.dtos.job_offer.responses.JobOfferResponse;
 import be.portal.job.entities.JobAdvertiser;
 import be.portal.job.entities.JobOffer;
 import be.portal.job.exceptions.NotAllowedException;
+import be.portal.job.mappers.job_offer.JobOfferMapper;
 import be.portal.job.repositories.CompanyAdvertiserRepository;
 import be.portal.job.repositories.ContractTypeRepository;
 import be.portal.job.repositories.JobFunctionRepository;
@@ -27,28 +28,70 @@ public class JobOfferServiceImpl implements IJobOfferService {
     private final ContractTypeRepository contractTypeRepository;
     private final CompanyAdvertiserRepository companyAdvertiserRepository;
     private final AuthServiceImpl authService;
+    private final JobOfferMapper jobOfferMapper;
 
     @Override
     public List<JobOfferResponse> getAll(Map<String, String> params) {
         return jobOfferRepository
                 .findAll(JobOfferSpecifications.filterByParams(params))
                 .stream()
-                .map(JobOfferResponse::fromEntity)
+                .map(jobOfferMapper::fromEntity)
+                .toList();
+    }
+
+    @Override
+    public List<JobOfferResponse> getAllByAgent(Long id) {
+        return jobOfferRepository.findAllByAgent(id).stream()
+                .map(jobOfferMapper::fromEntity)
                 .toList();
     }
 
     @Override
     public JobOfferResponse getJobOfferById(Long id) {
         return jobOfferRepository.findById(id)
-                .map(JobOfferResponse::fromEntity)
+                .map(jobOfferMapper::fromEntity)
                 .orElseThrow();
     }
 
     @Override
-    public List<JobOfferResponse> getAllByAgent(Long id) {
-        return jobOfferRepository.findAllByAgent(id).stream()
-                .map(JobOfferResponse::fromEntity)
-                .toList();
+    public JobOfferResponse addJobOffer(JobOfferRequest jobOfferRequest) {
+        JobAdvertiser currentUser = authService.getAuthenticatedAdvertiser();
+
+        JobOffer jobOffer = new JobOffer();
+
+        jobOfferMapper.updateEntityFromRequest(jobOfferRequest, jobOffer);
+
+        jobOffer.setAgent(companyAdvertiserRepository.findById(jobOfferRequest.agentId()).orElseThrow());
+
+        if (!Objects.equals(currentUser.getId(), jobOffer.getAgent().getJobAdvertiser().getId())
+                && !authService.isAdmin(currentUser)) {
+            throw new NotAllowedException("You are not allowed to create job offers for other job advertisers");
+        }
+
+        jobOffer.setJobFunction(jobFunctionRepository.findById(jobOfferRequest.jobFunctionId()).orElseThrow());
+        jobOffer.setContractType(contractTypeRepository.findById(jobOfferRequest.contractTypeId()).orElseThrow());
+
+        return jobOfferMapper.fromEntity(jobOfferRepository.save(jobOffer));
+    }
+
+    @Override
+    public JobOfferResponse updateJobOffer(Long id, JobOfferRequest jobOfferRequest) {
+        JobAdvertiser currentUser = authService.getAuthenticatedAdvertiser();
+
+        JobOffer jobOffer = jobOfferRepository.findById(id).orElseThrow();
+
+        if (!Objects.equals(currentUser.getId(), jobOffer.getAgent().getJobAdvertiser().getId())
+                && !authService.isAdmin(currentUser)) {
+            throw new NotAllowedException("You are not allowed to update job offers for other job advertisers");
+        }
+
+        jobOfferMapper.updateEntityFromRequest(jobOfferRequest, jobOffer);
+
+        jobOffer.setAgent(companyAdvertiserRepository.findById(jobOfferRequest.agentId()).orElseThrow());
+        jobOffer.setJobFunction(jobFunctionRepository.findById(jobOfferRequest.jobFunctionId()).orElseThrow());
+        jobOffer.setContractType(contractTypeRepository.findById(jobOfferRequest.contractTypeId()).orElseThrow());
+
+        return jobOfferMapper.fromEntity(jobOfferRepository.save(jobOffer));
     }
 
     @Override
@@ -64,44 +107,6 @@ public class JobOfferServiceImpl implements IJobOfferService {
 
         jobOfferRepository.delete(jobOffer);
 
-        return JobOfferResponse.fromEntity(jobOffer);
-    }
-
-    @Override
-    public JobOfferResponse addJobOffer(JobOfferRequest jobOfferRequest) {
-        JobAdvertiser currentUser = authService.getAuthenticatedAdvertiser();
-
-        JobOffer jobOffer = new JobOffer();
-        jobOfferRequest.updateEntity(jobOffer);
-        jobOffer.setAgent(companyAdvertiserRepository.findById(jobOfferRequest.agentId()).orElseThrow());
-
-        if (!Objects.equals(currentUser.getId(), jobOffer.getAgent().getJobAdvertiser().getId())
-                && !authService.isAdmin(currentUser)) {
-            throw new NotAllowedException("You are not allowed to create job offers for other job advertisers");
-        }
-
-        jobOffer.setJobFunction(jobFunctionRepository.findById(jobOfferRequest.jobFunctionId()).orElseThrow());
-        jobOffer.setContractType(contractTypeRepository.findById(jobOfferRequest.contractTypeId()).orElseThrow());
-
-        return JobOfferResponse.fromEntity(jobOfferRepository.save(jobOffer));
-    }
-
-    @Override
-    public JobOfferResponse updateJobOffer(Long id, JobOfferRequest jobOfferRequest) {
-        JobAdvertiser currentUser = authService.getAuthenticatedAdvertiser();
-
-        JobOffer jobOffer = jobOfferRepository.findById(id).orElseThrow();
-        jobOfferRequest.updateEntity(jobOffer);
-
-        if (!Objects.equals(currentUser.getId(), jobOffer.getAgent().getJobAdvertiser().getId())
-                && !authService.isAdmin(currentUser)) {
-            throw new NotAllowedException("You are not allowed to update job offers for other job advertisers");
-        }
-
-        jobOffer.setAgent(companyAdvertiserRepository.findById(jobOfferRequest.agentId()).orElseThrow());
-        jobOffer.setJobFunction(jobFunctionRepository.findById(jobOfferRequest.jobFunctionId()).orElseThrow());
-        jobOffer.setContractType(contractTypeRepository.findById(jobOfferRequest.contractTypeId()).orElseThrow());
-
-        return JobOfferResponse.fromEntity(jobOfferRepository.save(jobOffer));
+        return jobOfferMapper.fromEntity(jobOffer);
     }
 }

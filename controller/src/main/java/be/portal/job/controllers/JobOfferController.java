@@ -2,6 +2,7 @@ package be.portal.job.controllers;
 
 import be.portal.job.dtos.job_offer.requests.JobOfferRequest;
 import be.portal.job.dtos.job_offer.responses.JobOfferResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -35,13 +36,16 @@ public class JobOfferController {
 
     @PreAuthorize("hasAnyAuthority('ADVERTISER', 'ADMIN')")
     @PostMapping()
-    public ResponseEntity<JobOfferResponse> addJobOffer(@RequestBody JobOfferRequest jobOfferRequest) {
+    public ResponseEntity<JobOfferResponse> addJobOffer(@RequestBody @Valid JobOfferRequest jobOfferRequest) {
         return ResponseEntity.ok(jobOfferService.addJobOffer(jobOfferRequest));
     }
 
     @PreAuthorize("hasAnyAuthority('ADVERTISER', 'ADMIN')")
     @PutMapping("/{id:^[0-9]+$}")
-    public ResponseEntity<JobOfferResponse> updateJobOffer(@PathVariable Long id, @RequestBody JobOfferRequest jobOfferRequest) {
+    public ResponseEntity<JobOfferResponse> updateJobOffer(
+            @PathVariable Long id,
+            @RequestBody @Valid JobOfferRequest jobOfferRequest
+    ) {
         return ResponseEntity.ok(jobOfferService.updateJobOffer(id, jobOfferRequest));
     }
 
