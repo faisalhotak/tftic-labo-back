@@ -12,7 +12,9 @@ public record SocialRequest(
         String logoUrl
 ) {
     public Social toEntity() {
+
         Social social = new Social();
+
         social.setName(name);
         social.setLogoUrl(logoUrl);
 
