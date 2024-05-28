@@ -38,7 +38,7 @@ public class ContractTypeController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/{id:^[0-9]+$}")
-    public ResponseEntity<ContractTypeResponse> updateContractType(@PathVariable @Valid Long id, @RequestBody ContractTypeRequest contractType) {
+    public ResponseEntity<ContractTypeResponse> updateContractType(@PathVariable Long id, @RequestBody @Valid ContractTypeRequest contractType) {
         return ResponseEntity.ok(contractTypeService.updateContractType(id, contractType));
     }
 

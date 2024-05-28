@@ -13,7 +13,7 @@ import lombok.*;
 @Table(name = "contract_type")
 public class ContractType extends BaseEntity<Long> {
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false, unique = true)
     private String name;
 
     @Column(name = "description", nullable = false)

@@ -38,7 +38,7 @@ public class SkillDetailController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/{id:^[0-9]+$}")
-    public  ResponseEntity<SkillDetailResponse> updateSkillDetails(@PathVariable @Valid Long id, @RequestBody SkillDetailRequest skillDetail) {
+    public  ResponseEntity<SkillDetailResponse> updateSkillDetails(@PathVariable Long id, @RequestBody @Valid SkillDetailRequest skillDetail) {
         return ResponseEntity.ok(skillDetailService.updateSkillDetail(id, skillDetail));
     }
 

@@ -38,7 +38,7 @@ public class SocialController {
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/{id:^[0-9]+$}")
-    public ResponseEntity<SocialResponse> updateSocial(@PathVariable @Valid Long id, @RequestBody SocialRequest social) {
+    public ResponseEntity<SocialResponse> updateSocial(@PathVariable Long id, @RequestBody @Valid SocialRequest social) {
         return ResponseEntity.ok(socialService.updateSocial(id, social));
     }
 
