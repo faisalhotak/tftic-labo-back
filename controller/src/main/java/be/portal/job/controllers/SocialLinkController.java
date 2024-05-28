@@ -2,7 +2,7 @@ package be.portal.job.controllers;
 
 import be.portal.job.dtos.social_link.requests.SocialLinkRequest;
 import be.portal.job.dtos.social_link.responses.SocialLinkResponse;
-import be.portal.job.services.SocialLinkService;
+import be.portal.job.services.ISocialLinkService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +17,7 @@ import java.util.List;
 @PreAuthorize("hasAnyAuthority('SEEKER', 'ADMIN')")
 public class SocialLinkController {
 
-    private final SocialLinkService socialLinkService;
+    private final ISocialLinkService socialLinkService;
 
     @GetMapping
     public ResponseEntity<List<SocialLinkResponse>> getAllSocialLinks() {
