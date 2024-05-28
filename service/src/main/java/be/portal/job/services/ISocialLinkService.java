@@ -6,7 +6,7 @@ import be.portal.job.dtos.social_link.responses.SocialLinkResponse;
 
 import java.util.List;
 
-public interface SocialLinkService {
+public interface ISocialLinkService {
 
     /**
      * Gets all social links.
