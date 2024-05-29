@@ -64,6 +64,10 @@ public class CertificationDetailServiceImpl implements ICertificationDetailServi
         CertificationDetail certificationDetail = certificationDetailRepository.findByIdAndJobSeekerId(id, jobSeeker.getId())
                 .orElseThrow(CertificationDetailNotFoundException::new);
 
+        certificationDetail.setName(request.name());
+        certificationDetail.setDescription(request.description());
+        certificationDetail.setCompletionDate(request.completionDate());
+
         return CertificationDetailResponse.fromEntity(certificationDetailRepository.save(certificationDetail));
     }
 
