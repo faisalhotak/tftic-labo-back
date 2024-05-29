@@ -1,7 +1,6 @@
 package be.portal.job.services;
 
 import be.portal.job.dtos.skill_set.requests.SkillSetRequest;
-import be.portal.job.dtos.skill_set.requests.SkillSetUpdateRequest;
 import be.portal.job.dtos.skill_set.responses.SkillSetResponse;
 
 import java.util.List;
@@ -34,7 +33,7 @@ public interface ISkillSetService {
      * @param request the SkillSetUpdateRequest object containing the new details of the skill set.
      * @return a SkillSetResponse object representing the updated skill set.
      */
-    SkillSetResponse update(Long id, SkillSetUpdateRequest request);
+    SkillSetResponse update(Long id, SkillSetRequest request);
 
     /**
      * Deletes a specific skill set by its ID.
