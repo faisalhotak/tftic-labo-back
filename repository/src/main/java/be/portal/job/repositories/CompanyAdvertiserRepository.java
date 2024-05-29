@@ -12,6 +12,9 @@ import java.util.Optional;
 @Repository
 public interface CompanyAdvertiserRepository extends JpaRepository<CompanyAdvertiser, Long> {
 
+    @Query("SELECT ca FROM CompanyAdvertiser ca WHERE ca.id = :id AND ca.jobAdvertiser.id = :jobAdvertiserId")
+    Optional<CompanyAdvertiser> findByIdAndJobAdvertiserId(Long id, Long jobAdvertiserId);
+
     @Query("SELECT ca FROM CompanyAdvertiser ca WHERE ca.company.id = :companyId AND ca.jobAdvertiser.id = :agentId")
     Optional<CompanyAdvertiser> findByCompanyAndAgent(Long companyId, Long agentId);
 

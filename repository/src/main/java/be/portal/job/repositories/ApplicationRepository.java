@@ -2,6 +2,7 @@ package be.portal.job.repositories;
 
 import be.portal.job.entities.Application;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -19,4 +20,8 @@ public interface ApplicationRepository extends JpaRepository<Application, Long> 
 
     @Query("SELECT a FROM Application a WHERE a.jobSeeker.id = :seekerId AND a.jobOffer.id = :jobOfferId")
     Optional<Application> findByJobSeekerIdAndJobOfferId(Long seekerId, Long jobOfferId);
+
+    @Modifying
+    @Query("DELETE FROM Application a WHERE a.jobOffer.id = :jobOfferId")
+    void deleteAllByJobOfferId(Long jobOfferId);
 }

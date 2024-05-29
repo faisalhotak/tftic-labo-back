@@ -14,7 +14,6 @@ import java.time.LocalDateTime;
 @Table(name = "job_offer")
 public class JobOffer extends BaseEntity<Long> {
 
-
     @Column(name = "description", nullable = false)
     private String description;
 
@@ -24,8 +23,8 @@ public class JobOffer extends BaseEntity<Long> {
     @Column(name = "annual_gross_salary_max", nullable = false)
     private double annualGrossSalaryMax;
 
-    @Column(name = "published_date", nullable = false)
-    private LocalDateTime publishedDate;
+    @Column(name = "publishing_date", nullable = false)
+    private LocalDateTime publishingDate;
 
     @Column(name = "active_days", nullable = false)
     private int activeDays;
