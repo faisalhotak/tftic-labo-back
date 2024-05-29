@@ -26,7 +26,7 @@ public class ExperienceDetailController {
 
     @PreAuthorize("hasAnyAuthority('SEEKER')")
     @PostMapping
-    public ResponseEntity<ExperienceDetailResponse> addExperienceDetail(@RequestBody ExperienceDetailAddRequest experienceDetailRequest) {
+    public ResponseEntity<ExperienceDetailResponse> addExperienceDetail(@RequestBody @Valid ExperienceDetailAddRequest experienceDetailRequest) {
         return ResponseEntity.ok(experienceDetailService.addExperienceDetail(experienceDetailRequest));
     }
 
