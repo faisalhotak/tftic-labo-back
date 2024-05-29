@@ -12,6 +12,6 @@ import lombok.*;
 @EqualsAndHashCode(callSuper = true)
 public class JobFunction extends BaseEntity<Long> {
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false, unique = true)
     private String name;
 }

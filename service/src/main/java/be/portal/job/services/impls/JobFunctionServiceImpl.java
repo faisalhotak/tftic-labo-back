@@ -1,6 +1,11 @@
 package be.portal.job.services.impls;
 
+import be.portal.job.dtos.job_function.requests.JobFunctionRequest;
+import be.portal.job.dtos.job_function.responses.JobFunctionResponse;
 import be.portal.job.entities.JobFunction;
+import be.portal.job.exceptions.AlreadyExistsException;
+import be.portal.job.exceptions.job_function.JobFunctionNotFoundException;
+import be.portal.job.mappers.job_function.JobFunctionMapper;
 import be.portal.job.repositories.JobFunctionRepository;
 import be.portal.job.services.IJobFunctionService;
 import lombok.RequiredArgsConstructor;
@@ -13,42 +18,48 @@ import java.util.List;
 public class JobFunctionServiceImpl implements IJobFunctionService {
 
     private final JobFunctionRepository jobFunctionRepository;
+    private final JobFunctionMapper jobFunctionMapper;
 
     @Override
-    public List<JobFunction> getJobFunction() {
-        return jobFunctionRepository.findAll();
+    public List<JobFunctionResponse> getAll() {
+        return jobFunctionRepository.findAll().stream()
+                .map(jobFunctionMapper::fromEntity)
+                .toList();
     }
 
     @Override
-    public JobFunction getJobFunctionByName(String name) {
-        return jobFunctionRepository.findByName(name).orElseThrow();
+    public JobFunctionResponse getById(Long id) {
+        JobFunction jobFunction = jobFunctionRepository.findById(id).orElseThrow(JobFunctionNotFoundException::new);
+
+        return jobFunctionMapper.fromEntity(jobFunction);
     }
 
     @Override
-    public JobFunction getJobFunctionById(Long id) {
-        return jobFunctionRepository.findById(id).orElseThrow();
-    }
-
-    @Override
-    public JobFunction addJobFunction(JobFunction jobFunction) {
-        return jobFunctionRepository.save(jobFunction);
-    }
-
-    @Override
-    public JobFunction updateJobFunction(Long id, JobFunction jobFunction) {
-        JobFunction existingJobFunction = jobFunctionRepository.findById(id)
-                .orElseThrow(()-> new RuntimeException("Job function not found: " + id));
-
-        existingJobFunction.setName(jobFunction.getName());
-
-        return jobFunctionRepository.save(existingJobFunction);
-    }
-
-    @Override
-    public void deleteJobFunction(Long id) {
-        if (!jobFunctionRepository.existsById(id)) {
-            throw new RuntimeException("Job function not found: " + id);
+    public JobFunctionResponse add(JobFunctionRequest request) {
+        if (jobFunctionRepository.findByName(request.name()).isPresent()) {
+            throw new AlreadyExistsException("Job function with this name already exists");
         }
-        jobFunctionRepository.deleteById(id);
+
+        JobFunction jobFunction = jobFunctionMapper.toEntity(request);
+
+        return jobFunctionMapper.fromEntity(jobFunctionRepository.save(jobFunction));
+    }
+
+    @Override
+    public JobFunctionResponse update(Long id, JobFunctionRequest request) {
+        JobFunction existingJobFunction = jobFunctionRepository.findById(id).orElseThrow(JobFunctionNotFoundException::new);
+
+        jobFunctionMapper.updateEntityFromRequest(request, existingJobFunction);
+
+        return jobFunctionMapper.fromEntity(jobFunctionRepository.save(existingJobFunction));
+    }
+
+    @Override
+    public JobFunctionResponse delete(Long id) {
+        JobFunction jobFunction = jobFunctionRepository.findById(id).orElseThrow(JobFunctionNotFoundException::new);
+
+        jobFunctionRepository.delete(jobFunction);
+
+        return jobFunctionMapper.fromEntity(jobFunction);
     }
 }

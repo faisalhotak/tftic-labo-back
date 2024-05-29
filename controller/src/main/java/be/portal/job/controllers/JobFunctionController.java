@@ -7,7 +7,6 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,53 +22,33 @@ public class JobFunctionController {
     @PreAuthorize("hasAnyAuthority('SEEKER', 'ADVERTISER', 'ADMIN')")
     @GetMapping
     public ResponseEntity<List<JobFunctionResponse>> getAllJobFunctions() {
-        List<JobFunctionResponse> jobFunctionDTOS = jobFunctionService.getJobFunction()
-                .stream()
-                .map(JobFunctionResponse::fromEntity)
-                .toList();
-
-        return ResponseEntity.ok(jobFunctionDTOS);
+        return ResponseEntity.ok(jobFunctionService.getAll());
     }
 
     @PreAuthorize("hasAnyAuthority('SEEKER', 'ADVERTISER', 'ADMIN')")
-    @GetMapping("/{id}")
+    @GetMapping("/{id:^[0-9]+$}")
     public ResponseEntity<JobFunctionResponse> getJobFunctionById(@PathVariable Long id) {
-        JobFunctionResponse jobFunctionDTO = JobFunctionResponse.fromEntity(jobFunctionService.getJobFunctionById(id));
-
-        return ResponseEntity.ok(jobFunctionDTO);
+        return ResponseEntity.ok(jobFunctionService.getById(id));
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    @PostMapping("/post")
-    public ResponseEntity<JobFunctionResponse> addJobFunction(
-            @Valid @RequestBody JobFunctionRequest jobFunctionForm,
-            BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return ResponseEntity.badRequest().build();
-        }
-
-        JobFunctionResponse newJobFunction = JobFunctionResponse.fromEntity(jobFunctionService.addJobFunction(jobFunctionForm.toEntity()));
-
-        return ResponseEntity.ok(newJobFunction);
+    @PostMapping
+    public ResponseEntity<JobFunctionResponse> addJobFunction(@RequestBody @Valid JobFunctionRequest request) {
+        return ResponseEntity.ok(jobFunctionService.add(request));
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    @PutMapping("/{id}")
-    public ResponseEntity<JobFunctionResponse> updateJobFunction(@PathVariable Long id, @Valid @RequestBody JobFunctionRequest jobFunctionForm, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return ResponseEntity.badRequest().build();
-        }
-
-        JobFunctionResponse jobFunctionDTO = JobFunctionResponse.fromEntity(jobFunctionService.updateJobFunction(id, jobFunctionForm.toEntity()));
-
-        return ResponseEntity.ok(jobFunctionDTO);
+    @PutMapping("/{id:^[0-9]+$}")
+    public ResponseEntity<JobFunctionResponse> updateJobFunction(
+            @PathVariable Long id,
+            @RequestBody @Valid JobFunctionRequest request
+    ) {
+        return ResponseEntity.ok(jobFunctionService.update(id, request));
     }
 
-    @PreAuthorize("hasAnyAuthority('SEEKER', 'ADVERTISER', 'ADMIN')")
-    @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @DeleteMapping("/{id:^[0-9]+$}")
     public ResponseEntity<JobFunctionResponse> deleteJobFunction(@PathVariable Long id) {
-        jobFunctionService.deleteJobFunction(id);
-
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(jobFunctionService.delete(id));
     }
 }

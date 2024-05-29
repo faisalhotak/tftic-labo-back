@@ -1,6 +1,5 @@
 package be.portal.job.dtos.job_offer.requests;
 
-import be.portal.job.entities.JobOffer;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -11,23 +10,26 @@ public record JobOfferRequest(
         @NotBlank(message = "Description is mandatory")
         String description,
 
-        @NotBlank(message = "Annual gross salary min is mandatory")
+        @NotNull(message = "Annual gross salary min is mandatory")
         Double annualGrossSalaryMin,
 
-        @NotBlank(message = "Annual gross salary max is mandatory")
+        @NotNull(message = "Annual gross salary max is mandatory")
         Double annualGrossSalaryMax,
 
-        @NotBlank(message = "Publishing date is mandatory")
-        LocalDateTime publishing,
+        @NotNull(message = "Publishing date is mandatory")
+        LocalDateTime publishingDate,
 
         @NotNull(message = "Active days is mandatory")
         Integer activeDays,
 
-        @NotBlank(message = "Expiring date is mandatory")
+        @NotNull(message = "Expiring date is mandatory")
         LocalDateTime expiringDate,
 
         @NotNull(message = "Active is mandatory")
         Boolean isActive,
+
+        @NotBlank(message = "Zip city is mandatory")
+        String zipCity,
 
         @NotNull(message = "Agent id is mandatory")
         Long agentId,
@@ -37,14 +39,4 @@ public record JobOfferRequest(
 
         @NotNull(message = "Job function id is mandatory")
         Long jobFunctionId
-) {
-    public void updateEntity( JobOffer jobOffer) {
-        jobOffer.setDescription(this.description);
-        jobOffer.setAnnualGrossSalaryMin(this.annualGrossSalaryMin);
-        jobOffer.setAnnualGrossSalaryMax(this.annualGrossSalaryMax);
-        jobOffer.setPublishedDate(this.publishing);
-        jobOffer.setActiveDays(this.activeDays);
-        jobOffer.setExpiringDate(this.expiringDate);
-        jobOffer.setActive(this.isActive);
-    }
-}
+) { }

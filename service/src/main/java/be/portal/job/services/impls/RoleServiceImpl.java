@@ -1,6 +1,11 @@
 package be.portal.job.services.impls;
 
+import be.portal.job.dtos.role.requests.RoleRequest;
+import be.portal.job.dtos.role.responses.RoleResponse;
 import be.portal.job.entities.Role;
+import be.portal.job.exceptions.AlreadyExistsException;
+import be.portal.job.exceptions.role.RoleNotFoundException;
+import be.portal.job.mappers.role.RoleMapper;
 import be.portal.job.repositories.RoleRepository;
 import be.portal.job.services.IRoleService;
 import lombok.RequiredArgsConstructor;
@@ -13,43 +18,56 @@ import java.util.List;
 public class RoleServiceImpl implements IRoleService {
 
     private final RoleRepository roleRepository;
+    private final RoleMapper roleMapper;
 
     @Override
-    public List<Role> getRoles() {
-        return roleRepository.findAll();
+    public List<RoleResponse> getAll() {
+        return roleRepository.findAll()
+                .stream()
+                .map(roleMapper::fromEntity)
+                .toList();
     }
 
     @Override
-    public Role getRoleByName(String name) {
-        return roleRepository.findByName(name).orElseThrow();
+    public RoleResponse getByName(String name) {
+        Role role = roleRepository.findByName(name).orElseThrow(RoleNotFoundException::new);
+
+        return roleMapper.fromEntity(role);
     }
 
     @Override
-    public Role getRoleById(Long id) {
-        return roleRepository.findById(id).orElseThrow();
+    public RoleResponse getById(Long id) {
+        Role role = roleRepository.findById(id).orElseThrow(RoleNotFoundException::new);
+
+        return roleMapper.fromEntity(role);
     }
 
     @Override
-    public Role addRole(Role role) {
-        return roleRepository.save(role);
-    }
-
-    @Override
-    public Role updateRole(Long id, Role role) {
-        Role existingRole = roleRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Role not found with id: " + id));
-
-        existingRole.setName(role.getName());
-        existingRole.setDescription(role.getDescription());
-
-        return roleRepository.save(existingRole);
-    }
-
-    @Override
-    public void deleteRole(Long id) {
-        if (!roleRepository.existsById(id)) {
-            throw new RuntimeException("Role not found with id: " + id);
+    public RoleResponse add(RoleRequest request) {
+        if (roleRepository.findByName(request.name()).isPresent()) {
+            throw new AlreadyExistsException("Role already exists");
         }
-        roleRepository.deleteById(id);
+
+        Role role = roleMapper.toEntity(request);
+
+        return roleMapper.fromEntity(roleRepository.save(role));
+    }
+
+    @Override
+    public RoleResponse update(Long id, RoleRequest request) {
+        Role existingRole = roleRepository.findById(id).orElseThrow(RoleNotFoundException::new);
+
+        roleMapper.updateEntityFromRequest(request, existingRole);
+
+        return roleMapper.fromEntity(roleRepository.save(existingRole));
+    }
+
+    @Override
+    public RoleResponse delete(Long id) {
+        Role role = roleRepository.findById(id).orElseThrow(RoleNotFoundException::new);
+
+        roleRepository.delete(role);
+
+        return roleMapper.fromEntity(role);
     }
 }

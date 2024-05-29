@@ -1,51 +1,47 @@
 package be.portal.job.services;
 
-import be.portal.job.entities.JobFunction;
+import be.portal.job.dtos.job_function.requests.JobFunctionRequest;
+import be.portal.job.dtos.job_function.responses.JobFunctionResponse;
 
 import java.util.List;
+
 /**
  * This interface defines methods for managing job functions.
  */
 public interface IJobFunctionService {
 
     /**
-     * Retrieves a list of all job functions.
-     * @return A list of all job functions.
+     * Get all job functions.
+     * @return list of job functions responses
      */
-    List<JobFunction> getJobFunction();
+    List<JobFunctionResponse> getAll();
 
     /**
-     * Retrieves a job function by its name.
-     * @param name The name of the job function to retrieve.
-     * @return The job function with the specified name, or null if not found.
+     * Get job function by id.
+     * @param id job function id
+     * @return job function response
      */
-    JobFunction getJobFunctionByName(String name);
+    JobFunctionResponse getById(Long id);
 
     /**
-     * Retrieves a job function by its ID.
-     * @param id The ID of the job function to retrieve.
-     * @return The job function with the specified ID, or null if not found.
+     * Add new job function based on request.
+     * @param request job function request
+     * @return job function response
      */
-    JobFunction getJobFunctionById(Long id);
+    JobFunctionResponse add(JobFunctionRequest request);
 
     /**
-     * Creates a new job function.
-     * @param jobFunction The job function to create.
-     * @return The newly created job function.
+     * Update job function based on request.
+     * @param id job function id
+     * @param request job function request
+     * @return job function response
      */
-    JobFunction addJobFunction(JobFunction jobFunction);
+    JobFunctionResponse update(Long id, JobFunctionRequest request);
 
     /**
-     * Updates an existing job function.
-     * @param id The ID of the job function to update.
-     * @param jobFunction The updated job function object.
-     * @return The updated job function.
+     * Delete job function by id.
+     * @param id job function id
+     * @return job function response
      */
-    JobFunction updateJobFunction(Long id, JobFunction jobFunction);
-
-    /**
-     * Deletes a job function by its ID.
-     * @param id The ID of the job function to delete.
-     */
-    void deleteJobFunction(Long id);
+    JobFunctionResponse delete(Long id);
 }

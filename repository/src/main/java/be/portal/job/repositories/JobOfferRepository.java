@@ -8,9 +8,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface JobOfferRepository extends JpaRepository<JobOffer, Long>, JpaSpecificationExecutor<JobOffer> {
+
+    @Query("SELECT jo FROM JobOffer jo WHERE jo.id = :id AND jo.agent.jobAdvertiser.id= :jobAdvertiserId")
+    Optional<JobOffer> findByIdAndJobAdvertiserId(Long id, Long jobAdvertiserId);
 
     @Query("SELECT jo FROM JobOffer jo WHERE jo.agent.id = :id")
     List<JobOffer> findAllByAgent(Long id);
