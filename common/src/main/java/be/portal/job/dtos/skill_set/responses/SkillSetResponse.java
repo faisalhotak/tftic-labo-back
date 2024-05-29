@@ -9,7 +9,7 @@ public record SkillSetResponse(
         Long id,
         SkillLevel skillLevel,
         int years,
-        SkillDetailResponse skillDetailId
+        SkillDetailResponse skillDetailResponse
 ) {
     public static SkillSetResponse fromEntity(SkillSet skillSet) {
         return new SkillSetResponse(
