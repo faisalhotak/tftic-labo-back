@@ -6,7 +6,6 @@ import be.portal.job.dtos.skill_set.responses.SkillSetResponse;
 import be.portal.job.entities.JobSeeker;
 import be.portal.job.entities.SkillDetail;
 import be.portal.job.entities.SkillSet;
-import be.portal.job.exceptions.NotAllowedException;
 import be.portal.job.exceptions.skill_detail.SkillDetailNotFoundException;
 import be.portal.job.exceptions.skill_set.SkillSetNotFoundException;
 import be.portal.job.repositories.SkillDetailRepository;
@@ -16,7 +15,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
