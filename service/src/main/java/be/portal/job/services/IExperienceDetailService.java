@@ -24,4 +24,11 @@ public interface IExperienceDetailService {
      * @return the added experience détail.
      */
     ExperienceDetailResponse addExperienceDetail(ExperienceDetailAddRequest experienceDetailRequest);
+
+    /**
+     * Update an existing experience détail in the system.
+     * @param experienceDetailRequest the experience détail to update.
+     * @return the updated experience détail.
+     */
+    ExperienceDetailResponse updateExperienceDetail(Long id, ExperienceDetailAddRequest experienceDetailRequest);
 }

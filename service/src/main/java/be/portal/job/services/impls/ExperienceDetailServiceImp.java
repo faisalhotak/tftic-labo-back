@@ -32,4 +32,14 @@ public class ExperienceDetailServiceImp implements IExperienceDetailService {
         JobSeeker currentUser = authService.getAuthenticatedSeeker();
         return ExperienceDetailResponse.fromEntity(experienceDetailRepository.save(experienceDetailRequest.toEntity(currentUser)));
     }
+
+    @Override
+    public ExperienceDetailResponse updateExperienceDetail(Long id, ExperienceDetailAddRequest experienceDetailRequest) {
+        JobSeeker currentUser = authService.getAuthenticatedSeeker();
+        ExperienceDetail experienceDetail = experienceDetailRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Experience detail notfound"));
+        if (!experienceDetail.getJobSeeker().getId().equals(currentUser.getId())) {
+            throw new IllegalArgumentException("You are not allowed to update experience details for other job seekers");
+        }
+        return ExperienceDetailResponse.fromEntity(experienceDetailRepository.save(experienceDetailRequest.toEntity(currentUser)));
+    }
 }
