@@ -42,4 +42,15 @@ public class ExperienceDetailServiceImp implements IExperienceDetailService {
         }
         return ExperienceDetailResponse.fromEntity(experienceDetailRepository.save(experienceDetailRequest.toEntity(currentUser)));
     }
+
+    @Override
+    public ExperienceDetailResponse deleteExperienceDetail(Long id) {
+        JobSeeker currentUser = authService.getAuthenticatedSeeker();
+        ExperienceDetail experienceDetail = experienceDetailRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Experience detail notfound"));
+        if (!experienceDetail.getJobSeeker().getId().equals(currentUser.getId())) {
+            throw new IllegalArgumentException("You are not allowed to delete experience details for other job seekers");
+        }
+        experienceDetailRepository.delete(experienceDetail);
+        return ExperienceDetailResponse.fromEntity(experienceDetail);
+    }
 }

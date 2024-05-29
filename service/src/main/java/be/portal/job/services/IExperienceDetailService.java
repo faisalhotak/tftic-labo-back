@@ -31,4 +31,11 @@ public interface IExperienceDetailService {
      * @return the updated experience détail.
      */
     ExperienceDetailResponse updateExperienceDetail(Long id, ExperienceDetailAddRequest experienceDetailRequest);
+
+    /**
+     * Delete an existing experience détail in the system.
+     * @param id the identifier of the experience détail to delete.
+     * @return the deleted experience détail.
+     */
+    ExperienceDetailResponse deleteExperienceDetail(Long id);
 }

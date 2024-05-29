@@ -35,4 +35,10 @@ public class ExperienceDetailController {
     public ResponseEntity<ExperienceDetailResponse> updateExperienceDetail(@PathVariable Long id, @RequestBody @Valid ExperienceDetailAddRequest experienceDetailRequest) {
         return ResponseEntity.ok(experienceDetailService.updateExperienceDetail(id, experienceDetailRequest));
     }
+
+    @PreAuthorize("hasAnyAuthority('SEEKER')")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ExperienceDetailResponse> deleteExperienceDetail(@PathVariable Long id) {
+        return ResponseEntity.ok(experienceDetailService.deleteExperienceDetail(id));
+    }
 }
