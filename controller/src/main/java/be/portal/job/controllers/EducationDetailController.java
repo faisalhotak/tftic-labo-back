@@ -22,12 +22,12 @@ public class EducationDetailController {
     private final IEducationDetailService educationDetailService;
 
     @GetMapping
-    public ResponseEntity<List<EducationDetailResponse>> getAllEducationDetail(){
+    public ResponseEntity<List<EducationDetailResponse>> getAllEducationDetail() {
         return ResponseEntity.ok(educationDetailService.getAllBySeeker());
     }
 
     @GetMapping("/{id:^[0-9]+$}")
-    public ResponseEntity<EducationDetailResponse> getEducationDetailById(@PathVariable Long id){
+    public ResponseEntity<EducationDetailResponse> getEducationDetailById(@PathVariable Long id) {
         return ResponseEntity.ok(educationDetailService.getEducationDetailById(id));
     }
 

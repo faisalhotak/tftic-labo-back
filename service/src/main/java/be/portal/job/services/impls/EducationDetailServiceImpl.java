@@ -59,12 +59,7 @@ public class EducationDetailServiceImpl implements IEducationDetailService {
         EducationDetail educationDetail = educationDetailRepository.findByIdAndJobSeekerId(id, jobSeeker.getId())
                 .orElseThrow(EducationDetailNotFoundException::new);
 
-        educationDetail.setInstituteName(requestUpdate.instituteName());
-        educationDetail.setMajor(requestUpdate.major());
-        educationDetail.setDegreeType(requestUpdate.degreeType());
-        educationDetail.setMention(requestUpdate.mention());
-        educationDetail.setStartDate(requestUpdate.startDate());
-        educationDetail.setCompletionDate(requestUpdate.completionDate());
+        educationDetailMapper.updateEntityFromRequest(requestUpdate, educationDetail);
 
         return educationDetailMapper.fromEntity(educationDetailRepository.save(educationDetail));
     }
