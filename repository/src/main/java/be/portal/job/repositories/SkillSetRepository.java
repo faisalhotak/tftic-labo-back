@@ -16,7 +16,4 @@ public interface SkillSetRepository extends JpaRepository<SkillSet, Long> {
 
     @Query("SELECT ss FROM SkillSet ss WHERE ss.id = :id AND ss.jobSeeker.id = :seekerId")
     Optional<SkillSet> findByIdAndJobSeekerId(Long id, Long seekerId);
-
-    @Query("SELECT ss FROM SkillSet ss WHERE ss.jobSeeker.id = :seekerId AND ss.skillDetail.id = :skillDetailId")
-    Optional<SkillSet> findByJobSeekerIdAndSkillDetailId(Long seekerId, Long skillDetailId);
 }
