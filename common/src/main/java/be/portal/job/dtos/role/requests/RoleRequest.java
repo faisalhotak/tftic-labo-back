@@ -2,7 +2,7 @@ package be.portal.job.dtos.role.requests;
 
 import jakarta.validation.constraints.NotBlank;
 
-public record RoleUpdateRequest(
+public record RoleRequest(
 
         @NotBlank(message = "Role name cannot be blank")
         String name,

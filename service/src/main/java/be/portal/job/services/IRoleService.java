@@ -1,6 +1,7 @@
 package be.portal.job.services;
 
-import be.portal.job.entities.Role;
+import be.portal.job.dtos.role.requests.RoleRequest;
+import be.portal.job.dtos.role.responses.RoleResponse;
 
 import java.util.List;
 
@@ -12,43 +13,43 @@ public interface IRoleService {
 
     /**
      * Retrieves a list of all roles.
-     * @return a list of all roles.
+     * @return a list of role responses.
      */
-    List<Role> getRoles();
+    List<RoleResponse> getAll();
 
     /**
      * Retrieves a role by its name.
-     * @param name the name of the role to search for.
-     * @return the role corresponding to the provided name, or null if not found.
+     * @param name the name of the role.
+     * @return a role response.
      */
-    Role getRoleByName(String name);
+    RoleResponse getByName(String name);
 
     /**
-     * Retrieves a role by its unique identifier.
-     *
-     * @param id the identifier of the role to search for.
-     * @return the role corresponding to the provided identifier, or null if not found.
+     * Retrieves a role by its id.
+     * @param id the id of the role.
+     * @return a role response.
      */
-    Role getRoleById(Long id);
+    RoleResponse getById(Long id);
 
     /**
-     * Adds a new role to the system.
-     * @param role the role to add.
-     * @return the added role with its generated identifier.
+     * Adds a new role.
+     * @param request the role request.
+     * @return a role response.
      */
-    Role addRole(Role role);
+    RoleResponse add(RoleRequest request);
 
     /**
-     * Updates an existing role.
-     * @param id the identifier of the role to update.
-     * @param role the new information for the role.
-     * @return the updated role, or null if the role does not exist.
+     * Updates a role by its id.
+     * @param id the id of the role to update.
+     * @param request the role request.
+     * @return a role response.
      */
-    Role updateRole(Long id, Role role);
+    RoleResponse update(Long id, RoleRequest request);
 
     /**
-     * Deletes a role by its identifier.
-     * @param id the identifier of the role to delete.
+     * Deletes a role by its id.
+     * @param id the id of the role to delete.
+     * @return a role response.
      */
-    void deleteRole(Long id);
+    RoleResponse delete(Long id);
 }
