@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface SkillSetRepository extends JpaRepository<SkillSet, Long> {
 
     @Query("SELECT ss FROM SkillSet ss WHERE ss.jobSeeker.id = :seekerId")
-    List<SkillSet> findByJobSeekerId(Long seekerId);
+    List<SkillSet> findAllByJobSeekerId(Long seekerId);
 
     @Query("SELECT ss FROM SkillSet ss WHERE ss.id = :id AND ss.jobSeeker.id = :seekerId")
     Optional<SkillSet> findByIdAndJobSeekerId(Long id, Long seekerId);
