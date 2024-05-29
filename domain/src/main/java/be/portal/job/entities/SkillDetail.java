@@ -25,4 +25,9 @@ public class SkillDetail extends BaseEntity<Long> {
     public SkillDetail() {
         this.skillSets = new HashSet<>();
     }
+
+    public SkillDetail(String name) {
+        this();
+        this.name = name;
+    }
 }
