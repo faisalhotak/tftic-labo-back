@@ -15,7 +15,7 @@ public record SkillSetAddRequest(
         @Min(value = 0)
         int years,
 
-        @NotNull
+        @NotNull(message = "Skill detail ID cannot be null")
         Long skillDetailId
 ) {
     public SkillSet toEntity(JobSeeker jobSeeker, SkillDetail skillDetail) {

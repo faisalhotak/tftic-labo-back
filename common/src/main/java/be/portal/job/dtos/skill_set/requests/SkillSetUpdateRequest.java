@@ -12,6 +12,6 @@ public record SkillSetUpdateRequest(
         @Min(value = 0)
         int years,
 
-        @NotNull
+        @NotNull(message = "Skill detail ID cannot be null")
         Long skillDetailId
 ) { }
