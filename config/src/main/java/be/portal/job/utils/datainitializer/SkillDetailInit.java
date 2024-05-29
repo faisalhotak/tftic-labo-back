@@ -12,7 +12,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-@Order(14)
+@Order(13)
 public class SkillDetailInit implements CommandLineRunner {
 
     private final SkillDetailRepository skillDetailRepository;

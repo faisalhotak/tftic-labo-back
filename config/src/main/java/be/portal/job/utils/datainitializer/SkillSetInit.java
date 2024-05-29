@@ -17,7 +17,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-@Order(13)
+@Order(14)
 public class SkillSetInit implements CommandLineRunner {
 
     private final JobSeekerRepository jobSeekerRepository;
