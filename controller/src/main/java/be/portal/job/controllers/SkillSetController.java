@@ -1,7 +1,6 @@
 package be.portal.job.controllers;
 
 import be.portal.job.dtos.skill_set.requests.SkillSetRequest;
-import be.portal.job.dtos.skill_set.requests.SkillSetUpdateRequest;
 import be.portal.job.dtos.skill_set.responses.SkillSetResponse;
 import be.portal.job.services.ISkillSetService;
 import jakarta.validation.Valid;
@@ -21,7 +20,7 @@ public class SkillSetController {
     private final ISkillSetService skillSetService;
 
     @GetMapping
-    public ResponseEntity<List<SkillSetResponse>> getSkillSet() {
+    public ResponseEntity<List<SkillSetResponse>> getAllSkillSets() {
         return ResponseEntity.ok(skillSetService.getAllBySeeker());
     }
 
@@ -38,7 +37,7 @@ public class SkillSetController {
     @PutMapping("/{id:^[0-9]+$}")
     public ResponseEntity<SkillSetResponse> updateSkillSet(
             @PathVariable Long id,
-            @RequestBody @Valid SkillSetUpdateRequest request
+            @RequestBody @Valid SkillSetRequest request
     ) {
         return ResponseEntity.ok(skillSetService.update(id, request));
     }
