@@ -1,7 +1,6 @@
 package be.portal.job.services.impls;
 
 import be.portal.job.dtos.skill_set.requests.SkillSetRequest;
-import be.portal.job.dtos.skill_set.requests.SkillSetUpdateRequest;
 import be.portal.job.dtos.skill_set.responses.SkillSetResponse;
 import be.portal.job.entities.JobSeeker;
 import be.portal.job.entities.SkillDetail;
@@ -29,7 +28,7 @@ public class SkillSetServiceImpl implements ISkillSetService {
 
         JobSeeker jobSeeker = authService.getAuthenticatedSeeker();
 
-        return skillSetRepository.findByJobSeekerId(jobSeeker.getId())
+        return skillSetRepository.findAllByJobSeekerId(jobSeeker.getId())
                 .stream()
                 .map(SkillSetResponse::fromEntity)
                 .toList();
@@ -43,7 +42,7 @@ public class SkillSetServiceImpl implements ISkillSetService {
         SkillSet skillSet = skillSetRepository.findByIdAndJobSeekerId(id, jobSeeker.getId())
                 .orElseThrow(SkillSetNotFoundException::new);
 
-        return SkillSetResponse.fromEntity(skillSetRepository.save(skillSet));
+        return SkillSetResponse.fromEntity(skillSet);
     }
 
     @Override
@@ -60,7 +59,7 @@ public class SkillSetServiceImpl implements ISkillSetService {
     }
 
     @Override
-    public SkillSetResponse update(Long id, SkillSetUpdateRequest request) {
+    public SkillSetResponse update(Long id, SkillSetRequest request) {
 
         JobSeeker jobSeeker = authService.getAuthenticatedSeeker();
 
