@@ -8,7 +8,7 @@ import be.portal.job.mappers.social_link.SocialLinkMapper;
 import be.portal.job.repositories.SocialLinkRepository;
 import be.portal.job.repositories.SocialRepository;
 import be.portal.job.services.IAuthService;
-import be.portal.job.services.SocialLinkService;
+import be.portal.job.services.ISocialLinkService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +16,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class SocialLinkServiceImpl implements SocialLinkService {
+public class SocialLinkServiceImpl implements ISocialLinkService {
 
     private final SocialRepository socialRepository;
     private final SocialLinkRepository socialLinkRepository;

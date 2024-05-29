@@ -11,6 +11,7 @@ public record SkillDetailRequest(
         String name
 ) {
     public SkillDetail toEntity() {
+
         SkillDetail skillDetail = new SkillDetail();
 
         skillDetail.setName(name);
