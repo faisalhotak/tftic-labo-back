@@ -14,6 +14,6 @@ public interface CertificationDetailRepository extends JpaRepository<Certificati
     @Query("SELECT cd FROM CertificationDetail cd WHERE cd.jobSeeker.id = :seekerId")
     List<CertificationDetail> findByJobSeekerId(Long seekerId);
 
-    @Query("SELECT cd FROM Application cd WHERE cd.id = :id AND cd.jobSeeker.id = :seekerId")
+    @Query("SELECT cd FROM CertificationDetail cd WHERE cd.id = :id AND cd.jobSeeker.id = :seekerId")
     Optional<CertificationDetail> findByIdAndJobSeekerId(Long id, Long seekerId);
 }
