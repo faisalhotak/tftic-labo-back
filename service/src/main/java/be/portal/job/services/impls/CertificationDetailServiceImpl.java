@@ -1,7 +1,6 @@
 package be.portal.job.services.impls;
 
 import be.portal.job.dtos.certification_detail.requests.CertificationDetailRequest;
-import be.portal.job.dtos.certification_detail.requests.CertificationDetailUpdateRequest;
 import be.portal.job.dtos.certification_detail.responses.CertificationDetailResponse;
 import be.portal.job.entities.CertificationDetail;
 import be.portal.job.entities.JobSeeker;
@@ -57,7 +56,7 @@ public class CertificationDetailServiceImpl implements ICertificationDetailServi
 
     @Override
     @Transactional
-    public CertificationDetailResponse update(Long id, CertificationDetailUpdateRequest request) {
+    public CertificationDetailResponse update(Long id, CertificationDetailRequest request) {
 
         JobSeeker jobSeeker = authService.getAuthenticatedSeeker();
 

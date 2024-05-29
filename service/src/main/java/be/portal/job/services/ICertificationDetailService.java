@@ -1,7 +1,6 @@
 package be.portal.job.services;
 
 import be.portal.job.dtos.certification_detail.requests.CertificationDetailRequest;
-import be.portal.job.dtos.certification_detail.requests.CertificationDetailUpdateRequest;
 import be.portal.job.dtos.certification_detail.responses.CertificationDetailResponse;
 
 import java.util.List;
@@ -34,7 +33,7 @@ public interface ICertificationDetailService {
      * @param request the request containing the new data for the certification detail.
      * @return the response of the updated certification detail.
      */
-    CertificationDetailResponse update(Long id, CertificationDetailUpdateRequest request);
+    CertificationDetailResponse update(Long id, CertificationDetailRequest request);
 
     /**
      * Deletes a certification detail by its ID.
