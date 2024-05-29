@@ -1,11 +1,7 @@
 package be.portal.job.dtos.education_detail.requests;
 
-import be.portal.job.entities.EducationDetail;
-import be.portal.job.entities.JobSeeker;
-import be.portal.job.enums.DegreeType;
-import be.portal.job.enums.Mention;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import be.portal.job.enums.*;
+import jakarta.validation.constraints.*;
 
 import java.time.LocalDate;
 
@@ -28,16 +24,4 @@ public record EducationDetailAddRequest(
 
         @NotNull(message = "Completion date cannot be null")
         LocalDate completionDate
-) {
-    public EducationDetail toEntity(JobSeeker jobSeeker) {
-        return new EducationDetail(
-                instituteName,
-                major,
-                degreeType,
-                mention,
-                startDate,
-                completionDate,
-                jobSeeker
-        );
-    }
-}
+) { }

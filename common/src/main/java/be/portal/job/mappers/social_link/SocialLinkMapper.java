@@ -5,9 +5,8 @@ import be.portal.job.dtos.social_link.responses.SocialLinkResponse;
 import be.portal.job.entities.Social;
 import be.portal.job.entities.SocialLink;
 import be.portal.job.entities.User;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
+import org.mapstruct.*;
+
 
 @Mapper(componentModel = "spring")
 public interface SocialLinkMapper {
