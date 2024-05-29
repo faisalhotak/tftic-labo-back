@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDate;
 
-public record CertificationDetailAddRequest(
+public record CertificationDetailRequest(
 
         @NotBlank(message = "Certification name cannot be blank")
         String name,
@@ -19,10 +19,14 @@ public record CertificationDetailAddRequest(
         LocalDate completionDate
 ) {
     public CertificationDetail toEntity(JobSeeker jobSeeker) {
-        return new CertificationDetail(
-                name,
-                description,
-                completionDate,
-                jobSeeker);
+
+        CertificationDetail certificationDetail = new CertificationDetail();
+
+        certificationDetail.setName(name);
+        certificationDetail.setDescription(description);
+        certificationDetail.setCompletionDate(completionDate);
+        certificationDetail.setJobSeeker(jobSeeker);
+
+        return certificationDetail;
     }
 }
