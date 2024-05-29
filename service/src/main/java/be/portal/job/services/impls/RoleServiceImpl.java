@@ -59,9 +59,7 @@ public class RoleServiceImpl implements IRoleService {
 
         roleMapper.updateEntityFromRequest(request, existingRole);
 
-        roleRepository.save(existingRole);
-
-        return roleMapper.fromEntity(existingRole);
+        return roleMapper.fromEntity(roleRepository.save(existingRole));
     }
 
     @Override
