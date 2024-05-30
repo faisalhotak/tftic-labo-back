@@ -27,6 +27,7 @@ public class ProfileServiceImpl implements IProfileService {
     public String disableProfile() {
         User currentUser = authService.getAuthenticatedUser();
         currentUser.setEnabled(false);
+        currentUser.setCredentialsExpired(true);
 
         if (currentUser instanceof JobAdvertiser jobAdvertiser) {
             List<CompanyAdvertiser> companyAdvertisers = companyAdvertiserRepository.findAllByAgentIdAndAdvertiserRole(jobAdvertiser.getId(), AdvertiserRole.OWNER);
@@ -55,6 +56,35 @@ public class ProfileServiceImpl implements IProfileService {
 
         userRepository.save(currentUser);
         return "Profile disabled successfully!";
+    }
+
+    @Transactional
+    @Override
+    public String deleteProfile() {
+        User currentUser = authService.getAuthenticatedUser();
+
+        if (currentUser.isLocked()) {
+            return "Profile already deleted!";
+        }
+
+        currentUser.setEmail("deleted");
+        currentUser.setFirstname("deleted");
+        currentUser.setLastname("deleted");
+        currentUser.setPassword("deleted");
+        currentUser.setPhoneNumber("deleted");
+        currentUser.setContactEmail("deleted");
+        currentUser.setLocked(true);
+
+        currentUser.getAddress().setStreet("deleted");
+
+
+        if (currentUser.isEnabled()) {
+            disableProfile();
+        } else {
+            userRepository.save(currentUser);
+        }
+
+        return "Profile deleted successfully!";
     }
 
 }

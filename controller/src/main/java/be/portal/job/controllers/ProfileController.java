@@ -16,8 +16,13 @@ public class ProfileController {
 
     private final IProfileService profileService;
 
-    @GetMapping
+    @GetMapping("/disable")
     public ResponseEntity<String> disableProfile() {
         return ResponseEntity.ok(profileService.disableProfile());
+    }
+
+    @GetMapping("/delete")
+    public ResponseEntity<String> deleteProfile() {
+        return ResponseEntity.ok(profileService.deleteProfile());
     }
 }
