@@ -14,7 +14,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-@Order(11)
+@Order(12)
 public class ExperienceDetailInit implements CommandLineRunner {
 
     private final ExperienceDetailRepository experienceDetailRepository;
