@@ -42,11 +42,4 @@ public class AuthController {
     public ResponseEntity<UserTokenResponse> registerSeeker(@RequestBody @Valid JobSeekerRegisterRequest request) {
         return ResponseEntity.ok(authService.register(request));
     }
-
-    @PreAuthorize("isAnonymous()")
-    @PostMapping("/enable-account")
-    public ResponseEntity<String> enableAccount(@RequestParam String email) {
-        authService.enableAccount(email);
-        return ResponseEntity.ok("Account successfully enabled for email: " + email);
-    }
 }

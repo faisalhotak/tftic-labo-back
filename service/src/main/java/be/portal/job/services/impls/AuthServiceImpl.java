@@ -43,9 +43,10 @@ public class AuthServiceImpl implements IAuthService {
             throw new InvalidPasswordException();
         }
 
-        if (!user.isEnabled()) {
+        if (!user.isEnabled() && user.isAccountNonLocked()) {
             user.setEnabled(true);
             userRepository.save(user);
+
             throw new AccountReactivatedException("Your account has been reactivated! Please login again.");
         }
 
@@ -116,16 +117,5 @@ public class AuthServiceImpl implements IAuthService {
     @Override
     public boolean isAdmin(User user) {
         return user.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals(ADMIN_ROLE));
-    }
-
-    @Override
-    public void enableAccount(String email) throws UserNotFoundException {
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(UserNotFoundException::new);
-
-        if (!user.isEnabled()) {
-            user.setEnabled(true);
-            userRepository.save(user);
-        }
     }
 }
