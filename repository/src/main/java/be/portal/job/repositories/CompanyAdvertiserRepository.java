@@ -1,6 +1,7 @@
 package be.portal.job.repositories;
 
 import be.portal.job.entities.CompanyAdvertiser;
+import be.portal.job.enums.AdvertiserRole;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -24,4 +25,7 @@ public interface CompanyAdvertiserRepository extends JpaRepository<CompanyAdvert
     @Modifying
     @Query("DELETE FROM CompanyAdvertiser ca WHERE ca.id IN :ids")
     void deleteByIds(List<Long> ids);
+
+    @Query("SELECT ca FROM CompanyAdvertiser ca WHERE ca.jobAdvertiser.id = :agentId AND ca.advertiserRole = :advertiserRole")
+    List<CompanyAdvertiser> findAllByAgentIdAndAdvertiserRole(Long agentId, AdvertiserRole advertiserRole);
 }

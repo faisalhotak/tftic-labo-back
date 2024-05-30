@@ -1,5 +1,6 @@
 package be.portal.job.repositories;
 
+import be.portal.job.entities.Company;
 import be.portal.job.entities.JobOffer;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -22,4 +23,7 @@ public interface JobOfferRepository extends JpaRepository<JobOffer, Long>, JpaSp
     @Modifying
     @Query("DELETE FROM JobOffer jo WHERE jo.agent.id IN :agentsIds")
     void deleteByAgentsIds(List<Long> agentsIds);
+
+    @Query("SELECT jo FROM JobOffer jo WHERE jo.agent.company = :company")
+    List<JobOffer> findAllByCompany(Company company);
 }
