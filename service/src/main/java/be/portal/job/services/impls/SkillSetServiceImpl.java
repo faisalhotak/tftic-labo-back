@@ -7,6 +7,7 @@ import be.portal.job.entities.SkillDetail;
 import be.portal.job.entities.SkillSet;
 import be.portal.job.exceptions.skill_detail.SkillDetailNotFoundException;
 import be.portal.job.exceptions.skill_set.SkillSetNotFoundException;
+import be.portal.job.mappers.skill_set.SkillSetMapper;
 import be.portal.job.repositories.SkillDetailRepository;
 import be.portal.job.repositories.SkillSetRepository;
 import be.portal.job.services.ISkillSetService;
@@ -22,6 +23,7 @@ public class SkillSetServiceImpl implements ISkillSetService {
     private final SkillSetRepository skillSetRepository;
     private final SkillDetailRepository skillDetailRepository;
     private final AuthServiceImpl authService;
+    private final SkillSetMapper skillSetMapper;
 
     @Override
     public List<SkillSetResponse> getAllBySeeker() {
@@ -30,7 +32,7 @@ public class SkillSetServiceImpl implements ISkillSetService {
 
         return skillSetRepository.findAllByJobSeekerId(jobSeeker.getId())
                 .stream()
-                .map(SkillSetResponse::fromEntity)
+                .map(skillSetMapper::fromEntity)
                 .toList();
     }
 
@@ -42,7 +44,7 @@ public class SkillSetServiceImpl implements ISkillSetService {
         SkillSet skillSet = skillSetRepository.findByIdAndJobSeekerId(id, jobSeeker.getId())
                 .orElseThrow(SkillSetNotFoundException::new);
 
-        return SkillSetResponse.fromEntity(skillSet);
+        return skillSetMapper.fromEntity(skillSet);
     }
 
     @Override
@@ -53,9 +55,9 @@ public class SkillSetServiceImpl implements ISkillSetService {
         SkillDetail skillDetail = skillDetailRepository.findById(request.skillDetailId())
                 .orElseThrow(SkillDetailNotFoundException::new);
 
-        SkillSet skillSet = request.toEntity(jobSeeker, skillDetail);
+        SkillSet skillSet = skillSetMapper.toEntity(request, jobSeeker, skillDetail);
 
-        return SkillSetResponse.fromEntity(skillSetRepository.save(skillSet));
+        return skillSetMapper.fromEntity(skillSetRepository.save(skillSet));
     }
 
     @Override
@@ -70,11 +72,9 @@ public class SkillSetServiceImpl implements ISkillSetService {
         SkillDetail skillDetail = skillDetailRepository.findById(request.skillDetailId())
                 .orElseThrow(SkillDetailNotFoundException::new);
 
-        skillSet.setSkillLevel(request.skillLevel());
-        skillSet.setYears(request.years());
-        skillSet.setSkillDetail(skillDetail);
+        skillSetMapper.updateEntityFromRequest(request, skillDetail, skillSet);
 
-        return SkillSetResponse.fromEntity(skillSetRepository.save(skillSet));
+        return skillSetMapper.fromEntity(skillSetRepository.save(skillSet));
     }
 
     @Override
@@ -87,6 +87,6 @@ public class SkillSetServiceImpl implements ISkillSetService {
 
         skillSetRepository.deleteById(id);
 
-        return SkillSetResponse.fromEntity(skillSet);
+        return skillSetMapper.fromEntity(skillSet);
     }
 }

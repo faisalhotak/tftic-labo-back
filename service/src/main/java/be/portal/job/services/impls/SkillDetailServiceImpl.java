@@ -3,8 +3,9 @@ package be.portal.job.services.impls;
 import be.portal.job.dtos.skill_detail.requests.SkillDetailRequest;
 import be.portal.job.dtos.skill_detail.responses.SkillDetailResponse;
 import be.portal.job.entities.SkillDetail;
-import be.portal.job.exceptions.NotAllowedException;
+import be.portal.job.exceptions.skill_detail.SkillDetailAlreadyExistsException;
 import be.portal.job.exceptions.skill_detail.SkillDetailNotFoundException;
+import be.portal.job.mappers.skill_detail.SkillDetailMapper;
 import be.portal.job.repositories.SkillDetailRepository;
 import be.portal.job.services.ISkillDetailService;
 import lombok.RequiredArgsConstructor;
@@ -17,12 +18,13 @@ import java.util.List;
 public class SkillDetailServiceImpl implements ISkillDetailService {
 
     private final SkillDetailRepository skillDetailRepository;
+    private final SkillDetailMapper skillDetailMapper;
 
     @Override
     public List<SkillDetailResponse> getAll() {
         return skillDetailRepository.findAll()
                 .stream()
-                .map(SkillDetailResponse::fromEntity)
+                .map(skillDetailMapper::fromEntity)
                 .toList();
     }
 
@@ -31,19 +33,19 @@ public class SkillDetailServiceImpl implements ISkillDetailService {
 
         SkillDetail skillDetail = skillDetailRepository.findById(id).orElseThrow(SkillDetailNotFoundException::new);
 
-        return SkillDetailResponse.fromEntity(skillDetail);
+        return skillDetailMapper.fromEntity(skillDetail);
     }
 
     @Override
     public SkillDetailResponse addSkillDetail(SkillDetailRequest skillDetailRequest) {
 
         if (skillDetailRepository.findByName(skillDetailRequest.name()).isPresent()) {
-            throw new NotAllowedException("Skill already exists");
+            throw new SkillDetailAlreadyExistsException();
         }
 
-        SkillDetail skillDetail = skillDetailRequest.toEntity();
+        SkillDetail skillDetail = skillDetailMapper.toEntity(skillDetailRequest);
 
-        return SkillDetailResponse.fromEntity(skillDetail);
+        return skillDetailMapper.fromEntity(skillDetailRepository.save(skillDetail));
     }
 
     @Override
@@ -52,11 +54,15 @@ public class SkillDetailServiceImpl implements ISkillDetailService {
         SkillDetail existingSkillDetail = skillDetailRepository.findById(id)
                 .orElseThrow(SkillDetailNotFoundException::new);
 
-        existingSkillDetail.setName(skillDetailRequest.name());
+        if (skillDetailRepository.findByName(skillDetailRequest.name()).isPresent()) {
+            throw new SkillDetailAlreadyExistsException();
+        }
+
+        skillDetailMapper.updateEntityFromRequest(skillDetailRequest, existingSkillDetail);
 
         skillDetailRepository.save(existingSkillDetail);
 
-        return SkillDetailResponse.fromEntity(existingSkillDetail);
+        return skillDetailMapper.fromEntity(existingSkillDetail);
     }
 
     @Override
@@ -66,6 +72,6 @@ public class SkillDetailServiceImpl implements ISkillDetailService {
 
         skillDetailRepository.deleteById(id);
 
-        return SkillDetailResponse.fromEntity(existingSkillDetail);
+        return skillDetailMapper.fromEntity(existingSkillDetail);
     }
 }
