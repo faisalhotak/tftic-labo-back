@@ -1,4 +1,4 @@
-package be.portal.job.controllers;
+package be.portal.job.controllers.admin;
 
 import be.portal.job.dtos.role.requests.RoleRequest;
 import be.portal.job.dtos.role.responses.RoleResponse;
@@ -16,9 +16,9 @@ import java.util.List;
 @RequestMapping("/api/admin/v1/roles")
 @PreAuthorize("hasAuthority('ADMIN')")
 @CrossOrigin("*")
-public class RoleController {
+public class AdminRoleController {
 
-    public final IRoleService roleService;
+    private final IRoleService roleService;
 
     @GetMapping
     public ResponseEntity<List<RoleResponse>> getRoles() {

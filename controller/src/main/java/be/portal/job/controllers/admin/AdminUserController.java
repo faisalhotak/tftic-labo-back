@@ -1,4 +1,4 @@
-package be.portal.job.controllers;
+package be.portal.job.controllers.admin;
 
 import be.portal.job.dtos.auth.requests.JobAdvertiserRegisterRequest;
 import be.portal.job.dtos.auth.requests.JobSeekerRegisterRequest;
@@ -21,7 +21,7 @@ import java.util.List;
 @RequestMapping("/api/admin/v1")
 @PreAuthorize("hasAuthority('ADMIN')")
 @CrossOrigin("*")
-public class UserController {
+public class AdminUserController {
 
     private final IUserService userService;
 
