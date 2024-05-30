@@ -11,18 +11,17 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@PreAuthorize("isAuthenticated()")
 @RequestMapping("/api/v1/contract-types")
 public class ContractTypeController {
 
     private final IContractTypeService contractTypeService;
 
-    @PreAuthorize("hasAnyAuthority('SEEKER', 'ADVERTISER', 'ADMIN')")
     @GetMapping
     public ResponseEntity<List<ContractTypeResponse>> getAllContractTypes() {
         return ResponseEntity.ok(contractTypeService.getAll());
     }
 
-    @PreAuthorize("hasAnyAuthority('SEEKER', 'ADVERTISER', 'ADMIN')")
     @GetMapping("/{id:^[0-9]+$}")
     public ResponseEntity<ContractTypeResponse> getContractTypeById(@PathVariable Long id) {
         return ResponseEntity.ok(contractTypeService.getContractTypeById(id));
