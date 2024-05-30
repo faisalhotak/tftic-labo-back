@@ -29,6 +29,7 @@ public interface JobOfferMapper {
     );
 
     @Mapping(source = "active", target = "isActive")
+    @Mapping(source = "agent.company.verified", target = "agent.company.isVerified")
     JobOfferResponse fromEntity(JobOffer entity);
 
     @Mapping(target = "id", ignore = true)

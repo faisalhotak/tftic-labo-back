@@ -18,5 +18,9 @@ public interface EducationDetailMapper {
 
     EducationDetailResponse fromEntity(EducationDetail educationDetail);
 
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
+    @Mapping(target = "jobSeeker", ignore = true)
     void updateEntityFromRequest(EducationDetailUpdateRequest request, @MappingTarget EducationDetail educationDetail);
 }

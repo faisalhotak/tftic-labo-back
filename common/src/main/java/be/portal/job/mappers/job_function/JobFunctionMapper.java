@@ -17,5 +17,8 @@ public interface JobFunctionMapper {
 
     JobFunctionResponse fromEntity(JobFunction entity);
 
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
     void updateEntityFromRequest(JobFunctionRequest request, @MappingTarget JobFunction jobFunction);
 }
