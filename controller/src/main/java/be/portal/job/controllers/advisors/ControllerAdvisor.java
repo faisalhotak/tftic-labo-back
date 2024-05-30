@@ -100,9 +100,11 @@ public class ControllerAdvisor {
         Map<String,String> errors = e.getBindingResult().getFieldErrors()
                 .stream()
                 .collect(Collectors.toMap(
-                        FieldError::getField,
+                        fieldError -> Optional.of(fieldError.getField())
+                                .orElse("No field provided."),
                         fieldError -> Optional.ofNullable(fieldError.getDefaultMessage())
-                                .orElse("No error message provided.")
+                                .orElse("No error message provided."),
+                        (existingValue, newValue) -> String.join(", ", existingValue, newValue)
                 ));
 
         return ResponseEntity.status(406).body(errors);
