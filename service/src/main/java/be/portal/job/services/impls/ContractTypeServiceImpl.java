@@ -14,7 +14,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class ContractTypeImpl implements IContractTypeService {
+public class ContractTypeServiceImpl implements IContractTypeService {
 
     private final ContractTypeRepository contractTypeRepository;
 
