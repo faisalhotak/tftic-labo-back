@@ -1,6 +1,7 @@
 package be.portal.job.services.impls;
 
 import be.portal.job.dtos.application.requests.ApplicationRequest;
+import be.portal.job.dtos.application.requests.ApplicationStatusRequest;
 import be.portal.job.dtos.application.requests.ApplicationUpdateRequest;
 import be.portal.job.dtos.application.responses.ApplicationResponse;
 import be.portal.job.entities.Application;
@@ -9,6 +10,7 @@ import be.portal.job.entities.JobSeeker;
 import be.portal.job.enums.ApplicationStatus;
 import be.portal.job.exceptions.NotAllowedException;
 import be.portal.job.exceptions.application.ApplicationNotFoundException;
+import be.portal.job.exceptions.application.ApplicationStatusAlreadyDefined;
 import be.portal.job.exceptions.job_offer.JobOfferNotFoundException;
 import be.portal.job.repositories.ApplicationRepository;
 import be.portal.job.repositories.JobOfferRepository;
@@ -28,6 +30,14 @@ public class ApplicationServiceImpl implements IApplicationService {
     private final AuthServiceImpl authService;
 
     @Override
+    public List<ApplicationResponse> getAll() {
+        return applicationRepository.findAll()
+                .stream()
+                .map(ApplicationResponse::fromEntity)
+                .toList();
+    }
+
+    @Override
     public List<ApplicationResponse> getAllBySeeker() {
         JobSeeker jobSeeker = authService.getAuthenticatedSeeker();
 
@@ -39,6 +49,14 @@ public class ApplicationServiceImpl implements IApplicationService {
 
     @Override
     public ApplicationResponse getApplicationById(Long id) {
+        Application application = applicationRepository.findById(id)
+                .orElseThrow(ApplicationNotFoundException::new);
+
+        return ApplicationResponse.fromEntity(application);
+    }
+
+    @Override
+    public ApplicationResponse getApplicationByIdAndJobSeekerId(Long id) {
         JobSeeker jobSeeker = authService.getAuthenticatedSeeker();
 
         Application application = applicationRepository.findByIdAndJobSeekerId(id, jobSeeker.getId())
@@ -90,5 +108,20 @@ public class ApplicationServiceImpl implements IApplicationService {
         applicationRepository.deleteById(id);
 
         return ApplicationResponse.fromEntity(application);
+    }
+
+    @Override
+    public ApplicationResponse triggerApplicationStatus(Long id, ApplicationStatusRequest request) {
+        Application application = applicationRepository.findById(id).orElseThrow(ApplicationNotFoundException::new);
+
+        ApplicationStatus status = request.status();
+
+        if (application.getApplicationStatus().equals(status)) {
+            throw new ApplicationStatusAlreadyDefined(status);
+        }
+
+        application.setApplicationStatus(status);
+
+        return ApplicationResponse.fromEntity(applicationRepository.save(application));
     }
 }

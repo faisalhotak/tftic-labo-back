@@ -4,6 +4,7 @@ import be.portal.job.dtos.auth.requests.JobAdvertiserRegisterRequest;
 import be.portal.job.dtos.auth.requests.JobSeekerRegisterRequest;
 import be.portal.job.dtos.user.requests.JobAdvertiserUpdateRequest;
 import be.portal.job.dtos.user.requests.JobSeekerUpdateRequest;
+import be.portal.job.dtos.user.requests.UserIsLockedRequest;
 import be.portal.job.dtos.user.responses.JobAdvertiserResponse;
 import be.portal.job.dtos.user.responses.JobSeekerResponse;
 import be.portal.job.entities.*;
@@ -144,27 +145,16 @@ public class UserServiceImpl implements UserDetailsService, IUserService {
     }
 
     @Override
-    public UserResponse lockUser(Long id) {
+    public UserResponse triggerLock(Long id, UserIsLockedRequest request) {
         User user = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
 
-        if (!user.isAccountNonLocked()) {
-            throw new UserAlreadyLockedException();
+        boolean isLocked = request.isLocked();
+
+        if (!user.isAccountNonLocked() == isLocked) {
+            throw request.isLocked() ? new UserAlreadyLockedException() : new UserAlreadyUnlockedException();
         }
 
-        user.setLocked(true);
-
-        return userMapper.fromUser(userRepository.save(user));
-    }
-
-    @Override
-    public UserResponse unlockUser(Long id) {
-        User user = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
-
-        if (user.isAccountNonLocked()) {
-            throw new UserAlreadyUnlockedException();
-        }
-
-        user.setLocked(false);
+        user.setLocked(isLocked);
 
         return userMapper.fromUser(userRepository.save(user));
     }

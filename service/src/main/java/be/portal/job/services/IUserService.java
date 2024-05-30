@@ -4,6 +4,7 @@ import be.portal.job.dtos.auth.requests.JobAdvertiserRegisterRequest;
 import be.portal.job.dtos.auth.requests.JobSeekerRegisterRequest;
 import be.portal.job.dtos.user.requests.JobAdvertiserUpdateRequest;
 import be.portal.job.dtos.user.requests.JobSeekerUpdateRequest;
+import be.portal.job.dtos.user.requests.UserIsLockedRequest;
 import be.portal.job.dtos.user.responses.JobAdvertiserResponse;
 import be.portal.job.dtos.user.responses.JobSeekerResponse;
 import be.portal.job.dtos.user.responses.UserResponse;
@@ -32,7 +33,5 @@ public interface IUserService {
 
     UserResponse deleteUser(Long id);
 
-    UserResponse lockUser(Long id);
-
-    UserResponse unlockUser(Long id);
+    UserResponse triggerLock(Long id, UserIsLockedRequest request);
 }
