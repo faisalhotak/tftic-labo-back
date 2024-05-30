@@ -114,4 +114,15 @@ public class AuthServiceImpl implements IAuthService {
     public boolean isAdmin(User user) {
         return user.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals(ADMIN_ROLE));
     }
+
+    @Override
+    public void enableAccount(String email) throws UserNotFoundException {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(UserNotFoundException::new);
+
+        if (!user.isEnabled()) {
+            user.setEnabled(true);
+            userRepository.save(user);
+        }
+    }
 }
