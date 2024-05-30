@@ -7,7 +7,7 @@ import be.portal.job.enums.SkillLevel;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
-public record SkillSetAddRequest(
+public record SkillSetRequest(
 
         @NotNull(message = "Skill level cannot be null")
         SkillLevel skillLevel,
@@ -15,15 +15,17 @@ public record SkillSetAddRequest(
         @Min(value = 0)
         int years,
 
-        @NotNull
+        @NotNull(message = "Skill detail ID cannot be null")
         Long skillDetailId
 ) {
     public SkillSet toEntity(JobSeeker jobSeeker, SkillDetail skillDetail) {
-        return new SkillSet(
-                skillLevel,
-                years,
-                jobSeeker,
-                skillDetail
-        );
+        SkillSet skillSet = new SkillSet();
+
+        skillSet.setYears(years);
+        skillSet.setSkillLevel(skillLevel);
+        skillSet.setJobSeeker(jobSeeker);
+        skillSet.setSkillDetail(skillDetail);
+
+        return skillSet;
     }
 }
