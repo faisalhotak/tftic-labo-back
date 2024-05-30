@@ -1,7 +1,6 @@
 package be.portal.job.services.impls;
 
-import be.portal.job.dtos.driving_licence.requests.DrivingLicenceAddRequest;
-import be.portal.job.dtos.driving_licence.requests.DrivingLicenceUpdateRequest;
+import be.portal.job.dtos.driving_licence.requests.DrivingLicenceRequest;
 import be.portal.job.dtos.driving_licence.responses.DrivingLicenceResponse;
 import be.portal.job.entities.DrivingLicence;
 import be.portal.job.entities.JobSeeker;
@@ -44,7 +43,7 @@ public class DrivingLicenceServiceImpl implements IDrivingLicenceService {
     }
 
     @Override
-    public DrivingLicenceResponse add(DrivingLicenceAddRequest requestAdd) {
+    public DrivingLicenceResponse add(DrivingLicenceRequest requestAdd) {
         JobSeeker jobSeeker = authService.getAuthenticatedSeeker();
 
         DrivingLicence drivingLicence = drivingLicenceMapper.toEntity(requestAdd, jobSeeker);
@@ -53,7 +52,7 @@ public class DrivingLicenceServiceImpl implements IDrivingLicenceService {
     }
 
     @Override
-    public DrivingLicenceResponse update(Long id, DrivingLicenceUpdateRequest requestUpdate) {
+    public DrivingLicenceResponse update(Long id, DrivingLicenceRequest requestUpdate) {
         JobSeeker jobSeeker = authService.getAuthenticatedSeeker();
 
         DrivingLicence drivingLicence = drivingLicenceRepository.findByIdAndJobSeekerId(id, jobSeeker.getId())

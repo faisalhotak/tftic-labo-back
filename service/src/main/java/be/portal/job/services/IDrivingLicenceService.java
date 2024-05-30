@@ -1,7 +1,6 @@
 package be.portal.job.services;
 
-import be.portal.job.dtos.driving_licence.requests.DrivingLicenceAddRequest;
-import be.portal.job.dtos.driving_licence.requests.DrivingLicenceUpdateRequest;
+import be.portal.job.dtos.driving_licence.requests.DrivingLicenceRequest;
 import be.portal.job.dtos.driving_licence.responses.DrivingLicenceResponse;
 
 import java.util.List;
@@ -29,7 +28,7 @@ public interface IDrivingLicenceService {
      * @param requestAdd the request object containing details of the driving licence to add.
      * @return the added {@link DrivingLicenceResponse} object.
      */
-    DrivingLicenceResponse add(DrivingLicenceAddRequest requestAdd);
+    DrivingLicenceResponse add(DrivingLicenceRequest requestAdd);
 
     /**
      * Updates an existing driving licence.
@@ -37,7 +36,7 @@ public interface IDrivingLicenceService {
      * @param requestUpdate the request object containing updated details of the driving licence.
      * @return the updated {@link DrivingLicenceResponse} object.
      */
-    DrivingLicenceResponse update(Long id, DrivingLicenceUpdateRequest requestUpdate);
+    DrivingLicenceResponse update(Long id, DrivingLicenceRequest requestUpdate);
 
     /**
      * Deletes a driving licence by its ID.

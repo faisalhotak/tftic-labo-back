@@ -1,7 +1,6 @@
 package be.portal.job.controllers;
 
-import be.portal.job.dtos.driving_licence.requests.DrivingLicenceAddRequest;
-import be.portal.job.dtos.driving_licence.requests.DrivingLicenceUpdateRequest;
+import be.portal.job.dtos.driving_licence.requests.DrivingLicenceRequest;
 import be.portal.job.dtos.driving_licence.responses.DrivingLicenceResponse;
 import be.portal.job.services.IDrivingLicenceService;
 import jakarta.validation.Valid;
@@ -34,15 +33,15 @@ public class DrivingLicenceController {
     @PostMapping
     public ResponseEntity<DrivingLicenceResponse> add(
             @RequestBody
-            @Valid DrivingLicenceAddRequest drivingLicenceAddRequest) {
-        return ResponseEntity.ok(drivingLicenceService.add(drivingLicenceAddRequest));
+            @Valid DrivingLicenceRequest drivingLicenceRequest) {
+        return ResponseEntity.ok(drivingLicenceService.add(drivingLicenceRequest));
     }
 
     @PutMapping("/{id:^[0-9]+$}")
     public ResponseEntity<DrivingLicenceResponse> updateById(
             @PathVariable Long id,
-            @RequestBody @Valid DrivingLicenceUpdateRequest drivingLicenceUpdateRequest) {
-        return ResponseEntity.ok(drivingLicenceService.update(id, drivingLicenceUpdateRequest));
+            @RequestBody @Valid DrivingLicenceRequest drivingLicenceRequest) {
+        return ResponseEntity.ok(drivingLicenceService.update(id, drivingLicenceRequest));
     }
 
     @DeleteMapping("/{id:^[0-9]+$}")
