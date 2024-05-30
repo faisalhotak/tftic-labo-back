@@ -5,13 +5,10 @@ import be.portal.job.entities.JobSeeker;
 import be.portal.job.entities.Role;
 import be.portal.job.entities.User;
 import be.portal.job.exceptions.NotFoundException;
-import be.portal.job.exceptions.auth.InvalidPasswordException;
-import be.portal.job.exceptions.auth.UserAlreadyExistsException;
+import be.portal.job.exceptions.auth.*;
 import be.portal.job.dtos.auth.requests.LoginRequest;
 import be.portal.job.dtos.auth.requests.AbstractRegisterRequest;
 import be.portal.job.dtos.auth.responses.UserTokenResponse;
-import be.portal.job.exceptions.auth.UserNotAuthenticatedException;
-import be.portal.job.exceptions.auth.UserNotFoundException;
 import be.portal.job.mappers.user.UserMapper;
 import be.portal.job.repositories.RoleRepository;
 import be.portal.job.repositories.UserRepository;
@@ -44,6 +41,13 @@ public class AuthServiceImpl implements IAuthService {
 
         if (!passwordEncoder.matches(request.password(), user.getPassword())) {
             throw new InvalidPasswordException();
+        }
+
+        if (!user.isEnabled() && user.isAccountNonLocked()) {
+            user.setEnabled(true);
+            userRepository.save(user);
+
+            throw new AccountReactivatedException();
         }
 
         String token = jwtUtils.generateToken(user);
