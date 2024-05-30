@@ -25,7 +25,7 @@ public class ExperienceDetailServiceImp implements IExperienceDetailService {
 
     @Override
     public List<ExperienceDetailResponse> getAllByCurrentSeeker() {
-        JobSeeker currentUser = (JobSeeker) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        JobSeeker currentUser = authService.getAuthenticatedSeeker();
 
         return experienceDetailRepository.findAllByJobSeekerId(currentUser.getId()).stream()
                 .map(experienceDetailMapper::fromEntity)
