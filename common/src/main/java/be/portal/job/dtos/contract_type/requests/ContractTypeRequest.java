@@ -6,11 +6,11 @@ import jakarta.validation.constraints.Size;
 
 public record ContractTypeRequest(
 
-        @NotBlank(message = "Contract type")
+        @NotBlank(message = "You must provide a name for the contract type.")
         @Size(min = 1, max = 100)
         String name,
 
-        @NotBlank(message = "Description")
+        @NotBlank(message = "You must provide a description for the contract type.")
         @Size(min = 10, max = 255)
         String description
 ) {
