@@ -5,6 +5,7 @@ import be.portal.job.dtos.social.responses.SocialResponse;
 import be.portal.job.entities.Social;
 import be.portal.job.exceptions.NotAllowedException;
 import be.portal.job.exceptions.social.SocialNotFoundException;
+import be.portal.job.mappers.social.SocialMapper;
 import be.portal.job.repositories.SocialRepository;
 import be.portal.job.services.ISocialService;
 import lombok.RequiredArgsConstructor;
@@ -17,12 +18,13 @@ import java.util.List;
 public class SocialServiceImpl implements ISocialService {
 
     private final SocialRepository socialRepository;
+    private final SocialMapper socialMapper;
 
     @Override
     public List<SocialResponse> getAll() {
         return socialRepository.findAll()
                 .stream()
-                .map(SocialResponse::fromEntity)
+                .map(socialMapper::fromEntity)
                 .toList();
     }
 
@@ -31,7 +33,7 @@ public class SocialServiceImpl implements ISocialService {
 
         Social social = socialRepository.findById(id).orElseThrow(SocialNotFoundException::new);
 
-        return SocialResponse.fromEntity(social);
+        return socialMapper.fromEntity(social);
     }
 
     @Override
@@ -41,9 +43,9 @@ public class SocialServiceImpl implements ISocialService {
             throw new NotAllowedException("Social already exists");
         }
 
-        Social social = socialRequest.toEntity();
+        Social social = socialMapper.toEntity(socialRequest);
 
-        return SocialResponse.fromEntity(social);
+        return socialMapper.fromEntity(socialRepository.save(social));
     }
 
     @Override
@@ -51,12 +53,11 @@ public class SocialServiceImpl implements ISocialService {
 
         Social existingSocial = socialRepository.findById(id).orElseThrow(SocialNotFoundException::new);
 
-        existingSocial.setName(social.name());
-        existingSocial.setLogoUrl(social.logoUrl());
+        socialMapper.updateEntityFromRequest(social, existingSocial);
 
         socialRepository.save(existingSocial);
 
-        return SocialResponse.fromEntity(existingSocial);
+        return socialMapper.fromEntity(existingSocial);
     }
 
     @Override
@@ -66,6 +67,6 @@ public class SocialServiceImpl implements ISocialService {
 
         socialRepository.deleteById(id);
 
-        return SocialResponse.fromEntity(existingSocial);
+        return socialMapper.fromEntity(existingSocial);
     }
 }
