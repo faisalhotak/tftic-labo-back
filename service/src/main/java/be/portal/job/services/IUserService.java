@@ -31,4 +31,8 @@ public interface IUserService {
     JobSeekerResponse updateSeeker(Long id, JobSeekerUpdateRequest request);
 
     UserResponse deleteUser(Long id);
+
+    UserResponse lockUser(Long id);
+
+    UserResponse unlockUser(Long id);
 }

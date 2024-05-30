@@ -14,6 +14,7 @@ public class JobSeekerResponse extends UserResponse {
     private final Gender gender;
 
     public JobSeekerResponse(
+            Long id,
             String email,
             String firstname,
             String lastname,
@@ -22,16 +23,21 @@ public class JobSeekerResponse extends UserResponse {
             Address address,
             LocalDate birthDate,
             Gender gender,
-            Set<String> roles
+            Set<String> roles,
+            boolean isEnabled,
+            boolean isLocked
     ) {
         super(
+                id,
                 email,
                 firstname,
                 lastname,
                 phoneNumber,
                 contactEmail,
                 address,
-                roles
+                roles,
+                isEnabled,
+                isLocked
         );
         this.birthDate = birthDate;
         this.gender = gender;

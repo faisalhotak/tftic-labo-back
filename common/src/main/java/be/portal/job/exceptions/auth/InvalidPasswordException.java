@@ -1,6 +1,8 @@
 package be.portal.job.exceptions.auth;
 
-public class InvalidPasswordException extends RuntimeException {
+import be.portal.job.exceptions.NotAllowedException;
+
+public class InvalidPasswordException extends NotAllowedException {
     public InvalidPasswordException() {
         super("Invalid password!");
     }

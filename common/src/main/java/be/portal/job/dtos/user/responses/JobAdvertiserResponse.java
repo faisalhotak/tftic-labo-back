@@ -10,22 +10,28 @@ import java.util.Set;
 @Setter
 public class JobAdvertiserResponse extends UserResponse {
     public JobAdvertiserResponse(
+            Long id,
             String email,
             String firstname,
             String lastname,
             String phoneNumber,
             String contactEmail,
             Address address,
-            Set<String> roles
+            Set<String> roles,
+            boolean isEnabled,
+            boolean isLocked
     ) {
         super(
+                id,
                 email,
                 firstname,
                 lastname,
                 phoneNumber,
                 contactEmail,
                 address,
-                roles
+                roles,
+                isEnabled,
+                isLocked
         );
     }
 }

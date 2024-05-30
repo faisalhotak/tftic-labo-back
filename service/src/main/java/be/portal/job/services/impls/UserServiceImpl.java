@@ -9,6 +9,8 @@ import be.portal.job.dtos.user.responses.JobSeekerResponse;
 import be.portal.job.entities.*;
 import be.portal.job.exceptions.NotFoundException;
 import be.portal.job.exceptions.auth.UserAlreadyExistsException;
+import be.portal.job.exceptions.auth.UserAlreadyLockedException;
+import be.portal.job.exceptions.auth.UserAlreadyUnlockedException;
 import be.portal.job.exceptions.auth.UserNotFoundException;
 import be.portal.job.dtos.user.responses.UserResponse;
 import be.portal.job.mappers.user.UserMapper;
@@ -139,5 +141,31 @@ public class UserServiceImpl implements UserDetailsService, IUserService {
         userRepository.deleteById(id);
 
         return userMapper.fromUser(user);
+    }
+
+    @Override
+    public UserResponse lockUser(Long id) {
+        User user = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+
+        if (!user.isAccountNonLocked()) {
+            throw new UserAlreadyLockedException();
+        }
+
+        user.setLocked(true);
+
+        return userMapper.fromUser(userRepository.save(user));
+    }
+
+    @Override
+    public UserResponse unlockUser(Long id) {
+        User user = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+
+        if (user.isAccountNonLocked()) {
+            throw new UserAlreadyUnlockedException();
+        }
+
+        user.setLocked(false);
+
+        return userMapper.fromUser(userRepository.save(user));
     }
 }
