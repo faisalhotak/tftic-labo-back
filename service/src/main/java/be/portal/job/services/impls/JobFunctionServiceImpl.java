@@ -3,7 +3,7 @@ package be.portal.job.services.impls;
 import be.portal.job.dtos.job_function.requests.JobFunctionRequest;
 import be.portal.job.dtos.job_function.responses.JobFunctionResponse;
 import be.portal.job.entities.JobFunction;
-import be.portal.job.exceptions.AlreadyExistsException;
+import be.portal.job.exceptions.job_function.JobFunctionAlreadyExistsException;
 import be.portal.job.exceptions.job_function.JobFunctionNotFoundException;
 import be.portal.job.mappers.job_function.JobFunctionMapper;
 import be.portal.job.repositories.JobFunctionRepository;
@@ -37,7 +37,7 @@ public class JobFunctionServiceImpl implements IJobFunctionService {
     @Override
     public JobFunctionResponse add(JobFunctionRequest request) {
         if (jobFunctionRepository.findByName(request.name()).isPresent()) {
-            throw new AlreadyExistsException("Job function with this name already exists");
+            throw new JobFunctionAlreadyExistsException();
         }
 
         JobFunction jobFunction = jobFunctionMapper.toEntity(request);
@@ -48,6 +48,10 @@ public class JobFunctionServiceImpl implements IJobFunctionService {
     @Override
     public JobFunctionResponse update(Long id, JobFunctionRequest request) {
         JobFunction existingJobFunction = jobFunctionRepository.findById(id).orElseThrow(JobFunctionNotFoundException::new);
+
+        if (jobFunctionRepository.findByName(request.name()).isPresent()) {
+            throw new JobFunctionAlreadyExistsException();
+        }
 
         jobFunctionMapper.updateEntityFromRequest(request, existingJobFunction);
 
