@@ -56,4 +56,11 @@ public interface IAuthService {
      * @return true if the user is an admin, false otherwise
      */
     boolean isAdmin(User user);
+
+    /**
+     * Enables the account of a disabled user.
+     * @param email the email of the user to enable
+     * @throws UserNotFoundException if a user with the provided email does not exist
+     */
+    void enableAccount(String email) throws UserNotFoundException;
 }
