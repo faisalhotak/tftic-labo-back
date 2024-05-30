@@ -43,7 +43,7 @@ public class AuthController {
         return ResponseEntity.ok(authService.register(request));
     }
 
-    @PreAuthorize("permitAll()")
+    @PreAuthorize("isAnonymous()")
     @PostMapping("/enable-account")
     public ResponseEntity<String> enableAccount(@RequestParam String email) {
         authService.enableAccount(email);
