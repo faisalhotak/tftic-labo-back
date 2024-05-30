@@ -14,7 +14,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/experience-details")
-@PreAuthorize("hasAnyAuthority('SEEKER')")
+@PreAuthorize("hasAuthority('SEEKER')")
 public class ExperienceDetailController {
 
     private final IExperienceDetailService experienceDetailService;
