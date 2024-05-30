@@ -47,7 +47,7 @@ public class AuthServiceImpl implements IAuthService {
             user.setEnabled(true);
             userRepository.save(user);
 
-            throw new AccountReactivatedException("Your account has been reactivated! Please login again.");
+            throw new AccountReactivatedException();
         }
 
         String token = jwtUtils.generateToken(user);
