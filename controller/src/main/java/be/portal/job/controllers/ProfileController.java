@@ -4,6 +4,7 @@ import be.portal.job.dtos.user.requests.JobAdvertiserUpdateRequest;
 import be.portal.job.dtos.user.requests.JobSeekerUpdateRequest;
 import be.portal.job.dtos.user.responses.JobAdvertiserResponse;
 import be.portal.job.dtos.user.responses.JobSeekerResponse;
+import be.portal.job.dtos.user.responses.UserResponse;
 import be.portal.job.services.IProfileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -34,13 +35,14 @@ public class ProfileController {
 
     @PreAuthorize("hasAnyAuthority('SEEKER', 'ADVERTISER')")
     @GetMapping("/disable")
-    public ResponseEntity<String> disableProfile() {
+    public ResponseEntity<UserResponse> disableProfile() {
+
         return ResponseEntity.ok(profileService.disableProfile());
     }
 
     @PreAuthorize("hasAnyAuthority('SEEKER', 'ADVERTISER')")
     @GetMapping("/delete")
-    public ResponseEntity<String> deleteProfile() {
+    public ResponseEntity<UserResponse> deleteProfile() {
         return ResponseEntity.ok(profileService.deleteProfile());
     }
 

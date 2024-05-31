@@ -4,9 +4,11 @@ import be.portal.job.dtos.user.requests.JobAdvertiserUpdateRequest;
 import be.portal.job.dtos.user.requests.JobSeekerUpdateRequest;
 import be.portal.job.dtos.user.responses.JobAdvertiserResponse;
 import be.portal.job.dtos.user.responses.JobSeekerResponse;
+import be.portal.job.dtos.user.responses.UserResponse;
 import be.portal.job.entities.*;
 import be.portal.job.enums.AdvertiserRole;
 import be.portal.job.enums.ApplicationStatus;
+import be.portal.job.mappers.user.UserMapper;
 import be.portal.job.repositories.*;
 import be.portal.job.services.IProfileService;
 import be.portal.job.services.IUserService;
@@ -26,6 +28,7 @@ public class ProfileServiceImpl implements IProfileService {
     private final ApplicationRepository applicationRepository;
     private final IUserService userService;
     private final UserRepository userRepository;
+    private final UserMapper userMapper;
     private final AuthServiceImpl authService;
 
     @Override
@@ -44,7 +47,7 @@ public class ProfileServiceImpl implements IProfileService {
 
     @Transactional
     @Override
-    public String disableProfile() {
+    public UserResponse disableProfile() {
         User currentUser = authService.getAuthenticatedUser();
         currentUser.setEnabled(false);
         currentUser.setCredentialsExpired(true);
@@ -74,17 +77,16 @@ public class ProfileServiceImpl implements IProfileService {
             applicationRepository.saveAll(applications);
         }
 
-        userRepository.save(currentUser);
-        return "Profile disabled successfully!";
+        return userMapper.fromUser(userRepository.save(currentUser));
     }
 
     @Transactional
     @Override
-    public String deleteProfile() {
+    public UserResponse deleteProfile() {
         User currentUser = authService.getAuthenticatedUser();
 
         if (currentUser.isLocked()) {
-            return "Profile already deleted!";
+            throw new IllegalStateException("Profile is already deleted!");
         }
 
         currentUser.setEmail("deleted");
@@ -100,11 +102,9 @@ public class ProfileServiceImpl implements IProfileService {
 
         if (currentUser.isEnabled()) {
             disableProfile();
-        } else {
-            userRepository.save(currentUser);
         }
 
-        return "Profile deleted successfully!";
+        return userMapper.fromUser(userRepository.save(currentUser));
     }
 
 }
