@@ -1,5 +1,6 @@
 package be.portal.job.services.impls;
 
+import be.portal.job.dtos.company.requests.CompanyIdRequest;
 import be.portal.job.dtos.company.requests.CompanyRequest;
 import be.portal.job.dtos.company.responses.CompanyResponse;
 import be.portal.job.entities.Company;
@@ -9,16 +10,14 @@ import be.portal.job.enums.AdvertiserRole;
 import be.portal.job.exceptions.NotAllowedException;
 import be.portal.job.exceptions.NotFoundException;
 import be.portal.job.exceptions.company.CompanyNotFoundException;
-import be.portal.job.repositories.CompanyAdvertiserRepository;
-import be.portal.job.repositories.CompanyRepository;
-import be.portal.job.repositories.JobOfferRepository;
+import be.portal.job.exceptions.company_advertiser.CompanyAdvertiserInsufficientRole;
+import be.portal.job.repositories.*;
 import be.portal.job.services.ICompanyService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +27,7 @@ public class CompanyServiceImpl implements ICompanyService {
     private final CompanyAdvertiserRepository companyAdvertiserRepository;
     private final JobOfferRepository jobOfferRepository;
     private final AuthServiceImpl authService;
+    private final JobAdvertiserRepository jobAdvertiserRepository;
 
     @Override
     public List<CompanyResponse> getAll() {
@@ -64,12 +64,11 @@ public class CompanyServiceImpl implements ICompanyService {
 
         Company company = companyRepository.findById(id).orElseThrow(CompanyNotFoundException::new);
 
-        CompanyAdvertiser companyAdvertiser = companyAdvertiserRepository
-                .findByCompanyAndAgent(company.getId(), currentUser.getId())
-                .orElseThrow(() -> new NotFoundException("Agent not found."));
-
-        if (!isOwner(companyAdvertiser) && !authService.isAdmin(currentUser)) {
-            throw new NotAllowedException("You are not allowed to update this company.");
+        if (companyAdvertiserRepository
+                .findByCompanyAndJobAdvertiserAndAdvertiserRole(company.getId(), currentUser.getId(), AdvertiserRole.OWNER)
+                .isEmpty()
+        ) {
+            throw new CompanyAdvertiserInsufficientRole();
         }
 
         companyRequest.updateEntity(company);
@@ -84,12 +83,11 @@ public class CompanyServiceImpl implements ICompanyService {
 
         Company company = companyRepository.findById(id).orElseThrow(CompanyNotFoundException::new);
 
-        CompanyAdvertiser companyAdvertiser = companyAdvertiserRepository.
-                findByCompanyAndAgent(company.getId(), currentUser.getId())
-                .orElseThrow(() -> new NotAllowedException("You are not part of this company."));
-
-        if (!isOwner(companyAdvertiser) && !authService.isAdmin(currentUser)) {
-            throw new NotAllowedException("You are not allowed to delete this company.");
+        if (companyAdvertiserRepository
+                .findByCompanyAndJobAdvertiserAndAdvertiserRole(company.getId(), currentUser.getId(), AdvertiserRole.OWNER)
+                .isEmpty()
+        ) {
+            throw new CompanyAdvertiserInsufficientRole();
         }
 
         List<Long> agentsIds = companyAdvertiserRepository.findAllAgentsIdsByCompany(company.getId());
@@ -101,7 +99,55 @@ public class CompanyServiceImpl implements ICompanyService {
         return CompanyResponse.fromEntity(company);
     }
 
-    private boolean isOwner(CompanyAdvertiser companyAdvertiser) {
-        return companyAdvertiser.getAdvertiserRole().equals(AdvertiserRole.OWNER);
+    @Override
+    @Transactional
+    public CompanyResponse addCompanyAsAdmin(Long userId, CompanyRequest companyRequest) {
+        JobAdvertiser jobAdvertiser = jobAdvertiserRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("Job Advertiser has not been found !"));
+
+        Company company = new Company();
+        companyRequest.updateEntity(company);
+        companyRepository.save(company);
+
+        CompanyAdvertiser companyAdvertiser = new CompanyAdvertiser(AdvertiserRole.OWNER, jobAdvertiser, company);
+        companyAdvertiserRepository.save(companyAdvertiser);
+
+        return CompanyResponse.fromEntity(company);
+    }
+
+    @Override
+    public CompanyResponse updateCompanyAsAdmin(Long id, CompanyRequest companyRequest) {
+        Company company = companyRepository.findById(id).orElseThrow(CompanyNotFoundException::new);
+
+        companyRequest.updateEntity(company);
+
+        return CompanyResponse.fromEntity(companyRepository.save(company));
+    }
+
+    @Override
+    @Transactional
+    public CompanyResponse deleteCompanyAsAdmin(Long id) {
+        Company company = companyRepository.findById(id).orElseThrow(CompanyNotFoundException::new);
+
+        List<Long> agentsIds = companyAdvertiserRepository.findAllAgentsIdsByCompany(company.getId());
+
+        jobOfferRepository.deleteByAgentsIds(agentsIds);
+        companyAdvertiserRepository.deleteByIds(agentsIds);
+        companyRepository.delete(company);
+
+        return CompanyResponse.fromEntity(company);
+    }
+
+    @Override
+    public CompanyResponse triggerActive(CompanyIdRequest request, boolean isActive) {
+        Company company = companyRepository.findById(request.id()).orElseThrow(CompanyNotFoundException::new);
+
+        if (isActive == company.isActive()) {
+            throw new NotAllowedException(String.format("Company field 'isActive' already defined to '%s'", isActive));
+        }
+
+        company.setActive(isActive);
+
+        return CompanyResponse.fromEntity(companyRepository.save(company));
     }
 }

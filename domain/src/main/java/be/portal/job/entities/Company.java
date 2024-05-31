@@ -36,9 +36,6 @@ public class Company extends BaseEntity<Long> {
     @Column(name = "contact_department", nullable = false)
     private String contactDepartment;
 
-    @Column(name = "is_verified", nullable = false)
-    private boolean isVerified = false;
-
     @Column(name = "is_active", nullable = false)
     private boolean isActive = false;
 
@@ -56,7 +53,6 @@ public class Company extends BaseEntity<Long> {
             String contactName,
             String contactPhoneNumber,
             String contactDepartment,
-            boolean isVerified,
             boolean isActive
     ) {
         this();
@@ -66,7 +62,6 @@ public class Company extends BaseEntity<Long> {
         this.contactName = contactName;
         this.contactPhoneNumber = contactPhoneNumber;
         this.contactDepartment = contactDepartment;
-        this.isVerified = isVerified;
         this.isActive = isActive;
     }
 }

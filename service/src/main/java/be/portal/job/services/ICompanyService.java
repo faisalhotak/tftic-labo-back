@@ -1,5 +1,6 @@
 package be.portal.job.services;
 
+import be.portal.job.dtos.company.requests.CompanyIdRequest;
 import be.portal.job.dtos.company.requests.CompanyRequest;
 import be.portal.job.dtos.company.responses.CompanyResponse;
 
@@ -45,4 +46,35 @@ public interface ICompanyService {
      * @param id the identifier of the company to delete.
      */
     CompanyResponse deleteCompany(Long id);
+
+    /**
+     * Adds a company as an admin.
+     * @param userId the id of the user.
+     * @param companyRequest the company request.
+     * @return the company response.
+     */
+    CompanyResponse addCompanyAsAdmin(Long userId, CompanyRequest companyRequest);
+
+    /**
+     * Updates a company as an admin.
+     * @param id the id of the company.
+     * @param companyRequest the company request.
+     * @return the company response.
+     */
+    CompanyResponse updateCompanyAsAdmin(Long id, CompanyRequest companyRequest);
+
+    /**
+     * Deletes a company as an admin.
+     * @param id the id of the company.
+     * @return the company response.
+     */
+    CompanyResponse deleteCompanyAsAdmin(Long id);
+
+    /**
+     * Triggers the active status of a company.
+     * @param request the company id request.
+     * @param isActive the active status.
+     * @return the company response.
+     */
+    CompanyResponse triggerActive(CompanyIdRequest request, boolean isActive);
 }

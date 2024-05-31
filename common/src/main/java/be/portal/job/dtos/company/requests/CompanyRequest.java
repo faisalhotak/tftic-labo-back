@@ -2,6 +2,7 @@ package be.portal.job.dtos.company.requests;
 
 import be.portal.job.entities.Company;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
 
@@ -13,7 +14,7 @@ public record CompanyRequest(
         @NotBlank(message = "The website URL of the company is required.")
         String websiteUrl,
 
-        @NotBlank(message = "The establishment date of the company is required.")
+        @NotNull(message = "The establishment date of the company is required.")
         LocalDateTime establishmentDate,
 
         @NotBlank(message = "The contact name of the company is required.")
