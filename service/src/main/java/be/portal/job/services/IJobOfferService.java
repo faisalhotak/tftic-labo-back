@@ -1,5 +1,6 @@
 package be.portal.job.services;
 
+import be.portal.job.dtos.common.IdRequest;
 import be.portal.job.dtos.job_offer.requests.JobOfferRequest;
 import be.portal.job.dtos.job_offer.responses.JobOfferResponse;
 
@@ -35,13 +36,6 @@ public interface IJobOfferService {
     JobOfferResponse getJobOfferById(Long id);
 
     /**
-     * Deletes a job offer by its identifier.
-     * @param id the identifier of the job offer to delete.
-     * @return the deleted job offer, or null if the job offer does not exist.
-     */
-    JobOfferResponse deleteJobOffer(Long id);
-
-    /**
      * Adds a new job offer to the system.
      * @param jobOfferRequest the job offer to add.
      * @return the added job offer with its generated identifier.
@@ -56,4 +50,18 @@ public interface IJobOfferService {
      */
     JobOfferResponse updateJobOffer(Long id, JobOfferRequest jobOfferRequest);
 
+    /**
+     * Deletes a job offer by its identifier.
+     * @param id the identifier of the job offer to delete.
+     * @return the deleted job offer, or null if the job offer does not exist.
+     */
+    JobOfferResponse deleteJobOffer(Long id);
+
+    /**
+     * Triggers the active status of a job offer.
+     * @param request the identifier of the job offer to update.
+     * @param isActive the new active status of the job offer.
+     * @return the updated job offer, or null if the job offer does not exist.
+     */
+    JobOfferResponse triggerActive(IdRequest request, boolean isActive);
 }

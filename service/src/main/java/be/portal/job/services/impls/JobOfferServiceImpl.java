@@ -1,8 +1,10 @@
 package be.portal.job.services.impls;
 
+import be.portal.job.dtos.common.IdRequest;
 import be.portal.job.dtos.job_offer.requests.JobOfferRequest;
 import be.portal.job.dtos.job_offer.responses.JobOfferResponse;
 import be.portal.job.entities.*;
+import be.portal.job.exceptions.NotAllowedException;
 import be.portal.job.exceptions.company_advertiser.CompanyAdvertiserNotFoundException;
 import be.portal.job.exceptions.contract_type.ContractTypeNotFoundException;
 import be.portal.job.exceptions.job_function.JobFunctionNotFoundException;
@@ -104,5 +106,19 @@ public class JobOfferServiceImpl implements IJobOfferService {
         jobOfferRepository.deleteById(id);
 
         return jobOfferMapper.fromEntity(jobOffer);
+    }
+
+    @Override
+    public JobOfferResponse triggerActive(IdRequest request, boolean isActive) {
+        JobOffer jobOffer = jobOfferRepository.findById(request.id())
+                .orElseThrow(JobOfferNotFoundException::new);
+
+        if (isActive == jobOffer.isActive()) {
+            throw new NotAllowedException(String.format("Job offer field 'isActive' already defined to '%s'", isActive));
+        }
+
+        jobOffer.setActive(isActive);
+
+        return jobOfferMapper.fromEntity(jobOfferRepository.save(jobOffer));
     }
 }
