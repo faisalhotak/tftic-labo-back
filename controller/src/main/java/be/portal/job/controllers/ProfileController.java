@@ -36,7 +36,6 @@ public class ProfileController {
     @PreAuthorize("hasAnyAuthority('SEEKER', 'ADVERTISER')")
     @GetMapping("/disable")
     public ResponseEntity<UserResponse> disableProfile() {
-
         return ResponseEntity.ok(profileService.disableProfile());
     }
 

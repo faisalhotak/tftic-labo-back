@@ -6,7 +6,6 @@ import be.portal.job.dtos.user.responses.JobAdvertiserResponse;
 import be.portal.job.dtos.user.responses.JobSeekerResponse;
 import be.portal.job.dtos.user.responses.UserResponse;
 import be.portal.job.entities.*;
-import be.portal.job.enums.AdvertiserRole;
 import be.portal.job.enums.ApplicationStatus;
 import be.portal.job.mappers.user.UserMapper;
 import be.portal.job.repositories.*;
@@ -17,6 +16,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -50,34 +52,54 @@ public class ProfileServiceImpl implements IProfileService {
     public UserResponse disableProfile() {
         User currentUser = authService.getAuthenticatedUser();
         currentUser.setEnabled(false);
-        currentUser.setCredentialsExpired(true);
 
-        if (currentUser instanceof JobAdvertiser jobAdvertiser) {
-            List<CompanyAdvertiser> companyAdvertisers = companyAdvertiserRepository.findAllByAgentIdAndAdvertiserRole(jobAdvertiser.getId(), AdvertiserRole.OWNER);
-
-            if (companyAdvertisers.size() == 1) {
-                Company company = companyRepository.findById(companyAdvertisers.getFirst().getCompany().getId()).orElseThrow();
-                company.setActive(false);
-                companyRepository.save(company);
-
-                List<JobOffer> jobOffers = jobOfferRepository.findAllByCompany(company);
-                jobOffers.forEach(jobOffer -> jobOffer.setActive(false));
-                jobOfferRepository.saveAll(jobOffers);
-            }
-            else {
-                List<JobOffer> jobOffers = jobOfferRepository.findAllByAgent(jobAdvertiser.getId());
-                jobOffers.forEach(jobOffer -> jobOffer.setActive(false));
-                jobOfferRepository.saveAll(jobOffers);
-            }
-
-        }
         if (currentUser instanceof JobSeeker jobSeeker) {
             List<Application> applications = applicationRepository.findByJobSeekerId(jobSeeker.getId());
             applications.forEach(application -> application.setApplicationStatus(ApplicationStatus.CANCELLED));
             applicationRepository.saveAll(applications);
+            return userMapper.fromUser(userRepository.save(currentUser));
         }
 
-        return userMapper.fromUser(userRepository.save(currentUser));
+        if (currentUser instanceof JobAdvertiser jobAdvertiser) {
+            // List of all companyAdvertisers that are owners and have an active user
+            List<CompanyAdvertiser> owners = companyAdvertiserRepository.findAllOwner();
+            // List of all companyAdvertisers where the current user is the owner
+            List<Company> ownedCompanies = owners.stream()
+                    .filter(companyAdvertiser -> companyAdvertiser.getJobAdvertiser().getId().equals(currentUser.getId()))
+                    .map(CompanyAdvertiser::getCompany)
+                    .toList();
+            // List of all companyAdvertisers where the current user is the owner and with co-owners
+            List<CompanyAdvertiser> filteredOwners = owners.stream()
+                    .filter(companyAdvertiser -> ownedCompanies.contains(companyAdvertiser.getCompany()))
+                    .toList();
+            // Map of companies and the number of owners
+            Map<Company, Long> companyCount = filteredOwners.stream()
+                    .collect(Collectors.groupingBy(CompanyAdvertiser::getCompany, Collectors.counting()));
+            // List of companies with only the current user as owner
+            List<CompanyAdvertiser> companiesWithoutDuplicates = filteredOwners.stream()
+                    .filter(companyAdvertiser -> companyCount.get(companyAdvertiser.getCompany()) == 1)
+                    .toList();
+
+            // Set all companies without owners to inactive and all job offers of these companies to inactive
+            for(CompanyAdvertiser companyAdvertiser : companiesWithoutDuplicates) {
+                Company company = companyRepository.findById(companyAdvertiser.getCompany().getId()).orElseThrow();
+                company.setActive(false);
+                companyRepository.save(company);
+
+                List<JobOffer> jobOffers = jobOfferRepository.findAllByCompanyId(company.getId());
+                jobOffers.forEach(jobOffer -> jobOffer.setActive(false));
+                jobOfferRepository.saveAll(jobOffers);
+            }
+
+            // Set all job offers of the current user to inactive
+            List<JobOffer> jobOffers = jobOfferRepository.findAllByJobAdvertiser(jobAdvertiser.getId());
+            jobOffers.forEach(jobOffer -> jobOffer.setActive(false));
+            jobOfferRepository.saveAll(jobOffers);
+
+            return userMapper.fromUser(userRepository.save(currentUser));
+        }
+
+        throw new IllegalStateException("User is not a job seeker or job advertiser!");
     }
 
     @Transactional
@@ -85,11 +107,11 @@ public class ProfileServiceImpl implements IProfileService {
     public UserResponse deleteProfile() {
         User currentUser = authService.getAuthenticatedUser();
 
-        if (currentUser.isLocked()) {
+        if (currentUser.isExpired()) {
             throw new IllegalStateException("Profile is already deleted!");
         }
 
-        currentUser.setEmail("deleted");
+        currentUser.setEmail(UUID.randomUUID().toString());
         currentUser.setFirstname("deleted");
         currentUser.setLastname("deleted");
         currentUser.setPassword("deleted");
