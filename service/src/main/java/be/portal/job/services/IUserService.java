@@ -2,9 +2,9 @@ package be.portal.job.services;
 
 import be.portal.job.dtos.auth.requests.JobAdvertiserRegisterRequest;
 import be.portal.job.dtos.auth.requests.JobSeekerRegisterRequest;
+import be.portal.job.dtos.common.IdRequest;
 import be.portal.job.dtos.user.requests.JobAdvertiserUpdateRequest;
 import be.portal.job.dtos.user.requests.JobSeekerUpdateRequest;
-import be.portal.job.dtos.user.requests.UserIdRequest;
 import be.portal.job.dtos.user.responses.JobAdvertiserResponse;
 import be.portal.job.dtos.user.responses.JobSeekerResponse;
 import be.portal.job.dtos.user.responses.UserResponse;
@@ -33,5 +33,5 @@ public interface IUserService {
 
     UserResponse deleteUser(Long id);
 
-    UserResponse triggerLock(UserIdRequest request, boolean isLocked);
+    UserResponse triggerLock(IdRequest request, boolean isLocked);
 }

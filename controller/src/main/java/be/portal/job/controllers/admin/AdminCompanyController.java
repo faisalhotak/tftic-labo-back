@@ -1,6 +1,6 @@
 package be.portal.job.controllers.admin;
 
-import be.portal.job.dtos.company.requests.CompanyIdRequest;
+import be.portal.job.dtos.common.IdRequest;
 import be.portal.job.dtos.company.requests.CompanyRequest;
 import be.portal.job.dtos.company.responses.CompanyResponse;
 import be.portal.job.services.ICompanyService;
@@ -53,12 +53,12 @@ public class AdminCompanyController {
     }
 
     @PatchMapping("/activate")
-    public ResponseEntity<CompanyResponse> activateCompany(@RequestBody @Valid CompanyIdRequest request) {
+    public ResponseEntity<CompanyResponse> activateCompany(@RequestBody @Valid IdRequest request) {
         return ResponseEntity.ok(companyService.triggerActive(request, true));
     }
 
     @PatchMapping("/deactivate")
-    public ResponseEntity<CompanyResponse> deactivateCompany(@RequestBody @Valid CompanyIdRequest request) {
+    public ResponseEntity<CompanyResponse> deactivateCompany(@RequestBody @Valid IdRequest request) {
         return ResponseEntity.ok(companyService.triggerActive(request, false));
     }
 }

@@ -2,9 +2,9 @@ package be.portal.job.services.impls;
 
 import be.portal.job.dtos.auth.requests.JobAdvertiserRegisterRequest;
 import be.portal.job.dtos.auth.requests.JobSeekerRegisterRequest;
+import be.portal.job.dtos.common.IdRequest;
 import be.portal.job.dtos.user.requests.JobAdvertiserUpdateRequest;
 import be.portal.job.dtos.user.requests.JobSeekerUpdateRequest;
-import be.portal.job.dtos.user.requests.UserIdRequest;
 import be.portal.job.dtos.user.responses.JobAdvertiserResponse;
 import be.portal.job.dtos.user.responses.JobSeekerResponse;
 import be.portal.job.entities.*;
@@ -144,7 +144,7 @@ public class UserServiceImpl implements UserDetailsService, IUserService {
     }
 
     @Override
-    public UserResponse triggerLock(UserIdRequest request, boolean isLocked) {
+    public UserResponse triggerLock(IdRequest request, boolean isLocked) {
         User user = userRepository.findById(request.id()).orElseThrow(UserNotFoundException::new);
 
         if (!user.isAccountNonLocked() == isLocked) {

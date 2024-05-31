@@ -1,6 +1,6 @@
 package be.portal.job.services.impls;
 
-import be.portal.job.dtos.company.requests.CompanyIdRequest;
+import be.portal.job.dtos.common.IdRequest;
 import be.portal.job.dtos.company.requests.CompanyRequest;
 import be.portal.job.dtos.company.responses.CompanyResponse;
 import be.portal.job.entities.Company;
@@ -139,7 +139,7 @@ public class CompanyServiceImpl implements ICompanyService {
     }
 
     @Override
-    public CompanyResponse triggerActive(CompanyIdRequest request, boolean isActive) {
+    public CompanyResponse triggerActive(IdRequest request, boolean isActive) {
         Company company = companyRepository.findById(request.id()).orElseThrow(CompanyNotFoundException::new);
 
         if (isActive == company.isActive()) {
