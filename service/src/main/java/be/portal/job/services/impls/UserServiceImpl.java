@@ -4,14 +4,13 @@ import be.portal.job.dtos.auth.requests.JobAdvertiserRegisterRequest;
 import be.portal.job.dtos.auth.requests.JobSeekerRegisterRequest;
 import be.portal.job.dtos.user.requests.JobAdvertiserUpdateRequest;
 import be.portal.job.dtos.user.requests.JobSeekerUpdateRequest;
-import be.portal.job.dtos.user.requests.UserIsLockedRequest;
+import be.portal.job.dtos.user.requests.UserIdRequest;
 import be.portal.job.dtos.user.responses.JobAdvertiserResponse;
 import be.portal.job.dtos.user.responses.JobSeekerResponse;
 import be.portal.job.entities.*;
+import be.portal.job.exceptions.NotAllowedException;
 import be.portal.job.exceptions.NotFoundException;
 import be.portal.job.exceptions.auth.UserAlreadyExistsException;
-import be.portal.job.exceptions.auth.UserAlreadyLockedException;
-import be.portal.job.exceptions.auth.UserAlreadyUnlockedException;
 import be.portal.job.exceptions.auth.UserNotFoundException;
 import be.portal.job.dtos.user.responses.UserResponse;
 import be.portal.job.mappers.user.UserMapper;
@@ -145,13 +144,11 @@ public class UserServiceImpl implements UserDetailsService, IUserService {
     }
 
     @Override
-    public UserResponse triggerLock(Long id, UserIsLockedRequest request) {
-        User user = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
-
-        boolean isLocked = request.isLocked();
+    public UserResponse triggerLock(UserIdRequest request, boolean isLocked) {
+        User user = userRepository.findById(request.id()).orElseThrow(UserNotFoundException::new);
 
         if (!user.isAccountNonLocked() == isLocked) {
-            throw request.isLocked() ? new UserAlreadyLockedException() : new UserAlreadyUnlockedException();
+            throw new NotAllowedException(String.format("User field 'isLocked' already defined to '%s'", isLocked));
         }
 
         user.setLocked(isLocked);

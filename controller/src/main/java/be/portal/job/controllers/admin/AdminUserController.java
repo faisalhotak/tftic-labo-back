@@ -4,7 +4,7 @@ import be.portal.job.dtos.auth.requests.JobAdvertiserRegisterRequest;
 import be.portal.job.dtos.auth.requests.JobSeekerRegisterRequest;
 import be.portal.job.dtos.user.requests.JobAdvertiserUpdateRequest;
 import be.portal.job.dtos.user.requests.JobSeekerUpdateRequest;
-import be.portal.job.dtos.user.requests.UserIsLockedRequest;
+import be.portal.job.dtos.user.requests.UserIdRequest;
 import be.portal.job.dtos.user.responses.JobAdvertiserResponse;
 import be.portal.job.dtos.user.responses.JobSeekerResponse;
 import be.portal.job.dtos.user.responses.UserResponse;
@@ -82,11 +82,13 @@ public class AdminUserController {
         return ResponseEntity.ok(userService.updateSeeker(id, request));
     }
 
-    @PatchMapping("/users/{id:^[0-9]+$}")
-    public ResponseEntity<UserResponse> triggerLock(
-            @PathVariable Long id,
-            @RequestBody @Valid UserIsLockedRequest request
-            ) {
-        return ResponseEntity.ok(userService.triggerLock(id, request));
+    @PatchMapping("/users/lock")
+    public ResponseEntity<UserResponse> lockUser(@RequestBody @Valid UserIdRequest request) {
+        return ResponseEntity.ok(userService.triggerLock(request, true));
+    }
+
+    @PatchMapping("/users/unlock")
+    public ResponseEntity<UserResponse> unlockUser(@RequestBody @Valid UserIdRequest request) {
+        return ResponseEntity.ok(userService.triggerLock(request, false));
     }
 }
