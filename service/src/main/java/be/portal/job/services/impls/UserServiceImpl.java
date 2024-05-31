@@ -2,6 +2,8 @@ package be.portal.job.services.impls;
 
 import be.portal.job.dtos.auth.requests.JobAdvertiserRegisterRequest;
 import be.portal.job.dtos.auth.requests.JobSeekerRegisterRequest;
+import be.portal.job.dtos.auth.responses.UserTokenResponse;
+import be.portal.job.dtos.common.EmailRequest;
 import be.portal.job.dtos.common.IdRequest;
 import be.portal.job.dtos.user.requests.JobAdvertiserUpdateRequest;
 import be.portal.job.dtos.user.requests.JobSeekerUpdateRequest;
@@ -15,6 +17,7 @@ import be.portal.job.exceptions.auth.UserNotFoundException;
 import be.portal.job.dtos.user.responses.UserResponse;
 import be.portal.job.mappers.user.UserMapper;
 import be.portal.job.repositories.*;
+import be.portal.job.services.IAuthService;
 import be.portal.job.services.IUserService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +40,7 @@ public class UserServiceImpl implements UserDetailsService, IUserService {
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
     private final UserMapper userMapper;
+    private final IAuthService authService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -154,5 +158,19 @@ public class UserServiceImpl implements UserDetailsService, IUserService {
         user.setLocked(isLocked);
 
         return userMapper.fromUser(userRepository.save(user));
+    }
+
+    @Override
+    public UserTokenResponse impersonateUserById(IdRequest request) {
+        User user = userRepository.findById(request.id()).orElseThrow(UserNotFoundException::new);
+
+        return authService.impersonateUser(user);
+    }
+
+    @Override
+    public UserTokenResponse impersonateUserByEmail(EmailRequest request) {
+        User user = userRepository.findByEmail(request.email()).orElseThrow(UserNotFoundException::new);
+
+        return authService.impersonateUser(user);
     }
 }

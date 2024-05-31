@@ -2,6 +2,8 @@ package be.portal.job.controllers.admin;
 
 import be.portal.job.dtos.auth.requests.JobAdvertiserRegisterRequest;
 import be.portal.job.dtos.auth.requests.JobSeekerRegisterRequest;
+import be.portal.job.dtos.auth.responses.UserTokenResponse;
+import be.portal.job.dtos.common.EmailRequest;
 import be.portal.job.dtos.common.IdRequest;
 import be.portal.job.dtos.user.requests.JobAdvertiserUpdateRequest;
 import be.portal.job.dtos.user.requests.JobSeekerUpdateRequest;
@@ -90,5 +92,15 @@ public class AdminUserController {
     @PatchMapping("/users/unlock")
     public ResponseEntity<UserResponse> unlockUser(@RequestBody @Valid IdRequest request) {
         return ResponseEntity.ok(userService.triggerLock(request, false));
+    }
+
+    @PostMapping("/users/impersonate-id")
+    public ResponseEntity<UserTokenResponse> impersonateUserById(@RequestBody @Valid IdRequest request) {
+        return ResponseEntity.ok(userService.impersonateUserById(request));
+    }
+
+    @PostMapping("/users/impersonate-email")
+    public ResponseEntity<UserTokenResponse> impersonateUserByEmail(@RequestBody @Valid EmailRequest request) {
+        return ResponseEntity.ok(userService.impersonateUserByEmail(request));
     }
 }

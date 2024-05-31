@@ -4,6 +4,7 @@ import be.portal.job.entities.JobAdvertiser;
 import be.portal.job.entities.JobSeeker;
 import be.portal.job.entities.Role;
 import be.portal.job.entities.User;
+import be.portal.job.exceptions.NotAllowedException;
 import be.portal.job.exceptions.NotFoundException;
 import be.portal.job.exceptions.auth.*;
 import be.portal.job.dtos.auth.requests.LoginRequest;
@@ -48,6 +49,17 @@ public class AuthServiceImpl implements IAuthService {
             userRepository.save(user);
 
             throw new AccountReactivatedException();
+        }
+
+        String token = jwtUtils.generateToken(user);
+
+        return UserTokenResponse.fromEntityWithToken(user, token);
+    }
+
+    @Override
+    public UserTokenResponse impersonateUser(User user) {
+        if (!user.isEnabled() || !user.isAccountNonLocked() || user.isExpired()) {
+            throw new NotAllowedException("User cannot be impersonated due to account restrictions");
         }
 
         String token = jwtUtils.generateToken(user);
