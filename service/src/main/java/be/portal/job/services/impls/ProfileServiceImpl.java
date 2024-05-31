@@ -1,10 +1,15 @@
 package be.portal.job.services.impls;
 
+import be.portal.job.dtos.user.requests.JobAdvertiserUpdateRequest;
+import be.portal.job.dtos.user.requests.JobSeekerUpdateRequest;
+import be.portal.job.dtos.user.responses.JobAdvertiserResponse;
+import be.portal.job.dtos.user.responses.JobSeekerResponse;
 import be.portal.job.entities.*;
 import be.portal.job.enums.AdvertiserRole;
 import be.portal.job.enums.ApplicationStatus;
 import be.portal.job.repositories.*;
 import be.portal.job.services.IProfileService;
+import be.portal.job.services.IUserService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,8 +24,23 @@ public class ProfileServiceImpl implements IProfileService {
     private final CompanyRepository companyRepository;
     private final JobOfferRepository jobOfferRepository;
     private final ApplicationRepository applicationRepository;
+    private final IUserService userService;
     private final UserRepository userRepository;
     private final AuthServiceImpl authService;
+
+    @Override
+    public JobSeekerResponse updateJobSeekerProfile(JobSeekerUpdateRequest jobSeekerUpdateRequest) {
+        User currentUser = authService.getAuthenticatedUser();
+
+        return userService.updateSeeker(currentUser.getId(), jobSeekerUpdateRequest);
+    }
+
+    @Override
+    public JobAdvertiserResponse updateJobAdvertiserProfile(JobAdvertiserUpdateRequest jobAdvertiserUpdateRequest) {
+        User currentUser = authService.getAuthenticatedUser();
+
+        return userService.updateAdvertiser(currentUser.getId(), jobAdvertiserUpdateRequest);
+    }
 
     @Transactional
     @Override
