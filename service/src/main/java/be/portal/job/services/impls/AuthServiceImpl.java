@@ -10,6 +10,8 @@ import be.portal.job.exceptions.auth.*;
 import be.portal.job.dtos.auth.requests.LoginRequest;
 import be.portal.job.dtos.auth.requests.AbstractRegisterRequest;
 import be.portal.job.dtos.auth.responses.UserTokenResponse;
+import be.portal.job.exceptions.auth.UserNotAuthenticatedException;
+import be.portal.job.exceptions.auth.UserNotFoundException;
 import be.portal.job.mappers.user.UserMapper;
 import be.portal.job.repositories.RoleRepository;
 import be.portal.job.repositories.UserRepository;
@@ -18,6 +20,10 @@ import be.portal.job.utils.JwtUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsChecker;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -27,13 +33,20 @@ import static be.portal.job.utils.Constants.ADMIN_ROLE;
 
 @Service
 @RequiredArgsConstructor
-public class AuthServiceImpl implements IAuthService {
+public class AuthServiceImpl implements UserDetailsService, IAuthService {
 
     private final PasswordEncoder passwordEncoder;
     private final JwtUtils jwtUtils;
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final UserMapper userMapper;
+    private final UserDetailsChecker userDetailsChecker;
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return userRepository.findByEmail(username)
+                .orElseThrow(() -> new UsernameNotFoundException(username));
+    }
 
     @Override
     public UserTokenResponse login(LoginRequest request) {
@@ -50,6 +63,8 @@ public class AuthServiceImpl implements IAuthService {
 
             throw new AccountReactivatedException();
         }
+
+        userDetailsChecker.check(user);
 
         String token = jwtUtils.generateToken(user);
 

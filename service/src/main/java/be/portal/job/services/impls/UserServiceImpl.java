@@ -21,9 +21,6 @@ import be.portal.job.services.IAuthService;
 import be.portal.job.services.IUserService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +29,7 @@ import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserDetailsService, IUserService {
+public class UserServiceImpl implements IUserService {
 
     private final UserRepository userRepository;
     private final JobAdvertiserRepository jobAdvertiserRepository;
@@ -41,12 +38,6 @@ public class UserServiceImpl implements UserDetailsService, IUserService {
     private final RoleRepository roleRepository;
     private final UserMapper userMapper;
     private final IAuthService authService;
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByEmail(username)
-                .orElseThrow(() -> new UsernameNotFoundException(username));
-    }
 
     @Override
     public List<UserResponse> getAll() {
