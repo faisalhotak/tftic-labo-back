@@ -4,6 +4,7 @@ import be.portal.job.dtos.job_offer.requests.JobOfferRequest;
 import be.portal.job.dtos.job_offer.responses.JobOfferResponse;
 import be.portal.job.entities.*;
 import be.portal.job.exceptions.company_advertiser.CompanyAdvertiserNotFoundException;
+import be.portal.job.exceptions.company.CompanyNotVerifiedOrActiveException;
 import be.portal.job.exceptions.contract_type.ContractTypeNotFoundException;
 import be.portal.job.exceptions.job_function.JobFunctionNotFoundException;
 import be.portal.job.exceptions.job_offer.JobOfferNotFoundException;
@@ -56,11 +57,16 @@ public class JobOfferServiceImpl implements IJobOfferService {
     @Override
     @Transactional
     public JobOfferResponse addJobOffer(JobOfferRequest jobOfferRequest) {
+
         JobAdvertiser currentUser = authService.getAuthenticatedAdvertiser();
 
         CompanyAdvertiser agent = companyAdvertiserRepository
                 .findByIdAndJobAdvertiserId(jobOfferRequest.agentId(), currentUser.getId())
                 .orElseThrow(CompanyAdvertiserNotFoundException::new);
+
+        if (!agent.getCompany().isVerified() || !agent.getCompany().isActive()) {
+            throw new CompanyNotVerifiedOrActiveException();
+        }
 
         ContractType contractType = contractTypeRepository.findById(jobOfferRequest.contractTypeId())
                 .orElseThrow(ContractTypeNotFoundException::new);
