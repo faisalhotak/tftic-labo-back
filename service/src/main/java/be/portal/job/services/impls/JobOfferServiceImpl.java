@@ -93,6 +93,23 @@ public class JobOfferServiceImpl implements IJobOfferService {
     }
 
     @Override
+    public JobOfferResponse transferJobOffer(Long id, JobOfferRequest jobOfferRequest) {
+
+        JobAdvertiser currentUser = authService.getAuthenticatedAdvertiser();
+
+        JobOffer jobOffer = jobOfferRepository.findByIdAndJobAdvertiserId(id, currentUser.getId())
+                .orElseThrow(JobOfferNotFoundException::new);
+
+        CompanyAdvertiser newAgent = companyAdvertiserRepository
+                .findByIdAndJobAdvertiserId(jobOfferRequest.agentId(), currentUser.getId())
+                .orElseThrow(CompanyAdvertiserNotFoundException::new);
+
+        jobOffer.setAgent(newAgent);
+
+        return jobOfferMapper.fromEntity(jobOfferRepository.save(jobOffer));
+    }
+
+    @Override
     @Transactional
     public JobOfferResponse deleteJobOffer(Long id) {
         JobAdvertiser currentUser = authService.getAuthenticatedAdvertiser();

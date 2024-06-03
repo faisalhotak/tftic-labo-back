@@ -50,6 +50,15 @@ public class JobOfferController {
     }
 
     @PreAuthorize("hasAnyAuthority('ADVERTISER', 'ADMIN')")
+    @PutMapping("/{id:^[0-9]+$}")
+    public ResponseEntity<JobOfferResponse> transferJobOffer(
+            @PathVariable Long id,
+            @RequestBody @Valid JobOfferRequest jobOfferRequest
+    ) {
+        return ResponseEntity.ok(jobOfferService.transferJobOffer(id, jobOfferRequest));
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADVERTISER', 'ADMIN')")
     @DeleteMapping("/{id:^[0-9]+$}")
     public ResponseEntity<JobOfferResponse> deleteJobOffer(@PathVariable Long id) {
         return ResponseEntity.ok(jobOfferService.deleteJobOffer(id));

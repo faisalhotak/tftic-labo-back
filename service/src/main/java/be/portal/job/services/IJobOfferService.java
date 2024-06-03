@@ -35,13 +35,6 @@ public interface IJobOfferService {
     JobOfferResponse getJobOfferById(Long id);
 
     /**
-     * Deletes a job offer by its identifier.
-     * @param id the identifier of the job offer to delete.
-     * @return the deleted job offer, or null if the job offer does not exist.
-     */
-    JobOfferResponse deleteJobOffer(Long id);
-
-    /**
      * Adds a new job offer to the system.
      * @param jobOfferRequest the job offer to add.
      * @return the added job offer with its generated identifier.
@@ -56,4 +49,18 @@ public interface IJobOfferService {
      */
     JobOfferResponse updateJobOffer(Long id, JobOfferRequest jobOfferRequest);
 
+    /**
+     * Transfers a job offer to another company advertiser who is a colleague of the same company.
+     * @param id the identifier of the job offer to transfer.
+     * @param jobOfferRequest the request containing the new advertiser's information.
+     * @return the transferred job offer.
+     */
+    JobOfferResponse transferJobOffer(Long id, JobOfferRequest jobOfferRequest);
+
+    /**
+     * Deletes a job offer by its identifier.
+     * @param id the identifier of the job offer to delete.
+     * @return the deleted job offer, or null if the job offer does not exist.
+     */
+    JobOfferResponse deleteJobOffer(Long id);
 }
