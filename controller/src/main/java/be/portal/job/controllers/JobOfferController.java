@@ -37,7 +37,7 @@ public class JobOfferController {
     @PreAuthorize("hasAnyAuthority('ADVERTISER', 'ADMIN')")
     @PostMapping()
     public ResponseEntity<JobOfferResponse> addJobOffer(@RequestBody @Valid JobOfferRequest jobOfferRequest) {
-        return ResponseEntity.ok(jobOfferService.addJobOffer(jobOfferRequest));
+            return ResponseEntity.ok(jobOfferService.addJobOffer(jobOfferRequest));
     }
 
     @PreAuthorize("hasAnyAuthority('ADVERTISER', 'ADMIN')")
