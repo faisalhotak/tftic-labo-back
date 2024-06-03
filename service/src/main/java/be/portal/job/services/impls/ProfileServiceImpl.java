@@ -54,9 +54,9 @@ public class ProfileServiceImpl implements IProfileService {
         currentUser.setEnabled(false);
 
         if (currentUser instanceof JobSeeker jobSeeker) {
-            List<Application> applications = applicationRepository.findByJobSeekerId(jobSeeker.getId());
-            applications.forEach(application -> application.setApplicationStatus(ApplicationStatus.CANCELLED));
-            applicationRepository.saveAll(applications);
+            applicationRepository.updateAllStatusByJobSeekerId(jobSeeker.getId(), ApplicationStatus.CANCELLED);
+
+            // Set all job offers of the current user to inactive
             return userMapper.fromUser(userRepository.save(currentUser));
         }
 
@@ -92,9 +92,7 @@ public class ProfileServiceImpl implements IProfileService {
             }
 
             // Set all job offers of the current user to inactive
-            List<JobOffer> jobOffers = jobOfferRepository.findAllByJobAdvertiser(jobAdvertiser.getId());
-            jobOffers.forEach(jobOffer -> jobOffer.setActive(false));
-            jobOfferRepository.saveAll(jobOffers);
+            jobOfferRepository.updateAllActiveByJobAdvertiserId(jobAdvertiser.getId(), false);
 
             return userMapper.fromUser(userRepository.save(currentUser));
         }
