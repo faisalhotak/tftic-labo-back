@@ -61,6 +61,9 @@ public class ProfileServiceImpl implements IProfileService {
         }
 
         if (currentUser instanceof JobAdvertiser jobAdvertiser) {
+            // Set all job offers of the current user to inactive
+            jobOfferRepository.updateAllActiveByJobAdvertiserId(jobAdvertiser.getId(), false);
+
             // List of all companyAdvertisers that are owners and have an active user
             List<CompanyAdvertiser> owners = companyAdvertiserRepository.findAllOwner();
             // List of all companyAdvertisers where the current user is the owner
@@ -90,9 +93,6 @@ public class ProfileServiceImpl implements IProfileService {
                 jobOffers.forEach(jobOffer -> jobOffer.setActive(false));
                 jobOfferRepository.saveAll(jobOffers);
             }
-
-            // Set all job offers of the current user to inactive
-            jobOfferRepository.updateAllActiveByJobAdvertiserId(jobAdvertiser.getId(), false);
 
             return userMapper.fromUser(userRepository.save(currentUser));
         }
