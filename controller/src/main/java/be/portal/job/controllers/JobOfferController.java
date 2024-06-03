@@ -2,10 +2,8 @@ package be.portal.job.controllers;
 
 import be.portal.job.dtos.job_offer.requests.JobOfferRequest;
 import be.portal.job.dtos.job_offer.responses.JobOfferResponse;
-import be.portal.job.exceptions.company.CompanyNotVerifiedOrActiveException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -38,13 +36,8 @@ public class JobOfferController {
 
     @PreAuthorize("hasAnyAuthority('ADVERTISER', 'ADMIN')")
     @PostMapping()
-    public ResponseEntity<?> addJobOffer(@RequestBody @Valid JobOfferRequest jobOfferRequest) {
-        try {
-            JobOfferResponse jobOfferResponse = jobOfferService.addJobOffer(jobOfferRequest);
-            return ResponseEntity.ok(jobOfferResponse);
-        } catch (CompanyNotVerifiedOrActiveException ex) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
-        }
+    public ResponseEntity<JobOfferResponse> addJobOffer(@RequestBody @Valid JobOfferRequest jobOfferRequest) {
+            return ResponseEntity.ok(jobOfferService.addJobOffer(jobOfferRequest));
     }
 
     @PreAuthorize("hasAnyAuthority('ADVERTISER', 'ADMIN')")
