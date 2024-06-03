@@ -48,4 +48,9 @@ public class ApplicationController {
     public ResponseEntity<ApplicationResponse> deleteApplication(@PathVariable Long id) {
         return ResponseEntity.ok(applicationService.deleteApplication(id));
     }
+
+    @PatchMapping("/{id:^[0-9]+$}")
+    public ResponseEntity<ApplicationResponse> cancelApplication(@PathVariable Long id) {
+        return ResponseEntity.ok(applicationService.cancelApplication(id));
+    }
 }
