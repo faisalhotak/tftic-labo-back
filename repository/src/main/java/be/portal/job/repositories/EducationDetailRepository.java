@@ -1,6 +1,5 @@
 package be.portal.job.repositories;
 
-import be.portal.job.entities.Application;
 import be.portal.job.entities.EducationDetail;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
