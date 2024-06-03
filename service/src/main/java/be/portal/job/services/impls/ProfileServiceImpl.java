@@ -6,6 +6,7 @@ import be.portal.job.dtos.user.responses.JobAdvertiserResponse;
 import be.portal.job.dtos.user.responses.JobSeekerResponse;
 import be.portal.job.dtos.user.responses.UserResponse;
 import be.portal.job.entities.*;
+import be.portal.job.enums.AdvertiserRole;
 import be.portal.job.enums.ApplicationStatus;
 import be.portal.job.mappers.user.UserMapper;
 import be.portal.job.repositories.*;
@@ -16,9 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -64,35 +63,11 @@ public class ProfileServiceImpl implements IProfileService {
             // Set all job offers of the current user to inactive
             jobOfferRepository.updateAllActiveByJobAdvertiserId(jobAdvertiser.getId(), false);
 
-            // List of all companyAdvertisers that are owners and have an active user
-            List<CompanyAdvertiser> owners = companyAdvertiserRepository.findAllOwner();
-            // List of all companyAdvertisers where the current user is the owner
-            List<Company> ownedCompanies = owners.stream()
-                    .filter(companyAdvertiser -> companyAdvertiser.getJobAdvertiser().getId().equals(currentUser.getId()))
-                    .map(CompanyAdvertiser::getCompany)
-                    .toList();
-            // List of all companyAdvertisers where the current user is the owner and with co-owners
-            List<CompanyAdvertiser> filteredOwners = owners.stream()
-                    .filter(companyAdvertiser -> ownedCompanies.contains(companyAdvertiser.getCompany()))
-                    .toList();
-            // Map of companies and the number of owners
-            Map<Company, Long> companyCount = filteredOwners.stream()
-                    .collect(Collectors.groupingBy(CompanyAdvertiser::getCompany, Collectors.counting()));
-            // List of companies with only the current user as owner
-            List<CompanyAdvertiser> companiesWithoutDuplicates = filteredOwners.stream()
-                    .filter(companyAdvertiser -> companyCount.get(companyAdvertiser.getCompany()) == 1)
-                    .toList();
+            //companies where the current user is the only owner
+            List<Long> companiesIds = companyRepository.findCompaniesWithSingleOwnerByJobAdvertiserId(jobAdvertiser.getId(), AdvertiserRole.OWNER);
 
-            // Set all companies without owners to inactive and all job offers of these companies to inactive
-            for(CompanyAdvertiser companyAdvertiser : companiesWithoutDuplicates) {
-                Company company = companyRepository.findById(companyAdvertiser.getCompany().getId()).orElseThrow();
-                company.setActive(false);
-                companyRepository.save(company);
-
-                List<JobOffer> jobOffers = jobOfferRepository.findAllByCompanyId(company.getId());
-                jobOffers.forEach(jobOffer -> jobOffer.setActive(false));
-                jobOfferRepository.saveAll(jobOffers);
-            }
+            companyRepository.setInactiveForCompanies(companiesIds);
+            jobOfferRepository.setInactiveForJobOffersByCompaniesIds(companiesIds);
 
             return userMapper.fromUser(userRepository.save(currentUser));
         }

@@ -1,6 +1,5 @@
 package be.portal.job.repositories;
 
-import be.portal.job.entities.Company;
 import be.portal.job.entities.JobOffer;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -30,4 +29,9 @@ public interface JobOfferRepository extends JpaRepository<JobOffer, Long>, JpaSp
     @Modifying
     @Query("UPDATE JobOffer jo SET jo.isActive = :isActive WHERE jo.agent.jobAdvertiser.id = :jobAdvertiserId")
     void updateAllActiveByJobAdvertiserId(Long jobAdvertiserId, boolean isActive);
+
+    @Modifying
+    @Query("UPDATE JobOffer jo SET jo.isActive = false WHERE jo.agent.company.id IN :companyIds")
+    void setInactiveForJobOffersByCompaniesIds(List<Long> companyIds);
+
 }
