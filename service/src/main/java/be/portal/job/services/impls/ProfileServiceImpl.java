@@ -55,7 +55,6 @@ public class ProfileServiceImpl implements IProfileService {
         if (currentUser instanceof JobSeeker jobSeeker) {
             applicationRepository.updateAllStatusByJobSeekerId(jobSeeker.getId(), ApplicationStatus.CANCELLED);
 
-            // Set all job offers of the current user to inactive
             return userMapper.fromUser(userRepository.save(currentUser));
         }
 

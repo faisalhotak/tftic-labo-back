@@ -11,7 +11,14 @@ import java.util.List;
 
 @Repository
 public interface CompanyRepository extends JpaRepository<Company, Long> {
-    //trouve une liste de compagnies dont le jobAdvertiser est le seul owner
+    /**
+     * Find companies where a advertiser is the only owner.
+     *
+     * @param jobAdvertiserId the job advertiser id
+     * @param advertiserRole  the advertiser role, normally OWNER
+     * @return the list of company ids where the advertiser is the only owner
+     */
+
     @Query(
             "SELECT c.id " +
                     "FROM Company c " +
