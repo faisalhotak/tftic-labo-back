@@ -1,6 +1,7 @@
 package be.portal.job.repositories;
 
 import be.portal.job.entities.CompanyAdvertiser;
+import be.portal.job.enums.AdvertiserRole;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -17,6 +18,12 @@ public interface CompanyAdvertiserRepository extends JpaRepository<CompanyAdvert
 
     @Query("SELECT ca FROM CompanyAdvertiser ca WHERE ca.company.id = :companyId AND ca.jobAdvertiser.id = :agentId")
     Optional<CompanyAdvertiser> findByCompanyAndAgent(Long companyId, Long agentId);
+
+    @Query("SELECT ca FROM CompanyAdvertiser ca " +
+            "WHERE ca.company.id = :companyId " +
+            "AND ca.jobAdvertiser.id = :agentId " +
+            "AND ca.advertiserRole = :advertiserRole")
+    Optional<CompanyAdvertiser> findByCompanyAndAgentIdAndAdvertiserRole(Long companyId, Long agentId, AdvertiserRole advertiserRole);
 
     @Query("SELECT ca.id FROM CompanyAdvertiser ca WHERE ca.company.id = :companyId")
     List<Long> findAllAgentsIdsByCompany(Long companyId);
