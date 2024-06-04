@@ -18,7 +18,6 @@ public interface ICompanyService {
 
     /**
      * Retrieves a company by its unique identifier.
-     *
      * @param id the identifier of the company to search for.
      * @return the company corresponding to the provided identifier, or null if not found.
      */
@@ -26,7 +25,6 @@ public interface ICompanyService {
 
     /**
      * Creates a new company in the system.
-     *
      * @param company the company to add.
      * @return The newly created job function.
      */
