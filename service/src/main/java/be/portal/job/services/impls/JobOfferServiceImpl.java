@@ -56,6 +56,16 @@ public class JobOfferServiceImpl implements IJobOfferService {
     }
 
     @Override
+    public List<JobOfferResponse> getAllJobOffersByCompany(Long id) {
+        CompanyAdvertiser companyAdvertiser = companyAdvertiserRepository.findById(id)
+                .orElseThrow(CompanyAdvertiserNotFoundException::new);
+
+        return jobOfferRepository.findAllByAgent(companyAdvertiser.getId()).stream()
+                .map(jobOfferMapper::fromEntity)
+                .toList();
+    }
+    
+    @Override
     @Transactional
     public JobOfferResponse addJobOffer(JobOfferRequest jobOfferRequest) {
 
