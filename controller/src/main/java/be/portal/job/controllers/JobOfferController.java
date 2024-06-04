@@ -1,6 +1,7 @@
 package be.portal.job.controllers;
 
 import be.portal.job.dtos.job_offer.requests.JobOfferRequest;
+import be.portal.job.dtos.job_offer.requests.JobOfferTransferRequest;
 import be.portal.job.dtos.job_offer.responses.JobOfferResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +24,7 @@ public class JobOfferController {
     public ResponseEntity<List<JobOfferResponse>> getAllJobOffers(@RequestParam Map<String, String> params) {
         return ResponseEntity.ok(jobOfferService.getAll(params));
     }
-    
+
     @GetMapping("/agent/{id:^[0-9]+$}")
     public ResponseEntity<List<JobOfferResponse>> getAllJobOffersByJobAdvertiser(@PathVariable Long id) {
         return ResponseEntity.ok(jobOfferService.getAllByAgent(id));
@@ -50,12 +51,12 @@ public class JobOfferController {
     }
 
     @PreAuthorize("hasAnyAuthority('ADVERTISER', 'ADMIN')")
-    @PutMapping("/{id:^[0-9]+$}")
+    @PatchMapping("/{id:^[0-9]+$}")
     public ResponseEntity<JobOfferResponse> transferJobOffer(
             @PathVariable Long id,
-            @RequestBody @Valid JobOfferRequest jobOfferRequest
+            @RequestBody @Valid JobOfferTransferRequest jobOfferTransferRequest
     ) {
-        return ResponseEntity.ok(jobOfferService.transferJobOffer(id, jobOfferRequest));
+        return ResponseEntity.ok(jobOfferService.transferJobOffer(id, jobOfferTransferRequest));
     }
 
     @PreAuthorize("hasAnyAuthority('ADVERTISER', 'ADMIN')")
