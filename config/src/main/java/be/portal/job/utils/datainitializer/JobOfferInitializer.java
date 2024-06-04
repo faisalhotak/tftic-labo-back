@@ -36,7 +36,8 @@ public class JobOfferInitializer implements CommandLineRunner {
         List<JobOffer> jobOffers = List.of(
                 new JobOffer("Description de l'offre 1", 30000, 50000, LocalDateTime.now(), 30, LocalDateTime.now().plusDays(30), true, "1000 Brussels", companyAdvertisers.get(0), contractTypes.get(0), jobFunctions.get(0)),
                 new JobOffer("Description de l'offre 2", 25000, 45000, LocalDateTime.now(), 30, LocalDateTime.now().plusDays(30), true, "2000 Antwerp", companyAdvertisers.get(1), contractTypes.get(1), jobFunctions.get(1)),
-                new JobOffer("Description de l'offre 3", 35000, 60000, LocalDateTime.now(), 30, LocalDateTime.now().plusDays(30), true, "3000 Leuven", companyAdvertisers.get(2), contractTypes.get(2), jobFunctions.get(2))
+                new JobOffer("Description de l'offre 3", 35000, 60000, LocalDateTime.now(), 30, LocalDateTime.now().plusDays(30), true, "3000 Leuven", companyAdvertisers.get(2), contractTypes.get(2), jobFunctions.get(2)),
+                new JobOffer("Description de l'offre 4", 40000, 70000, LocalDateTime.now(), 30, LocalDateTime.now().plusDays(30), true, "4000 Liège", companyAdvertisers.get(3), contractTypes.get(2), jobFunctions.get(2))
         );
 
         jobOfferRepository.saveAll(jobOffers);

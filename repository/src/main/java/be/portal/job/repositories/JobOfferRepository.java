@@ -16,10 +16,22 @@ public interface JobOfferRepository extends JpaRepository<JobOffer, Long>, JpaSp
     @Query("SELECT jo FROM JobOffer jo WHERE jo.id = :id AND jo.agent.jobAdvertiser.id= :jobAdvertiserId")
     Optional<JobOffer> findByIdAndJobAdvertiserId(Long id, Long jobAdvertiserId);
 
-    @Query("SELECT jo FROM JobOffer jo WHERE jo.agent.id = :id")
-    List<JobOffer> findAllByAgent(Long id);
+    @Query("SELECT jo FROM JobOffer jo JOIN CompanyAdvertiser ca ON jo.agent.id = ca.id WHERE ca.jobAdvertiser.id = :id")
+    List<JobOffer> findAllByJobAdvertiser(Long id);
 
     @Modifying
     @Query("DELETE FROM JobOffer jo WHERE jo.agent.id IN :agentsIds")
     void deleteByAgentsIds(List<Long> agentsIds);
+
+    @Query("SELECT jo FROM JobOffer jo WHERE jo.agent.company.id = :id")
+    List<JobOffer> findAllByCompanyId(Long id);
+
+    @Modifying
+    @Query("UPDATE JobOffer jo SET jo.isActive = :isActive WHERE jo.agent.jobAdvertiser.id = :jobAdvertiserId")
+    void updateAllActiveByJobAdvertiserId(Long jobAdvertiserId, boolean isActive);
+
+    @Modifying
+    @Query("UPDATE JobOffer jo SET jo.isActive = false WHERE jo.agent.company.id IN :companyIds")
+    void setInactiveForJobOffersByCompaniesIds(List<Long> companyIds);
+
 }
