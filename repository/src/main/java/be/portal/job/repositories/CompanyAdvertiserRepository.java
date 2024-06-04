@@ -31,4 +31,7 @@ public interface CompanyAdvertiserRepository extends JpaRepository<CompanyAdvert
     @Modifying
     @Query("DELETE FROM CompanyAdvertiser ca WHERE ca.id IN :ids")
     void deleteByIds(List<Long> ids);
+
+    @Query("SELECT ca FROM CompanyAdvertiser ca, JobAdvertiser ja WHERE ca.advertiserRole = 'OWNER' AND ja.isEnabled = true ORDER BY ca.company.id")
+    List<CompanyAdvertiser> findAllOwner();
 }
