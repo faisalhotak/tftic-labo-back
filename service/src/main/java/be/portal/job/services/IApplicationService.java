@@ -57,6 +57,12 @@ public interface IApplicationService {
     ApplicationResponse deleteApplication(Long id);
 
     /**
+     * Cancels an application by its unique identifier.
+     * @param id the unique identifier of the application to be cancelled.
+     */
+    ApplicationResponse cancelApplication(Long id);
+
+    /**
      * Triggers the status of an application.
      * @param id the unique identifier of the application.
      * @param request the ApplicationStatus object containing the new status.

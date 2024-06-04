@@ -31,7 +31,10 @@ public class CompanyAdvertiserInit implements CommandLineRunner {
         List<CompanyAdvertiser> companyAdvertisers = List.of(
                 new CompanyAdvertiser(AdvertiserRole.OWNER, jobAdvertisers.get(0), companies.get(0)),
                 new CompanyAdvertiser(AdvertiserRole.EMPLOYEE, jobAdvertisers.get(1), companies.get(1)),
-                new CompanyAdvertiser(AdvertiserRole.PARTNER, jobAdvertisers.get(2), companies.get(2))
+                new CompanyAdvertiser(AdvertiserRole.PARTNER, jobAdvertisers.get(2), companies.get(2)),
+                new CompanyAdvertiser(AdvertiserRole.OWNER, jobAdvertisers.get(1), companies.get(0)),
+                new CompanyAdvertiser(AdvertiserRole.OWNER, jobAdvertisers.get(0), companies.get(3)),
+                new CompanyAdvertiser(AdvertiserRole.OWNER, jobAdvertisers.get(2), companies.get(1))
         );
 
         companyAdvertiserRepository.saveAll(companyAdvertisers);

@@ -19,11 +19,12 @@ public class CompanyInit implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        // Créer quelques entreprises avec des valeurs arbitraires
+        // Create some companies
         List<Company> companies = List.of(
                 new Company("Company A", "http://www.companyA.com", LocalDateTime.now(), "John Doe", "123456789", "Sales", true),
                 new Company("Company B", "http://www.companyB.com", LocalDateTime.now(), "Jane Smith", "987654321", "Marketing", true),
-                new Company("Company C", "http://www.companyC.com", LocalDateTime.now(), "Alice Johnson", "555555555", "IT", true)
+                new Company("Company C", "http://www.companyC.com", LocalDateTime.now(), "Alice Johnson", "555555555", "IT", true),
+                new Company("Company D", "http://www.companyD.com", LocalDateTime.now(), "Bob Brown", "111111111", "HR", true)
         );
 
         companyRepository.saveAll(companies);

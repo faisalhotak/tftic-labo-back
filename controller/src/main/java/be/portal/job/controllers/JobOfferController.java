@@ -1,6 +1,7 @@
 package be.portal.job.controllers;
 
 import be.portal.job.dtos.job_offer.requests.JobOfferRequest;
+import be.portal.job.dtos.job_offer.requests.JobOfferTransferRequest;
 import be.portal.job.dtos.job_offer.responses.JobOfferResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -23,9 +24,9 @@ public class JobOfferController {
     public ResponseEntity<List<JobOfferResponse>> getAllJobOffers(@RequestParam Map<String, String> params) {
         return ResponseEntity.ok(jobOfferService.getAll(params));
     }
-    
-    @GetMapping("/agent/{id:^[0-9]+$}")
-    public ResponseEntity<List<JobOfferResponse>> getAllJobOffersByJobAdvertiser(@PathVariable Long id) {
+
+    @GetMapping("/agents/{id:^[0-9]+$}")
+    public ResponseEntity<List<JobOfferResponse>> getAllJobOffersByAgent(@PathVariable Long id) {
         return ResponseEntity.ok(jobOfferService.getAllByAgent(id));
     }
 
@@ -35,9 +36,15 @@ public class JobOfferController {
     }
 
     @PreAuthorize("hasAnyAuthority('ADVERTISER', 'ADMIN')")
+    @GetMapping("/companies/{id}")
+    public ResponseEntity<List<JobOfferResponse>> getAllJobOffersByCompanyId(@PathVariable Long id) {
+        return ResponseEntity.ok(jobOfferService.getAllJobOffersByCompany(id));
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADVERTISER', 'ADMIN')")
     @PostMapping()
     public ResponseEntity<JobOfferResponse> addJobOffer(@RequestBody @Valid JobOfferRequest jobOfferRequest) {
-        return ResponseEntity.ok(jobOfferService.addJobOffer(jobOfferRequest));
+            return ResponseEntity.ok(jobOfferService.addJobOffer(jobOfferRequest));
     }
 
     @PreAuthorize("hasAnyAuthority('ADVERTISER', 'ADMIN')")
@@ -47,6 +54,15 @@ public class JobOfferController {
             @RequestBody @Valid JobOfferRequest jobOfferRequest
     ) {
         return ResponseEntity.ok(jobOfferService.updateJobOffer(id, jobOfferRequest));
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADVERTISER', 'ADMIN')")
+    @PatchMapping("/{id:^[0-9]+$}")
+    public ResponseEntity<JobOfferResponse> transferJobOffer(
+            @PathVariable Long id,
+            @RequestBody @Valid JobOfferTransferRequest jobOfferTransferRequest
+    ) {
+        return ResponseEntity.ok(jobOfferService.transferJobOffer(id, jobOfferTransferRequest));
     }
 
     @PreAuthorize("hasAnyAuthority('ADVERTISER', 'ADMIN')")

@@ -111,6 +111,22 @@ public class ApplicationServiceImpl implements IApplicationService {
     }
 
     @Override
+    public ApplicationResponse cancelApplication(Long id) {
+        JobSeeker jobSeeker = authService.getAuthenticatedSeeker();
+
+        Application application = applicationRepository.findByIdAndJobSeekerId(id, jobSeeker.getId())
+                .orElseThrow(ApplicationNotFoundException::new);
+
+        if (application.getApplicationStatus().equals(ApplicationStatus.CANCELLED)) {
+            throw new NotAllowedException("Application is already cancelled.");
+        }
+
+        application.setApplicationStatus(ApplicationStatus.CANCELLED);
+
+        return ApplicationResponse.fromEntity(applicationRepository.save(application));
+    }
+
+    @Override
     public ApplicationResponse triggerApplicationStatus(Long id, ApplicationStatusRequest request) {
         Application application = applicationRepository.findById(id).orElseThrow(ApplicationNotFoundException::new);
 

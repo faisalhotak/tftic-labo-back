@@ -1,6 +1,7 @@
 package be.portal.job.repositories;
 
 import be.portal.job.entities.Application;
+import be.portal.job.enums.ApplicationStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -24,4 +25,8 @@ public interface ApplicationRepository extends JpaRepository<Application, Long> 
     @Modifying
     @Query("DELETE FROM Application a WHERE a.jobOffer.id = :jobOfferId")
     void deleteAllByJobOfferId(Long jobOfferId);
+
+    @Modifying
+    @Query("UPDATE Application a SET a.applicationStatus = :status WHERE a.jobSeeker.id = :seekerId")
+    void updateAllStatusByJobSeekerId(Long seekerId, ApplicationStatus status);
 }

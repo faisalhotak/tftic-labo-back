@@ -2,10 +2,12 @@ package be.portal.job.services.impls;
 
 import be.portal.job.dtos.common.IdRequest;
 import be.portal.job.dtos.job_offer.requests.JobOfferRequest;
+import be.portal.job.dtos.job_offer.requests.JobOfferTransferRequest;
 import be.portal.job.dtos.job_offer.responses.JobOfferResponse;
 import be.portal.job.entities.*;
 import be.portal.job.exceptions.NotAllowedException;
 import be.portal.job.exceptions.company_advertiser.CompanyAdvertiserNotFoundException;
+import be.portal.job.exceptions.company.CompanyNotVerifiedOrActiveException;
 import be.portal.job.exceptions.contract_type.ContractTypeNotFoundException;
 import be.portal.job.exceptions.job_function.JobFunctionNotFoundException;
 import be.portal.job.exceptions.job_offer.JobOfferNotFoundException;
@@ -43,7 +45,7 @@ public class JobOfferServiceImpl implements IJobOfferService {
 
     @Override
     public List<JobOfferResponse> getAllByAgent(Long id) {
-        return jobOfferRepository.findAllByAgent(id).stream()
+        return jobOfferRepository.findAllByAgentId(id).stream()
                 .map(jobOfferMapper::fromEntity)
                 .toList();
     }
@@ -56,13 +58,25 @@ public class JobOfferServiceImpl implements IJobOfferService {
     }
 
     @Override
+    public List<JobOfferResponse> getAllJobOffersByCompany(Long id) {
+        return jobOfferRepository.findByCompanyId(id).stream()
+                .map(jobOfferMapper::fromEntity)
+                .toList();
+    }
+
+    @Override
     @Transactional
     public JobOfferResponse addJobOffer(JobOfferRequest jobOfferRequest) {
+
         JobAdvertiser currentUser = authService.getAuthenticatedAdvertiser();
 
         CompanyAdvertiser agent = companyAdvertiserRepository
                 .findByIdAndJobAdvertiserId(jobOfferRequest.agentId(), currentUser.getId())
                 .orElseThrow(CompanyAdvertiserNotFoundException::new);
+
+        if (!agent.getCompany().isVerified() || !agent.getCompany().isActive()) {
+            throw new CompanyNotVerifiedOrActiveException();
+        }
 
         ContractType contractType = contractTypeRepository.findById(jobOfferRequest.contractTypeId())
                 .orElseThrow(ContractTypeNotFoundException::new);
@@ -90,6 +104,23 @@ public class JobOfferServiceImpl implements IJobOfferService {
                 .orElseThrow(JobFunctionNotFoundException::new);
 
         jobOfferMapper.updateEntityFromRequest(jobOfferRequest, contractType, jobFunction, jobOffer);
+
+        return jobOfferMapper.fromEntity(jobOfferRepository.save(jobOffer));
+    }
+
+    @Override
+    public JobOfferResponse transferJobOffer(Long id, JobOfferTransferRequest jobOfferTransferRequest) {
+
+        JobAdvertiser currentUser = authService.getAuthenticatedAdvertiser();
+
+        JobOffer jobOffer = jobOfferRepository.findByIdAndJobAdvertiserId(id, currentUser.getId())
+                .orElseThrow(JobOfferNotFoundException::new);
+
+        CompanyAdvertiser colleague = companyAdvertiserRepository
+                .findById(jobOfferTransferRequest.agentId())
+                .orElseThrow(CompanyAdvertiserNotFoundException::new);
+
+        jobOffer.setAgent(colleague);
 
         return jobOfferMapper.fromEntity(jobOfferRepository.save(jobOffer));
     }

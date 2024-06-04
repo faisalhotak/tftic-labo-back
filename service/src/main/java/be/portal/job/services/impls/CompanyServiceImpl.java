@@ -3,13 +3,21 @@ package be.portal.job.services.impls;
 import be.portal.job.dtos.common.IdRequest;
 import be.portal.job.dtos.company.requests.CompanyRequest;
 import be.portal.job.dtos.company.responses.CompanyResponse;
-import be.portal.job.entities.Company;
-import be.portal.job.entities.CompanyAdvertiser;
-import be.portal.job.entities.JobAdvertiser;
+import be.portal.job.dtos.company_advertiser.requests.CompanyAdvertiserRequest;
+import be.portal.job.dtos.company_advertiser.requests.CompanyAdvertiserUpdateRequest;
+import be.portal.job.dtos.company_advertiser.responses.CompanyAdvertiserResponse;
+import be.portal.job.entities.*;
 import be.portal.job.enums.AdvertiserRole;
+import be.portal.job.exceptions.AlreadyExistsException;
 import be.portal.job.exceptions.NotAllowedException;
 import be.portal.job.exceptions.NotFoundException;
+import be.portal.job.exceptions.auth.UserNotFoundException;
 import be.portal.job.exceptions.company.CompanyNotFoundException;
+import be.portal.job.mappers.company_advertiser.CompanyAdvertiserMapper;
+import be.portal.job.repositories.CompanyAdvertiserRepository;
+import be.portal.job.repositories.CompanyRepository;
+import be.portal.job.repositories.JobAdvertiserRepository;
+import be.portal.job.repositories.JobOfferRepository;
 import be.portal.job.exceptions.company_advertiser.CompanyAdvertiserInsufficientRole;
 import be.portal.job.repositories.*;
 import be.portal.job.services.ICompanyService;
@@ -26,6 +34,7 @@ public class CompanyServiceImpl implements ICompanyService {
     private final CompanyRepository companyRepository;
     private final CompanyAdvertiserRepository companyAdvertiserRepository;
     private final JobOfferRepository jobOfferRepository;
+    private final CompanyAdvertiserMapper companyAdvertiserMapper;
     private final AuthServiceImpl authService;
     private final JobAdvertiserRepository jobAdvertiserRepository;
 
@@ -97,6 +106,72 @@ public class CompanyServiceImpl implements ICompanyService {
         companyRepository.delete(company);
 
         return CompanyResponse.fromEntity(company);
+    }
+
+    @Transactional
+    @Override
+    public CompanyAdvertiserResponse addAdvertiserToCompany(Long companyId, CompanyAdvertiserRequest request) {
+        JobAdvertiser currentUser = authService.getAuthenticatedAdvertiser();
+
+        Company company = companyRepository.findById(companyId).orElseThrow(CompanyNotFoundException::new);
+
+        companyAdvertiserRepository.findByCompanyAndAgentIdAndAdvertiserRole(company.getId(), currentUser.getId(), AdvertiserRole.OWNER)
+                .orElseThrow(() -> new NotAllowedException("You are not owner of this company."));
+
+        JobAdvertiser jobAdvertiser = jobAdvertiserRepository.findById(request.jobAdvertiserId())
+                .orElseThrow(UserNotFoundException::new);
+
+        if (companyAdvertiserRepository.findByCompanyAndAgent(company.getId(), jobAdvertiser.getId()).isPresent()) {
+            throw new AlreadyExistsException("Advertiser already exists.");
+        }
+
+        CompanyAdvertiser newCompanyAdvertiser = new CompanyAdvertiser(request.advertiserRole(), jobAdvertiser, company);
+
+        return companyAdvertiserMapper.fromEntity(companyAdvertiserRepository.save(newCompanyAdvertiser));
+    }
+
+    @Transactional
+    @Override
+    public CompanyAdvertiserResponse updateCompanyAdvertiser(Long agentId, CompanyAdvertiserUpdateRequest request) {
+        JobAdvertiser currentUser = authService.getAuthenticatedAdvertiser();
+
+        CompanyAdvertiser companyAdvertiser = companyAdvertiserRepository.findById(agentId)
+                .orElseThrow(() -> new NotAllowedException("Company advertiser not found."));
+
+        companyAdvertiserRepository
+                .findByCompanyAndAgentIdAndAdvertiserRole(companyAdvertiser.getCompany().getId(), currentUser.getId(), AdvertiserRole.OWNER)
+                .orElseThrow(() -> new NotAllowedException("You are not owner of this company."));
+
+        companyAdvertiserMapper.updateEntityFromRequest(request, companyAdvertiser);
+
+        return companyAdvertiserMapper.fromEntity(companyAdvertiserRepository.save(companyAdvertiser));
+    }
+
+    @Transactional
+    @Override
+    public CompanyAdvertiserResponse deleteCompanyAdvertiser(Long agentId) {
+        JobAdvertiser currentUser = authService.getAuthenticatedAdvertiser();
+
+        CompanyAdvertiser companyAdvertiser = companyAdvertiserRepository.findById(agentId)
+                .orElseThrow(() -> new NotAllowedException("This agent does not exist."));
+
+        companyAdvertiserRepository
+                .findByCompanyAndAgent(companyAdvertiser.getCompany().getId(), currentUser.getId())
+                .orElseThrow(() -> new NotAllowedException("You are not owner of this company."));
+
+        List<JobOffer> jobOffers = jobOfferRepository.findAllByAgentId((companyAdvertiser.getId()));
+
+        if (!jobOffers.isEmpty()) {
+            throw new NotAllowedException("This agent has job offers. They need to be transferred to another agent.");
+        }
+
+        companyAdvertiserRepository.delete(companyAdvertiser);
+
+        return companyAdvertiserMapper.fromEntity(companyAdvertiser);
+    }
+
+    private boolean isOwner(CompanyAdvertiser companyAdvertiser) {
+        return companyAdvertiser.getAdvertiserRole().equals(AdvertiserRole.OWNER);
     }
 
     @Override
