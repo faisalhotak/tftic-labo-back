@@ -35,6 +35,13 @@ public interface IJobOfferService {
     JobOfferResponse getJobOfferById(Long id);
 
     /**
+     * Retrieves all job offers for a specified company.
+     * @param id the identifier of the company.
+     * @return a list of job offers for the specified company.
+     */
+    List<JobOfferResponse> getAllJobOffersByCompany(Long id);
+
+    /**
      * Adds a new job offer to the system.
      * @param jobOfferRequest the job offer to add.
      * @return the added job offer with its generated identifier.
