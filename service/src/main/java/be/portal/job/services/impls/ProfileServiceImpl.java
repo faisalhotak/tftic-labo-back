@@ -23,7 +23,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ProfileServiceImpl implements IProfileService {
 
-    private final CompanyAdvertiserRepository companyAdvertiserRepository;
     private final CompanyRepository companyRepository;
     private final JobOfferRepository jobOfferRepository;
     private final ApplicationRepository applicationRepository;
@@ -48,17 +47,24 @@ public class ProfileServiceImpl implements IProfileService {
 
     @Transactional
     @Override
-    public UserResponse disableProfile() {
+    public UserResponse disableSelf() {
         User currentUser = authService.getAuthenticatedUser();
-        currentUser.setEnabled(false);
 
-        if (currentUser instanceof JobSeeker jobSeeker) {
+        return disableProfile(currentUser);
+    }
+
+    @Transactional
+    @Override
+    public UserResponse disableProfile(User user) {
+        user.setEnabled(false);
+
+        if (user instanceof JobSeeker jobSeeker) {
             applicationRepository.updateAllStatusByJobSeekerId(jobSeeker.getId(), ApplicationStatus.CANCELLED);
 
-            return userMapper.fromUser(userRepository.save(currentUser));
+            return userMapper.fromUser(userRepository.save(user));
         }
 
-        if (currentUser instanceof JobAdvertiser jobAdvertiser) {
+        if (user instanceof JobAdvertiser jobAdvertiser) {
             // Set all job offers of the current user to inactive
             jobOfferRepository.updateAllActiveByJobAdvertiserId(jobAdvertiser.getId(), false);
 
@@ -68,7 +74,7 @@ public class ProfileServiceImpl implements IProfileService {
             companyRepository.setInactiveForCompanies(companiesIds);
             jobOfferRepository.setInactiveForJobOffersByCompaniesIds(companiesIds);
 
-            return userMapper.fromUser(userRepository.save(currentUser));
+            return userMapper.fromUser(userRepository.save(user));
         }
 
         throw new IllegalStateException("User is not a job seeker or job advertiser!");
@@ -76,29 +82,43 @@ public class ProfileServiceImpl implements IProfileService {
 
     @Transactional
     @Override
-    public UserResponse deleteProfile() {
+    public UserResponse deleteSelf() {
         User currentUser = authService.getAuthenticatedUser();
 
-        if (currentUser.isExpired()) {
+        return deleteProfile(currentUser);
+    }
+
+    @Transactional
+    @Override
+    public UserResponse deleteProfile(User user) {
+        if (user.isExpired()) {
             throw new IllegalStateException("Profile is already deleted!");
         }
 
-        currentUser.setEmail(UUID.randomUUID().toString());
-        currentUser.setFirstname("deleted");
-        currentUser.setLastname("deleted");
-        currentUser.setPassword("deleted");
-        currentUser.setPhoneNumber("deleted");
-        currentUser.setContactEmail("deleted");
-        currentUser.setLocked(true);
+        final String DELETED_STRING = "deleted";
 
-        currentUser.getAddress().setStreet("deleted");
+        user.setEmail(UUID.randomUUID().toString());
+        user.setFirstname(DELETED_STRING);
+        user.setLastname(DELETED_STRING);
+        user.setPassword(DELETED_STRING);
+        user.setPhoneNumber(DELETED_STRING);
+        user.setContactEmail(DELETED_STRING);
+        user.setLocked(true);
 
+        user.getAddress().setStreet(DELETED_STRING);
 
-        if (currentUser.isEnabled()) {
-            disableProfile();
+        if (user.isEnabled()) {
+            disableProfile(user);
         }
 
-        return userMapper.fromUser(userRepository.save(currentUser));
+        return userMapper.fromUser(userRepository.save(user));
     }
 
+    @Transactional
+    @Override
+    public UserResponse deleteUserAsAdmin(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow();
+
+        return deleteProfile(user);
+    }
 }

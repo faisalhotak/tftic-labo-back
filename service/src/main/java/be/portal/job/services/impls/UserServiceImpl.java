@@ -2,23 +2,23 @@ package be.portal.job.services.impls;
 
 import be.portal.job.dtos.auth.requests.JobAdvertiserRegisterRequest;
 import be.portal.job.dtos.auth.requests.JobSeekerRegisterRequest;
+import be.portal.job.dtos.auth.responses.UserTokenResponse;
 import be.portal.job.dtos.user.requests.JobAdvertiserUpdateRequest;
 import be.portal.job.dtos.user.requests.JobSeekerUpdateRequest;
 import be.portal.job.dtos.user.responses.JobAdvertiserResponse;
 import be.portal.job.dtos.user.responses.JobSeekerResponse;
 import be.portal.job.entities.*;
+import be.portal.job.exceptions.NotAllowedException;
 import be.portal.job.exceptions.NotFoundException;
 import be.portal.job.exceptions.auth.UserAlreadyExistsException;
 import be.portal.job.exceptions.auth.UserNotFoundException;
 import be.portal.job.dtos.user.responses.UserResponse;
 import be.portal.job.mappers.user.UserMapper;
 import be.portal.job.repositories.*;
+import be.portal.job.services.IAuthService;
 import be.portal.job.services.IUserService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +27,7 @@ import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
-public class UserServiceImpl implements UserDetailsService, IUserService {
+public class UserServiceImpl implements IUserService {
 
     private final UserRepository userRepository;
     private final JobAdvertiserRepository jobAdvertiserRepository;
@@ -35,12 +35,7 @@ public class UserServiceImpl implements UserDetailsService, IUserService {
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
     private final UserMapper userMapper;
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepository.findByEmail(username)
-                .orElseThrow(() -> new UsernameNotFoundException(username));
-    }
+    private final IAuthService authService;
 
     @Override
     public List<UserResponse> getAll() {
@@ -132,12 +127,42 @@ public class UserServiceImpl implements UserDetailsService, IUserService {
     }
 
     @Override
-    @Transactional
-    public UserResponse deleteUser(Long id) {
+    public UserResponse triggerLock(Long id, boolean isLocked) {
         User user = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
 
-        userRepository.deleteById(id);
+        if (!user.isAccountNonLocked() == isLocked) {
+            throw new NotAllowedException(String.format("User field 'isLocked' already defined to '%s'", isLocked));
+        }
 
-        return userMapper.fromUser(user);
+        user.setLocked(isLocked);
+
+        return userMapper.fromUser(userRepository.save(user));
+    }
+
+    @Override
+    public UserResponse triggerEnable(Long id, boolean isEnabled) {
+        User user = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+
+        if (user.isEnabled() == isEnabled) {
+            throw new NotAllowedException(String.format("User field 'isEnabled' already defined to '%s'", isEnabled));
+        }
+
+        user.setEnabled(isEnabled);
+
+        return userMapper.fromUser(userRepository.save(user));
+    }
+
+    @Override
+    public UserTokenResponse impersonateUserById(Long id) {
+        User user = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+
+        return authService.impersonateUser(user);
+    }
+
+    @Override
+    public UserTokenResponse impersonateUserByEmail(String email) {
+        User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+
+        return authService.impersonateUser(user);
     }
 }

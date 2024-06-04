@@ -28,7 +28,7 @@ public class ApplicationController {
 
     @GetMapping("/{id:^[0-9]+$}")
     public ResponseEntity<ApplicationResponse> getApplicationById(@PathVariable Long id) {
-        return ResponseEntity.ok(applicationService.getApplicationById(id));
+        return ResponseEntity.ok(applicationService.getApplicationByIdAndJobSeekerId(id));
     }
 
     @PostMapping

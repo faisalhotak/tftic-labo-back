@@ -43,7 +43,7 @@ public class ContractTypeServiceImpl implements IContractTypeService {
 
         ContractType contractType = contractTypeRequest.toEntity();
 
-        return ContractTypeResponse.fromEntity(contractType);
+        return ContractTypeResponse.fromEntity(contractTypeRepository.save(contractType));
     }
 
     @Override

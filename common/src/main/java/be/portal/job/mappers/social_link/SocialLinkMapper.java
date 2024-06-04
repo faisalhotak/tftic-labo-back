@@ -7,7 +7,6 @@ import be.portal.job.entities.SocialLink;
 import be.portal.job.entities.User;
 import org.mapstruct.*;
 
-
 @Mapper(componentModel = "spring")
 public interface SocialLinkMapper {
 
@@ -20,6 +19,10 @@ public interface SocialLinkMapper {
 
     SocialLinkResponse fromEntity(SocialLink entity);
 
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
+    @Mapping(target = "user", ignore = true)
     @Mapping(source = "social", target = "social")
     void updateEntityFromRequest(SocialLinkRequest request, Social social, @MappingTarget SocialLink socialLink);
 }

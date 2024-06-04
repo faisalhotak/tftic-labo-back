@@ -56,4 +56,11 @@ public interface IAuthService {
      * @return true if the user is an admin, false otherwise
      */
     boolean isAdmin(User user);
+
+    /**
+     * Impersonates a user.
+     * @param user the user to impersonate
+     * @return a UserTokenResponse object containing the user's details and authentication token
+     */
+    UserTokenResponse impersonateUser(User user);
 }

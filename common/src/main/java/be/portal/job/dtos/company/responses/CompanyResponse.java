@@ -12,7 +12,6 @@ public record CompanyResponse(
         String contactName,
         String contactPhoneNumber,
         String contactDepartment,
-        boolean isVerified,
         boolean isActive
 ) {
     public static CompanyResponse fromEntity(Company company) {
@@ -24,7 +23,6 @@ public record CompanyResponse(
                 company.getContactName(),
                 company.getContactPhoneNumber(),
                 company.getContactDepartment(),
-                company.isVerified(),
                 company.isActive()
         );
     }

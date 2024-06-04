@@ -23,15 +23,14 @@ public interface JobOfferRepository extends JpaRepository<JobOffer, Long>, JpaSp
     List<JobOffer> findByCompanyId(Long id);
 
     @Modifying
-    @Query("DELETE FROM JobOffer jo WHERE jo.agent.id IN :agentsIds")
-    void deleteByAgentsIds(List<Long> agentsIds);
-
-    @Modifying
     @Query("UPDATE JobOffer jo SET jo.isActive = :isActive WHERE jo.agent.jobAdvertiser.id = :jobAdvertiserId")
     void updateAllActiveByJobAdvertiserId(Long jobAdvertiserId, boolean isActive);
 
     @Modifying
+    @Query("UPDATE JobOffer jo SET jo.isActive = :isActive WHERE jo.agent.id IN :agentIds")
+    void updateAllActiveByAgentIds(List<Long> agentIds, boolean isActive);
+
+    @Modifying
     @Query("UPDATE JobOffer jo SET jo.isActive = false WHERE jo.agent.company.id IN :companyIds")
     void setInactiveForJobOffersByCompaniesIds(List<Long> companyIds);
-
 }

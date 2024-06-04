@@ -1,9 +1,7 @@
 package be.portal.job.controllers;
 
-import be.portal.job.dtos.contract_type.requests.ContractTypeRequest;
 import be.portal.job.dtos.contract_type.responses.ContractTypeResponse;
 import be.portal.job.services.IContractTypeService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -13,38 +11,19 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@PreAuthorize("isAuthenticated()")
 @RequestMapping("/api/v1/contract-types")
 public class ContractTypeController {
 
     private final IContractTypeService contractTypeService;
 
-    @PreAuthorize("hasAnyAuthority('SEEKER', 'ADVERTISER', 'ADMIN')")
     @GetMapping
     public ResponseEntity<List<ContractTypeResponse>> getAllContractTypes() {
         return ResponseEntity.ok(contractTypeService.getAll());
     }
 
-    @PreAuthorize("hasAnyAuthority('SEEKER', 'ADVERTISER', 'ADMIN')")
     @GetMapping("/{id:^[0-9]+$}")
     public ResponseEntity<ContractTypeResponse> getContractTypeById(@PathVariable Long id) {
         return ResponseEntity.ok(contractTypeService.getContractTypeById(id));
-    }
-
-    @PreAuthorize("hasAuthority('ADMIN')")
-    @PostMapping()
-    public ResponseEntity<ContractTypeResponse> addContractType(@RequestBody @Valid ContractTypeRequest contractType) {
-        return ResponseEntity.ok(contractTypeService.addContractType(contractType));
-    }
-
-    @PreAuthorize("hasAuthority('ADMIN')")
-    @PutMapping("/{id:^[0-9]+$}")
-    public ResponseEntity<ContractTypeResponse> updateContractType(@PathVariable Long id, @RequestBody @Valid ContractTypeRequest contractType) {
-        return ResponseEntity.ok(contractTypeService.updateContractType(id, contractType));
-    }
-
-    @PreAuthorize("hasAuthority('ADMIN')")
-    @DeleteMapping("/{id:^[0-9]+$}")
-    public ResponseEntity<ContractTypeResponse> deleteContractType(@PathVariable Long id) {
-        return ResponseEntity.ok(contractTypeService.deleteContractType(id));
     }
 }

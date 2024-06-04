@@ -31,13 +31,13 @@ public class CompanyController {
         return ResponseEntity.ok(companyService.getCompanyById(id));
     }
 
-    @PreAuthorize("hasAnyAuthority('ADVERTISER', 'ADMIN')")
+    @PreAuthorize("hasAuthority('ADVERTISER')")
     @PostMapping
     public ResponseEntity<CompanyResponse> addCompany(@RequestBody @Valid CompanyRequest company) {
         return ResponseEntity.ok(companyService.addCompany(company));
     }
 
-    @PreAuthorize("hasAnyAuthority('ADVERTISER', 'ADMIN')")
+    @PreAuthorize("hasAuthority('ADVERTISER')")
     @PutMapping("/{id:^[0-9]+$}")
     public ResponseEntity<CompanyResponse> updateCompany(
             @PathVariable Long id,
@@ -46,7 +46,7 @@ public class CompanyController {
         return ResponseEntity.ok(companyService.updateCompany(id, company));
     }
 
-    @PreAuthorize("hasAnyAuthority('ADVERTISER', 'ADMIN')")
+    @PreAuthorize("hasAuthority('ADVERTISER')")
     @DeleteMapping("/{id:^[0-9]+$}")
     public ResponseEntity<CompanyResponse> deleteCompany(@PathVariable Long id) {
         return ResponseEntity.ok(companyService.deleteCompany(id));

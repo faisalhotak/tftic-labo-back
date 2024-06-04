@@ -1,12 +1,19 @@
 package be.portal.job.services;
 
 import be.portal.job.dtos.application.requests.ApplicationRequest;
+import be.portal.job.dtos.application.requests.ApplicationStatusRequest;
 import be.portal.job.dtos.application.requests.ApplicationUpdateRequest;
 import be.portal.job.dtos.application.responses.ApplicationResponse;
 
 import java.util.List;
 
 public interface IApplicationService {
+
+    /**
+     * Retrieves a list of all applications.
+     * @return a List of Application objects representing all applications.
+     */
+    List<ApplicationResponse> getAll();
 
     /**
      * Retrieves a list of all the seeker's applications.
@@ -20,6 +27,13 @@ public interface IApplicationService {
      * @return the Application object corresponding to the specified id.
      */
     ApplicationResponse getApplicationById(Long id);
+
+    /**
+     * Retrieves an application by its unique identifier and the seeker's id.
+     * @param id the unique identifier of the application.
+     * @return the Application object corresponding to the specified id.
+     */
+    ApplicationResponse getApplicationByIdAndJobSeekerId(Long id);
 
     /**
      * Adds a new application.
@@ -47,4 +61,12 @@ public interface IApplicationService {
      * @param id the unique identifier of the application to be cancelled.
      */
     ApplicationResponse cancelApplication(Long id);
+
+    /**
+     * Triggers the status of an application.
+     * @param id the unique identifier of the application.
+     * @param request the ApplicationStatus object containing the new status.
+     * @return the updated Application object.
+     */
+    ApplicationResponse triggerApplicationStatus(Long id, ApplicationStatusRequest request);
 }

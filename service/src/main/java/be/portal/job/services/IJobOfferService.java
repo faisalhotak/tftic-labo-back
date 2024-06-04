@@ -70,4 +70,12 @@ public interface IJobOfferService {
      * @return the deleted job offer, or null if the job offer does not exist.
      */
     JobOfferResponse deleteJobOffer(Long id);
+
+    /**
+     * Triggers the active status of a job offer.
+     * @param id the identifier of the job offer to trigger.
+     * @param isActive the new active status of the job offer.
+     * @return the updated job offer.
+     */
+    JobOfferResponse triggerActive(Long id, boolean isActive);
 }

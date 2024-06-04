@@ -4,14 +4,15 @@ import be.portal.job.exceptions.AlreadyExistsException;
 import be.portal.job.exceptions.NotAllowedException;
 import be.portal.job.exceptions.NotFoundException;
 import be.portal.job.exceptions.ResourceAccessDeniedException;
+import be.portal.job.exceptions.auth.AccountReactivatedException;
 import io.jsonwebtoken.JwtException;
 import jakarta.validation.ValidationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -24,6 +25,13 @@ import java.util.stream.Collectors;
 @Slf4j
 @RestControllerAdvice
 public class ControllerAdvisor {
+
+    @ExceptionHandler(AccountReactivatedException.class)
+    public ResponseEntity<String> handleAccountReactivatedException(final AccountReactivatedException e){
+        log.error(e.toString());
+
+        return ResponseEntity.status(200).body(e.getMessage());
+    }
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<String> handleBadRequestException(final IllegalArgumentException e){
@@ -74,6 +82,13 @@ public class ControllerAdvisor {
         return ResponseEntity.status(403).body(e.getMessage());
     }
 
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<String> handleAuthenticationException(final AuthenticationException e){
+        log.error(e.toString());
+
+        return ResponseEntity.status(403).body(e.getMessage());
+    }
+
     @ExceptionHandler(NoResourceFoundException.class)
     public ResponseEntity<String> handleNoResourceFoundException(final NoResourceFoundException e){
         log.error(e.toString());
@@ -100,9 +115,11 @@ public class ControllerAdvisor {
         Map<String,String> errors = e.getBindingResult().getFieldErrors()
                 .stream()
                 .collect(Collectors.toMap(
-                        FieldError::getField,
+                        fieldError -> Optional.of(fieldError.getField())
+                                .orElse("No field provided."),
                         fieldError -> Optional.ofNullable(fieldError.getDefaultMessage())
-                                .orElse("No error message provided.")
+                                .orElse("No error message provided."),
+                        (existingValue, newValue) -> String.join(", ", existingValue, newValue)
                 ));
 
         return ResponseEntity.status(406).body(errors);

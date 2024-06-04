@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsChecker;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -23,6 +24,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
     private final JwtUtils jwtUtils;
     private final UserDetailsService userDetailsService;
+    private final UserDetailsChecker userDetailsChecker;
 
     /**
      * Check if the request should not be filtered.
@@ -49,6 +51,9 @@ public class JwtFilter extends OncePerRequestFilter {
             if (!token.isBlank() && jwtUtils.validateToken(token)) {
                 String username = jwtUtils.getUsername(token);
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
+                userDetailsChecker.check(userDetails);
+
                 UsernamePasswordAuthenticationToken upt = new UsernamePasswordAuthenticationToken(
                         userDetails,
                         null,

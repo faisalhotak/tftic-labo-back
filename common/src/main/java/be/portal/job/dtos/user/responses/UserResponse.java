@@ -9,6 +9,7 @@ import java.util.Set;
 @Getter
 @Setter
 public class UserResponse {
+    protected final Long id;
     protected final String email;
     protected final String firstname;
     protected final String lastname;
@@ -19,16 +20,22 @@ public class UserResponse {
     protected final int zip;
     protected final String country;
     protected final Set<String> roles;
+    protected final boolean isEnabled;
+    protected final boolean isLocked;
 
     public UserResponse(
+            Long id,
             String email,
             String firstname,
             String lastname,
             String phoneNumber,
             String contactEmail,
             Address address,
-            Set<String> roles
+            Set<String> roles,
+            boolean isEnabled,
+            boolean isLocked
     ) {
+        this.id = id;
         this.email = email;
         this.firstname = firstname;
         this.lastname = lastname;
@@ -39,5 +46,7 @@ public class UserResponse {
         this.zip = address.getZip();
         this.country = address.getCountry();
         this.roles = roles;
+        this.isEnabled = isEnabled;
+        this.isLocked = isLocked;
     }
 }

@@ -25,6 +25,9 @@ public interface UserMapper {
      * @param roles the roles to assign to the user
      * @return the job advertiser entity
      */
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
     @Mapping(source = "request.street", target = "address.street")
     @Mapping(source = "request.city", target = "address.city")
     @Mapping(source = "request.zip", target = "address.zip")
@@ -37,6 +40,9 @@ public interface UserMapper {
      * @param roles the roles to assign to the user
      * @return the job seeker entity
      */
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
     @Mapping(source = "request.street", target = "address.street")
     @Mapping(source = "request.city", target = "address.city")
     @Mapping(source = "request.zip", target = "address.zip")
@@ -77,6 +83,9 @@ public interface UserMapper {
      * @param request the request to update the user with
      * @param user the user to update
      */
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
     @Mapping(source = "street", target = "address.street")
     @Mapping(source = "city", target = "address.city")
     @Mapping(source = "zip", target = "address.zip")
@@ -88,6 +97,8 @@ public interface UserMapper {
      * @param user the user to map
      * @return the user response
      */
+    @Mapping(source = "enabled", target = "isEnabled")
+    @Mapping(source = "locked", target = "isLocked")
     UserResponse fromUser(User user);
 
     /**
@@ -95,6 +106,8 @@ public interface UserMapper {
      * @param jobAdvertiser the advertiser to map
      * @return the job advertiser response
      */
+    @Mapping(source = "enabled", target = "isEnabled")
+    @Mapping(source = "locked", target = "isLocked")
     JobAdvertiserResponse fromJobAdvertiser(JobAdvertiser jobAdvertiser);
 
     /**
@@ -102,5 +115,7 @@ public interface UserMapper {
      * @param jobSeeker the seeker to map
      * @return the job seeker response
      */
+    @Mapping(source = "enabled", target = "isEnabled")
+    @Mapping(source = "locked", target = "isLocked")
     JobSeekerResponse fromJobSeeker(JobSeeker jobSeeker);
 }
