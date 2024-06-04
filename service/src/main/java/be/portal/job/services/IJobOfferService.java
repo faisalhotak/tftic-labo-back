@@ -1,6 +1,7 @@
 package be.portal.job.services;
 
 import be.portal.job.dtos.job_offer.requests.JobOfferRequest;
+import be.portal.job.dtos.job_offer.requests.JobOfferTransferRequest;
 import be.portal.job.dtos.job_offer.responses.JobOfferResponse;
 
 import java.util.List;
@@ -27,14 +28,6 @@ public interface IJobOfferService {
     List<JobOfferResponse> getAllByAgent(Long id);
 
     /**
-     * Retrieves a job offer by its unique identifier.
-     *
-     * @param id the identifier of the job offer to search for.
-     * @return the job offer corresponding to the provided identifier, or null if not found.
-     */
-    JobOfferResponse getJobOfferById(Long id);
-
-    /**
      * Adds a new job offer to the system.
      * @param jobOfferRequest the job offer to add.
      * @return the added job offer with its generated identifier.
@@ -52,10 +45,10 @@ public interface IJobOfferService {
     /**
      * Transfers a job offer to another company advertiser who is a colleague of the same company.
      * @param id the identifier of the job offer to transfer.
-     * @param jobOfferRequest the request containing the new advertiser's information.
+     * @param jobOfferTransferRequest the request containing the new advertiser's information.
      * @return the transferred job offer.
      */
-    JobOfferResponse transferJobOffer(Long id, JobOfferRequest jobOfferRequest);
+    JobOfferResponse transferJobOffer(Long id, JobOfferTransferRequest jobOfferTransferRequest);
 
     /**
      * Deletes a job offer by its identifier.
