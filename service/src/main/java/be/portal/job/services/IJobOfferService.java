@@ -28,6 +28,13 @@ public interface IJobOfferService {
     List<JobOfferResponse> getAllByAgent(Long id);
 
     /**
+     * Retrieves a job offer by its unique identifier.
+     * @param id the identifier of the job offer to search for.
+     * @return the job offer corresponding to the provided identifier, or null if not found.
+     */
+    JobOfferResponse getJobOfferById(Long id);
+
+    /**
      * Adds a new job offer to the system.
      * @param jobOfferRequest the job offer to add.
      * @return the added job offer with its generated identifier.
