@@ -22,16 +22,14 @@ public interface CompanyAdvertiserRepository extends JpaRepository<CompanyAdvert
     @Query("SELECT ca FROM CompanyAdvertiser ca " +
             "WHERE ca.company.id = :companyId " +
             "AND ca.jobAdvertiser.id = :agentId " +
-            "AND ca.advertiserRole = :advertiserRole")
+            "AND ca.advertiserRole = :advertiserRole " +
+            "AND ca.isActive = true")
     Optional<CompanyAdvertiser> findByCompanyAndAgentIdAndAdvertiserRole(Long companyId, Long agentId, AdvertiserRole advertiserRole);
+
+    @Modifying
+    @Query("UPDATE CompanyAdvertiser ca SET ca.isActive = :isActive WHERE ca.id IN :ids")
+    void updateAllActiveByIds(List<Long> ids, boolean isActive);
 
     @Query("SELECT ca.id FROM CompanyAdvertiser ca WHERE ca.company.id = :companyId")
     List<Long> findAllAgentsIdsByCompany(Long companyId);
-
-    @Modifying
-    @Query("DELETE FROM CompanyAdvertiser ca WHERE ca.id IN :ids")
-    void deleteByIds(List<Long> ids);
-
-    @Query("SELECT ca FROM CompanyAdvertiser ca, JobAdvertiser ja WHERE ca.advertiserRole = 'OWNER' AND ja.isEnabled = true ORDER BY ca.company.id")
-    List<CompanyAdvertiser> findAllOwner();
 }

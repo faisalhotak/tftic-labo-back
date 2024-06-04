@@ -5,6 +5,7 @@ import be.portal.job.dtos.user.requests.JobSeekerUpdateRequest;
 import be.portal.job.dtos.user.responses.JobAdvertiserResponse;
 import be.portal.job.dtos.user.responses.JobSeekerResponse;
 import be.portal.job.dtos.user.responses.UserResponse;
+import be.portal.job.entities.User;
 
 /**
  * Service interface for profile management in the system.
@@ -12,16 +13,31 @@ import be.portal.job.dtos.user.responses.UserResponse;
 public interface IProfileService {
 
         /**
-        * Disables the profile of the current user.
-        * @return the user which was disabled.
-        */
-        UserResponse disableProfile();
+         * Disables the profile of the current user.
+         * @return the user which was disabled.
+         */
+        UserResponse disableSelf();
 
         /**
          * Deletes the profile of the current user.
          * @return the user which was disabled.
          */
-        UserResponse deleteProfile();
+        UserResponse deleteSelf();
+
+        /**
+        * Disables the profile of the current user.
+        * @param user the user to disable.
+        * @return the user which was disabled.
+        */
+        UserResponse disableProfile(User user);
+
+        /**
+         * Deletes the profile of the current user.
+         * @param user the user to delete.
+         * @return the user which was disabled.
+         */
+        UserResponse deleteProfile(User user);
+
         /**
          * Updates the profile of the current jobA
          * @param jobSeekerUpdateRequest the new information for the job seeker.
@@ -36,4 +52,10 @@ public interface IProfileService {
          */
         JobAdvertiserResponse updateJobAdvertiserProfile(JobAdvertiserUpdateRequest jobAdvertiserUpdateRequest);
 
+        /**
+         * Deletes a user as an admin.
+         * @param id the id of the user to delete.
+         * @return the user which was deleted.
+         */
+        UserResponse deleteUserAsAdmin(Long id);
 }

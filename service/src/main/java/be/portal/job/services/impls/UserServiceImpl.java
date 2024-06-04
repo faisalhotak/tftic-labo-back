@@ -3,8 +3,6 @@ package be.portal.job.services.impls;
 import be.portal.job.dtos.auth.requests.JobAdvertiserRegisterRequest;
 import be.portal.job.dtos.auth.requests.JobSeekerRegisterRequest;
 import be.portal.job.dtos.auth.responses.UserTokenResponse;
-import be.portal.job.dtos.common.EmailRequest;
-import be.portal.job.dtos.common.IdRequest;
 import be.portal.job.dtos.user.requests.JobAdvertiserUpdateRequest;
 import be.portal.job.dtos.user.requests.JobSeekerUpdateRequest;
 import be.portal.job.dtos.user.responses.JobAdvertiserResponse;
@@ -129,18 +127,8 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    @Transactional
-    public UserResponse deleteUser(Long id) {
+    public UserResponse triggerLock(Long id, boolean isLocked) {
         User user = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
-
-        userRepository.deleteById(id);
-
-        return userMapper.fromUser(user);
-    }
-
-    @Override
-    public UserResponse triggerLock(IdRequest request, boolean isLocked) {
-        User user = userRepository.findById(request.id()).orElseThrow(UserNotFoundException::new);
 
         if (!user.isAccountNonLocked() == isLocked) {
             throw new NotAllowedException(String.format("User field 'isLocked' already defined to '%s'", isLocked));
@@ -152,15 +140,28 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
-    public UserTokenResponse impersonateUserById(IdRequest request) {
-        User user = userRepository.findById(request.id()).orElseThrow(UserNotFoundException::new);
+    public UserResponse triggerEnable(Long id, boolean isEnabled) {
+        User user = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+
+        if (user.isEnabled() == isEnabled) {
+            throw new NotAllowedException(String.format("User field 'isEnabled' already defined to '%s'", isEnabled));
+        }
+
+        user.setEnabled(isEnabled);
+
+        return userMapper.fromUser(userRepository.save(user));
+    }
+
+    @Override
+    public UserTokenResponse impersonateUserById(Long id) {
+        User user = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
 
         return authService.impersonateUser(user);
     }
 
     @Override
-    public UserTokenResponse impersonateUserByEmail(EmailRequest request) {
-        User user = userRepository.findByEmail(request.email()).orElseThrow(UserNotFoundException::new);
+    public UserTokenResponse impersonateUserByEmail(String email) {
+        User user = userRepository.findByEmail(email).orElseThrow(UserNotFoundException::new);
 
         return authService.impersonateUser(user);
     }

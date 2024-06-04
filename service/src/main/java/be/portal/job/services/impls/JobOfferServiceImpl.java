@@ -1,13 +1,12 @@
 package be.portal.job.services.impls;
 
-import be.portal.job.dtos.common.IdRequest;
 import be.portal.job.dtos.job_offer.requests.JobOfferRequest;
 import be.portal.job.dtos.job_offer.requests.JobOfferTransferRequest;
 import be.portal.job.dtos.job_offer.responses.JobOfferResponse;
 import be.portal.job.entities.*;
 import be.portal.job.exceptions.NotAllowedException;
 import be.portal.job.exceptions.company_advertiser.CompanyAdvertiserNotFoundException;
-import be.portal.job.exceptions.company.CompanyNotVerifiedOrActiveException;
+import be.portal.job.exceptions.company.CompanyNotActiveException;
 import be.portal.job.exceptions.contract_type.ContractTypeNotFoundException;
 import be.portal.job.exceptions.job_function.JobFunctionNotFoundException;
 import be.portal.job.exceptions.job_offer.JobOfferNotFoundException;
@@ -74,8 +73,8 @@ public class JobOfferServiceImpl implements IJobOfferService {
                 .findByIdAndJobAdvertiserId(jobOfferRequest.agentId(), currentUser.getId())
                 .orElseThrow(CompanyAdvertiserNotFoundException::new);
 
-        if (!agent.getCompany().isVerified() || !agent.getCompany().isActive()) {
-            throw new CompanyNotVerifiedOrActiveException();
+        if (!agent.getCompany().isActive()) {
+            throw new CompanyNotActiveException();
         }
 
         ContractType contractType = contractTypeRepository.findById(jobOfferRequest.contractTypeId())
@@ -140,9 +139,8 @@ public class JobOfferServiceImpl implements IJobOfferService {
     }
 
     @Override
-    public JobOfferResponse triggerActive(IdRequest request, boolean isActive) {
-        JobOffer jobOffer = jobOfferRepository.findById(request.id())
-                .orElseThrow(JobOfferNotFoundException::new);
+    public JobOfferResponse triggerActive(Long id, boolean isActive) {
+        JobOffer jobOffer = jobOfferRepository.findById(id).orElseThrow(JobOfferNotFoundException::new);
 
         if (isActive == jobOffer.isActive()) {
             throw new NotAllowedException(String.format("Job offer field 'isActive' already defined to '%s'", isActive));

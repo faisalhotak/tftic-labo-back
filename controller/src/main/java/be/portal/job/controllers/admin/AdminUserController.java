@@ -3,13 +3,12 @@ package be.portal.job.controllers.admin;
 import be.portal.job.dtos.auth.requests.JobAdvertiserRegisterRequest;
 import be.portal.job.dtos.auth.requests.JobSeekerRegisterRequest;
 import be.portal.job.dtos.auth.responses.UserTokenResponse;
-import be.portal.job.dtos.common.EmailRequest;
-import be.portal.job.dtos.common.IdRequest;
 import be.portal.job.dtos.user.requests.JobAdvertiserUpdateRequest;
 import be.portal.job.dtos.user.requests.JobSeekerUpdateRequest;
 import be.portal.job.dtos.user.responses.JobAdvertiserResponse;
 import be.portal.job.dtos.user.responses.JobSeekerResponse;
 import be.portal.job.dtos.user.responses.UserResponse;
+import be.portal.job.services.IProfileService;
 import be.portal.job.services.IUserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,31 +20,32 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/admin/v1")
+@RequestMapping("/api/admin/v1/users")
 @PreAuthorize("hasAuthority('ADMIN')")
 @CrossOrigin("*")
 public class AdminUserController {
 
     private final IUserService userService;
+    private final IProfileService profileService;
 
-    @GetMapping("/users")
+    @GetMapping
     public ResponseEntity<List<UserResponse>> getAllUsers() {
         return ResponseEntity.ok(userService.getAll());
     }
 
-    @GetMapping("/users/{id:^[0-9]+$}")
+    @GetMapping("/{id:^[0-9]+$}")
     public ResponseEntity<UserResponse> getUserById(@PathVariable Long id) {
         return ResponseEntity.ok(userService.getUserById(id));
     }
 
-    @GetMapping(value= "/users", params = "email")
+    @GetMapping(params = "email")
     public ResponseEntity<UserResponse> getUserByEmail(@RequestParam String email) {
         return ResponseEntity.ok(userService.getUserByEmail(email));
     }
 
-    @DeleteMapping("/users/{id:^[0-9]+$}")
+    @DeleteMapping("/{id:^[0-9]+$}")
     public ResponseEntity<UserResponse> deleteUser(@PathVariable Long id) {
-        return ResponseEntity.ok(userService.deleteUser(id));
+        return ResponseEntity.ok(profileService.deleteUserAsAdmin(id));
     }
 
     @GetMapping("/advertisers")
@@ -84,23 +84,33 @@ public class AdminUserController {
         return ResponseEntity.ok(userService.updateSeeker(id, request));
     }
 
-    @PatchMapping("/users/lock")
-    public ResponseEntity<UserResponse> lockUser(@RequestBody @Valid IdRequest request) {
-        return ResponseEntity.ok(userService.triggerLock(request, true));
+    @PatchMapping("/{id:^[0-9]+$}/lock")
+    public ResponseEntity<UserResponse> lockUser(@PathVariable Long id) {
+        return ResponseEntity.ok(userService.triggerLock(id, true));
     }
 
-    @PatchMapping("/users/unlock")
-    public ResponseEntity<UserResponse> unlockUser(@RequestBody @Valid IdRequest request) {
-        return ResponseEntity.ok(userService.triggerLock(request, false));
+    @PatchMapping("/{id:^[0-9]+$}/unlock")
+    public ResponseEntity<UserResponse> unlockUser(@PathVariable Long id) {
+        return ResponseEntity.ok(userService.triggerLock(id, false));
     }
 
-    @PostMapping("/users/impersonate-id")
-    public ResponseEntity<UserTokenResponse> impersonateUserById(@RequestBody @Valid IdRequest request) {
-        return ResponseEntity.ok(userService.impersonateUserById(request));
+    @PatchMapping("/{id:^[0-9]+$}/disable")
+    public ResponseEntity<UserResponse> disableUser(@PathVariable Long id) {
+        return ResponseEntity.ok(userService.triggerEnable(id, false));
     }
 
-    @PostMapping("/users/impersonate-email")
-    public ResponseEntity<UserTokenResponse> impersonateUserByEmail(@RequestBody @Valid EmailRequest request) {
-        return ResponseEntity.ok(userService.impersonateUserByEmail(request));
+    @PatchMapping("/{id:^[0-9]+$}/enable")
+    public ResponseEntity<UserResponse> enableUser(@PathVariable Long id) {
+        return ResponseEntity.ok(userService.triggerEnable(id, true));
+    }
+
+    @PostMapping("/impersonate/id/{id:^[0-9]+$}")
+    public ResponseEntity<UserTokenResponse> impersonateUserById(@PathVariable Long id) {
+        return ResponseEntity.ok(userService.impersonateUserById(id));
+    }
+
+    @PostMapping("/impersonate/email/{email}")
+    public ResponseEntity<UserTokenResponse> impersonateUserByEmail(@PathVariable String email) {
+        return ResponseEntity.ok(userService.impersonateUserByEmail(email));
     }
 }

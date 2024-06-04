@@ -1,6 +1,5 @@
 package be.portal.job.services;
 
-import be.portal.job.dtos.common.IdRequest;
 import be.portal.job.dtos.job_offer.requests.JobOfferRequest;
 import be.portal.job.dtos.job_offer.requests.JobOfferTransferRequest;
 import be.portal.job.dtos.job_offer.responses.JobOfferResponse;
@@ -74,9 +73,9 @@ public interface IJobOfferService {
 
     /**
      * Triggers the active status of a job offer.
-     * @param request the identifier of the job offer to update.
+     * @param id the identifier of the job offer to trigger.
      * @param isActive the new active status of the job offer.
-     * @return the updated job offer, or null if the job offer does not exist.
+     * @return the updated job offer.
      */
-    JobOfferResponse triggerActive(IdRequest request, boolean isActive);
+    JobOfferResponse triggerActive(Long id, boolean isActive);
 }

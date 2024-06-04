@@ -33,13 +33,12 @@ public class ProfileController {
     @PreAuthorize("hasAnyAuthority('SEEKER', 'ADVERTISER')")
     @PatchMapping("/disable")
     public ResponseEntity<UserResponse> disableProfile() {
-        return ResponseEntity.ok(profileService.disableProfile());
+        return ResponseEntity.ok(profileService.disableSelf());
     }
 
     @PreAuthorize("hasAnyAuthority('SEEKER', 'ADVERTISER')")
     @PatchMapping("/delete")
     public ResponseEntity<UserResponse> deleteProfile() {
-        return ResponseEntity.ok(profileService.deleteProfile());
+        return ResponseEntity.ok(profileService.deleteSelf());
     }
-
 }

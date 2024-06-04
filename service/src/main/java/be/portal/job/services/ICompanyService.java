@@ -1,6 +1,5 @@
 package be.portal.job.services;
 
-import be.portal.job.dtos.common.IdRequest;
 import be.portal.job.dtos.company.requests.CompanyRequest;
 import be.portal.job.dtos.company.responses.CompanyResponse;
 import be.portal.job.dtos.company_advertiser.requests.CompanyAdvertiserRequest;
@@ -96,9 +95,9 @@ public interface ICompanyService {
 
     /**
      * Triggers the active status of a company.
-     * @param request the company id request.
-     * @param isActive the active status.
+     * @param id the id of the company.
+     * @param isActive the new active status.
      * @return the company response.
      */
-    CompanyResponse triggerActive(IdRequest request, boolean isActive);
+    CompanyResponse triggerActive(Long id, boolean isActive);
 }

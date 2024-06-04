@@ -3,8 +3,6 @@ package be.portal.job.services;
 import be.portal.job.dtos.auth.requests.JobAdvertiserRegisterRequest;
 import be.portal.job.dtos.auth.requests.JobSeekerRegisterRequest;
 import be.portal.job.dtos.auth.responses.UserTokenResponse;
-import be.portal.job.dtos.common.EmailRequest;
-import be.portal.job.dtos.common.IdRequest;
 import be.portal.job.dtos.user.requests.JobAdvertiserUpdateRequest;
 import be.portal.job.dtos.user.requests.JobSeekerUpdateRequest;
 import be.portal.job.dtos.user.responses.JobAdvertiserResponse;
@@ -82,31 +80,32 @@ public interface IUserService {
     JobSeekerResponse updateSeeker(Long id, JobSeekerUpdateRequest request);
 
     /**
-     * Delete a user.
-     * @param id The ID of the user to delete.
-     * @return The deleted user.
+     * Trigger the lock of a user.
+     * @param id The ID of the user to lock.
+     * @param isLocked Whether to lock or unlock the user.
+     * @return The locked user.
      */
-    UserResponse deleteUser(Long id);
+    UserResponse triggerLock(Long id, boolean isLocked);
 
     /**
-     * Trigger the lock of a user.
-     * @param request The request containing the ID of the user to lock.
-     * @param isLocked True to lock the user, false to unlock it.
-     * @return The locked/unlocked user.
+     * Trigger the enable of a user.
+     * @param id The ID of the user to enable.
+     * @param isEnabled Whether to enable or disable the user.
+     * @return The enabled user.
      */
-    UserResponse triggerLock(IdRequest request, boolean isLocked);
+    UserResponse triggerEnable(Long id, boolean isEnabled);
 
     /**
      * Impersonate a user by its ID.
-     * @param request The request containing the ID of the user to impersonate.
+     * @param id The ID of the user to impersonate.
      * @return The token of the impersonated user.
      */
-    UserTokenResponse impersonateUserById(IdRequest request);
+    UserTokenResponse impersonateUserById(Long id);
 
     /**
      * Impersonate a user by its email.
-     * @param request The request containing the email of the user to impersonate.
+     * @param email The email of the user to impersonate.
      * @return The token of the impersonated user.
      */
-    UserTokenResponse impersonateUserByEmail(EmailRequest request);
+    UserTokenResponse impersonateUserByEmail(String email);
 }
