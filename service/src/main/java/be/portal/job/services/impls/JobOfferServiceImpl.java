@@ -1,6 +1,7 @@
 package be.portal.job.services.impls;
 
 import be.portal.job.dtos.job_offer.requests.JobOfferRequest;
+import be.portal.job.dtos.job_offer.requests.JobOfferTransferRequest;
 import be.portal.job.dtos.job_offer.responses.JobOfferResponse;
 import be.portal.job.entities.*;
 import be.portal.job.exceptions.company_advertiser.CompanyAdvertiserNotFoundException;
@@ -93,18 +94,18 @@ public class JobOfferServiceImpl implements IJobOfferService {
     }
 
     @Override
-    public JobOfferResponse transferJobOffer(Long id, JobOfferRequest jobOfferRequest) {
+    public JobOfferResponse transferJobOffer(Long id, JobOfferTransferRequest jobOfferTransferRequest) {
 
         JobAdvertiser currentUser = authService.getAuthenticatedAdvertiser();
 
         JobOffer jobOffer = jobOfferRepository.findByIdAndJobAdvertiserId(id, currentUser.getId())
                 .orElseThrow(JobOfferNotFoundException::new);
 
-        CompanyAdvertiser newAgent = companyAdvertiserRepository
-                .findByIdAndJobAdvertiserId(jobOfferRequest.agentId(), currentUser.getId())
+        CompanyAdvertiser colleague = companyAdvertiserRepository
+                .findById(jobOfferTransferRequest.agentId())
                 .orElseThrow(CompanyAdvertiserNotFoundException::new);
 
-        jobOffer.setAgent(newAgent);
+        jobOffer.setAgent(colleague);
 
         return jobOfferMapper.fromEntity(jobOfferRepository.save(jobOffer));
     }
