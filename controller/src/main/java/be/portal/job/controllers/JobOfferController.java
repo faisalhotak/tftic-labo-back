@@ -36,6 +36,12 @@ public class JobOfferController {
     }
 
     @PreAuthorize("hasAnyAuthority('ADVERTISER', 'ADMIN')")
+    @GetMapping("/company/{id}")
+    public ResponseEntity<List<JobOfferResponse>> getAllJobOffersByCompanyId(@PathVariable Long id) {
+        return ResponseEntity.ok(jobOfferService.getAllJobOffersByCompany(id));
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADVERTISER', 'ADMIN')")
     @PostMapping()
     public ResponseEntity<JobOfferResponse> addJobOffer(@RequestBody @Valid JobOfferRequest jobOfferRequest) {
             return ResponseEntity.ok(jobOfferService.addJobOffer(jobOfferRequest));
