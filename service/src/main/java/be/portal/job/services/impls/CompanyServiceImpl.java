@@ -12,8 +12,6 @@ import be.portal.job.exceptions.NotAllowedException;
 import be.portal.job.exceptions.NotFoundException;
 import be.portal.job.exceptions.auth.UserNotFoundException;
 import be.portal.job.exceptions.company.CompanyNotFoundException;
-import be.portal.job.exceptions.job_offer.JobOfferIsActiveException;
-import be.portal.job.exceptions.job_offer.JobOfferNotFoundException;
 import be.portal.job.mappers.company_advertiser.CompanyAdvertiserMapper;
 import be.portal.job.repositories.CompanyAdvertiserRepository;
 import be.portal.job.repositories.CompanyRepository;
