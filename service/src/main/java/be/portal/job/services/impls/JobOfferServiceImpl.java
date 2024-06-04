@@ -43,7 +43,7 @@ public class JobOfferServiceImpl implements IJobOfferService {
 
     @Override
     public List<JobOfferResponse> getAllByAgent(Long id) {
-        return jobOfferRepository.findAllByAgent(id).stream()
+        return jobOfferRepository.findAllByAgentId(id).stream()
                 .map(jobOfferMapper::fromEntity)
                 .toList();
     }
@@ -57,14 +57,11 @@ public class JobOfferServiceImpl implements IJobOfferService {
 
     @Override
     public List<JobOfferResponse> getAllJobOffersByCompany(Long id) {
-        CompanyAdvertiser companyAdvertiser = companyAdvertiserRepository.findById(id)
-                .orElseThrow(CompanyAdvertiserNotFoundException::new);
-
-        return jobOfferRepository.findAllByAgent(companyAdvertiser.getId()).stream()
+        return jobOfferRepository.findByCompanyId(id).stream()
                 .map(jobOfferMapper::fromEntity)
                 .toList();
     }
-    
+
     @Override
     @Transactional
     public JobOfferResponse addJobOffer(JobOfferRequest jobOfferRequest) {
