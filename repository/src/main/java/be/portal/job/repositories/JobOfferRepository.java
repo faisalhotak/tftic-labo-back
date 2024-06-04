@@ -17,7 +17,10 @@ public interface JobOfferRepository extends JpaRepository<JobOffer, Long>, JpaSp
     Optional<JobOffer> findByIdAndJobAdvertiserId(Long id, Long jobAdvertiserId);
 
     @Query("SELECT jo FROM JobOffer jo WHERE jo.agent.id = :id")
-    List<JobOffer> findAllByAgent(Long id);
+    List<JobOffer> findAllByAgentId(Long id);
+
+    @Query("SELECT jo FROM JobOffer jo WHERE jo.agent.company.id = :id")
+    List<JobOffer> findByCompanyId(Long id);
 
     @Modifying
     @Query("DELETE FROM JobOffer jo WHERE jo.agent.id IN :agentsIds")
