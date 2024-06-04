@@ -21,10 +21,10 @@ public class CompanyInit implements CommandLineRunner {
     public void run(String... args) throws Exception {
         // Create some companies
         List<Company> companies = List.of(
-                new Company("Company A", "https://www.companyA.com", LocalDateTime.now(), "John Doe", "123456789", "Sales", true, true),
-                new Company("Company B", "https://www.companyB.com", LocalDateTime.now(), "Jane Smith", "987654321", "Marketing", true, true),
-                new Company("Company C", "https://www.companyC.com", LocalDateTime.now(), "Alice Johnson", "555555555", "IT", true, true),
-                new Company("Tesla", "https://tesla.com", LocalDateTime.parse("2020-01-01T00:00:00"), "Elon Musk", "121010101", "Information Technology", true, false)
+                new Company("Company A", "http://www.companyA.com", LocalDateTime.now(), "John Doe", "123456789", "Sales", true, true),
+                new Company("Company B", "http://www.companyB.com", LocalDateTime.now(), "Jane Smith", "987654321", "Marketing", true, true),
+                new Company("Company C", "http://www.companyC.com", LocalDateTime.now(), "Alice Johnson", "555555555", "IT", true, true),
+                new Company("Company D", "http://www.companyD.com", LocalDateTime.now(), "Bob Brown", "111111111", "HR", true, true)
         );
 
         companyRepository.saveAll(companies);
