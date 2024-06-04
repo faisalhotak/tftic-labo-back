@@ -2,6 +2,7 @@ package be.portal.job.controllers;
 
 import be.portal.job.dtos.company.requests.CompanyRequest;
 import be.portal.job.dtos.company.responses.CompanyResponse;
+import be.portal.job.dtos.job_offer.responses.JobOfferResponse;
 import be.portal.job.services.ICompanyService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,11 @@ public class CompanyController {
     @GetMapping
     public ResponseEntity<List<CompanyResponse>> getAllCompanies() {
         return ResponseEntity.ok(companyService.getAll());
+    }
+
+    @GetMapping("/{companyId}/job-offers")
+    public ResponseEntity<List<JobOfferResponse>> getAllJobOffersForCompany(@PathVariable Long companyId) {
+        return ResponseEntity.ok(companyService.getAllJobOffersForCompany(companyId));
     }
 
     @GetMapping("/{id:^[0-9]+$}")

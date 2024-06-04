@@ -1,6 +1,7 @@
 package be.portal.job.services;
 
 import be.portal.job.dtos.job_offer.requests.JobOfferRequest;
+import be.portal.job.dtos.job_offer.requests.JobOfferTransferRequest;
 import be.portal.job.dtos.job_offer.responses.JobOfferResponse;
 
 import java.util.List;
@@ -28,18 +29,10 @@ public interface IJobOfferService {
 
     /**
      * Retrieves a job offer by its unique identifier.
-     *
      * @param id the identifier of the job offer to search for.
      * @return the job offer corresponding to the provided identifier, or null if not found.
      */
     JobOfferResponse getJobOfferById(Long id);
-
-    /**
-     * Deletes a job offer by its identifier.
-     * @param id the identifier of the job offer to delete.
-     * @return the deleted job offer, or null if the job offer does not exist.
-     */
-    JobOfferResponse deleteJobOffer(Long id);
 
     /**
      * Adds a new job offer to the system.
@@ -56,4 +49,18 @@ public interface IJobOfferService {
      */
     JobOfferResponse updateJobOffer(Long id, JobOfferRequest jobOfferRequest);
 
+    /**
+     * Transfers a job offer to another company advertiser who is a colleague of the same company.
+     * @param id the identifier of the job offer to transfer.
+     * @param jobOfferTransferRequest the request containing the new advertiser's information.
+     * @return the transferred job offer.
+     */
+    JobOfferResponse transferJobOffer(Long id, JobOfferTransferRequest jobOfferTransferRequest);
+
+    /**
+     * Deletes a job offer by its identifier.
+     * @param id the identifier of the job offer to delete.
+     * @return the deleted job offer, or null if the job offer does not exist.
+     */
+    JobOfferResponse deleteJobOffer(Long id);
 }
