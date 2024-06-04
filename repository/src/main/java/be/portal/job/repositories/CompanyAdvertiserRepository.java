@@ -19,6 +19,12 @@ public interface CompanyAdvertiserRepository extends JpaRepository<CompanyAdvert
     @Query("SELECT ca FROM CompanyAdvertiser ca WHERE ca.company.id = :companyId AND ca.jobAdvertiser.id = :agentId")
     Optional<CompanyAdvertiser> findByCompanyAndAgent(Long companyId, Long agentId);
 
+    @Query("SELECT ca FROM CompanyAdvertiser ca " +
+            "WHERE ca.company.id = :companyId " +
+            "AND ca.jobAdvertiser.id = :agentId " +
+            "AND ca.advertiserRole = :advertiserRole")
+    Optional<CompanyAdvertiser> findByCompanyAndAgentIdAndAdvertiserRole(Long companyId, Long agentId, AdvertiserRole advertiserRole);
+
     @Query("SELECT ca.id FROM CompanyAdvertiser ca WHERE ca.company.id = :companyId")
     List<Long> findAllAgentsIdsByCompany(Long companyId);
 
