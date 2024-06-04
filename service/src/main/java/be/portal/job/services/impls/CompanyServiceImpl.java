@@ -161,7 +161,7 @@ public class CompanyServiceImpl implements ICompanyService {
                 .findByCompanyAndAgent(companyAdvertiser.getCompany().getId(), currentUser.getId())
                 .orElseThrow(() -> new NotAllowedException("You are not owner of this company."));
 
-        List<JobOffer> jobOffers = jobOfferRepository.findAllByAgent((companyAdvertiser.getId()));
+        List<JobOffer> jobOffers = jobOfferRepository.findAllByAgentId((companyAdvertiser.getId()));
 
         if (!jobOffers.isEmpty()) {
             throw new NotAllowedException("This agent has job offers. They need to be transferred to another agent.");

@@ -43,7 +43,7 @@ public class JobOfferServiceImpl implements IJobOfferService {
 
     @Override
     public List<JobOfferResponse> getAllByAgent(Long id) {
-        return jobOfferRepository.findAllByJobAdvertiser(id).stream()
+        return jobOfferRepository.findAllByAgentId(id).stream()
                 .map(jobOfferMapper::fromEntity)
                 .toList();
     }
