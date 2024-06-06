@@ -12,6 +12,7 @@ import be.portal.job.exceptions.NotAllowedException;
 import be.portal.job.exceptions.application.ApplicationNotFoundException;
 import be.portal.job.exceptions.application.ApplicationStatusAlreadyDefined;
 import be.portal.job.exceptions.job_offer.JobOfferNotFoundException;
+import be.portal.job.mappers.application.ApplicationMapper;
 import be.portal.job.repositories.ApplicationRepository;
 import be.portal.job.repositories.JobOfferRepository;
 import be.portal.job.services.IApplicationService;
@@ -27,13 +28,14 @@ public class ApplicationServiceImpl implements IApplicationService {
 
     private final ApplicationRepository applicationRepository;
     private final JobOfferRepository jobOfferRepository;
+    private final ApplicationMapper applicationMapper;
     private final AuthServiceImpl authService;
 
     @Override
     public List<ApplicationResponse> getAll() {
         return applicationRepository.findAll()
                 .stream()
-                .map(ApplicationResponse::fromEntity)
+                .map(applicationMapper::fromEntity)
                 .toList();
     }
 
@@ -43,7 +45,7 @@ public class ApplicationServiceImpl implements IApplicationService {
 
         return applicationRepository.findByJobSeekerId(jobSeeker.getId())
                 .stream()
-                .map(ApplicationResponse::fromEntity)
+                .map(applicationMapper::fromEntity)
                 .toList();
     }
 
@@ -52,7 +54,7 @@ public class ApplicationServiceImpl implements IApplicationService {
         Application application = applicationRepository.findById(id)
                 .orElseThrow(ApplicationNotFoundException::new);
 
-        return ApplicationResponse.fromEntity(application);
+        return applicationMapper.fromEntity(application);
     }
 
     @Override
@@ -62,7 +64,7 @@ public class ApplicationServiceImpl implements IApplicationService {
         Application application = applicationRepository.findByIdAndJobSeekerId(id, jobSeeker.getId())
                 .orElseThrow(ApplicationNotFoundException::new);
 
-        return ApplicationResponse.fromEntity(applicationRepository.save(application));
+        return applicationMapper.fromEntity(applicationRepository.save(application));
     }
 
     @Override
@@ -79,9 +81,9 @@ public class ApplicationServiceImpl implements IApplicationService {
         JobOffer jobOffer = jobOfferRepository.findById(applicationRequest.jobOfferId())
                 .orElseThrow(JobOfferNotFoundException::new);
 
-        Application application = applicationRequest.toEntity(jobSeeker, jobOffer, ApplicationStatus.SUBMITTED);
+        Application application = applicationMapper.toEntity(jobSeeker, jobOffer, ApplicationStatus.SUBMITTED);
 
-        return ApplicationResponse.fromEntity(applicationRepository.save(application));
+        return applicationMapper.fromEntity(applicationRepository.save(application));
     }
 
     @Override
@@ -95,7 +97,7 @@ public class ApplicationServiceImpl implements IApplicationService {
         application.setApplyDate(request.applyDate());
         application.setApplicationStatus(request.applicationStatus());
 
-        return ApplicationResponse.fromEntity(applicationRepository.save(application));
+        return applicationMapper.fromEntity(applicationRepository.save(application));
     }
 
     @Override
@@ -107,7 +109,7 @@ public class ApplicationServiceImpl implements IApplicationService {
 
         applicationRepository.deleteById(id);
 
-        return ApplicationResponse.fromEntity(application);
+        return applicationMapper.fromEntity(application);
     }
 
     @Override
@@ -123,7 +125,7 @@ public class ApplicationServiceImpl implements IApplicationService {
 
         application.setApplicationStatus(ApplicationStatus.CANCELLED);
 
-        return ApplicationResponse.fromEntity(applicationRepository.save(application));
+        return applicationMapper.fromEntity(applicationRepository.save(application));
     }
 
     @Override
@@ -138,6 +140,6 @@ public class ApplicationServiceImpl implements IApplicationService {
 
         application.setApplicationStatus(status);
 
-        return ApplicationResponse.fromEntity(applicationRepository.save(application));
+        return applicationMapper.fromEntity(applicationRepository.save(application));
     }
 }

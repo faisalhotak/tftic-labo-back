@@ -12,6 +12,7 @@ import be.portal.job.exceptions.NotAllowedException;
 import be.portal.job.exceptions.NotFoundException;
 import be.portal.job.exceptions.auth.UserNotFoundException;
 import be.portal.job.exceptions.company.CompanyNotFoundException;
+import be.portal.job.mappers.company.CompanyMapper;
 import be.portal.job.mappers.company_advertiser.CompanyAdvertiserMapper;
 import be.portal.job.repositories.CompanyAdvertiserRepository;
 import be.portal.job.repositories.CompanyRepository;
@@ -33,20 +34,21 @@ public class CompanyServiceImpl implements ICompanyService {
     private final CompanyAdvertiserRepository companyAdvertiserRepository;
     private final JobOfferRepository jobOfferRepository;
     private final CompanyAdvertiserMapper companyAdvertiserMapper;
+    private final CompanyMapper companyMapper;
     private final AuthServiceImpl authService;
     private final JobAdvertiserRepository jobAdvertiserRepository;
 
     @Override
     public List<CompanyResponse> getAll() {
         return companyRepository.findAll().stream()
-                .map(CompanyResponse::fromEntity)
+                .map(companyMapper::fromEntity)
                 .toList();
     }
 
     @Override
     public CompanyResponse getCompanyById(Long id) {
         return companyRepository.findById(id)
-                .map(CompanyResponse::fromEntity)
+                .map(companyMapper::fromEntity)
                 .orElseThrow(CompanyNotFoundException::new);
     }
 
@@ -56,13 +58,13 @@ public class CompanyServiceImpl implements ICompanyService {
         JobAdvertiser currentUser = authService.getAuthenticatedAdvertiser();
 
         Company company = new Company();
-        companyRequest.updateEntity(company);
+        companyMapper.updateEntity(companyRequest, company);
         companyRepository.save(company);
 
         CompanyAdvertiser companyAdvertiser = new CompanyAdvertiser(AdvertiserRole.OWNER, currentUser, company);
         companyAdvertiserRepository.save(companyAdvertiser);
 
-        return CompanyResponse.fromEntity(company);
+        return companyMapper.fromEntity(company);
     }
 
     @Override
@@ -78,9 +80,9 @@ public class CompanyServiceImpl implements ICompanyService {
             throw new CompanyAdvertiserInsufficientRole();
         }
 
-        companyRequest.updateEntity(company);
+        companyMapper.updateEntity(companyRequest, company);
 
-        return CompanyResponse.fromEntity(companyRepository.save(company));
+        return companyMapper.fromEntity(companyRepository.save(company));
     }
 
     @Override
@@ -104,7 +106,7 @@ public class CompanyServiceImpl implements ICompanyService {
 
         company.setActive(false);
 
-        return CompanyResponse.fromEntity(companyRepository.save(company));
+        return companyMapper.fromEntity(companyRepository.save(company));
     }
 
     @Transactional
@@ -179,22 +181,22 @@ public class CompanyServiceImpl implements ICompanyService {
                 .orElseThrow(() -> new NotFoundException("Job Advertiser has not been found !"));
 
         Company company = new Company();
-        companyRequest.updateEntity(company);
+        companyMapper.updateEntity(companyRequest, company);
         companyRepository.save(company);
 
         CompanyAdvertiser companyAdvertiser = new CompanyAdvertiser(AdvertiserRole.OWNER, jobAdvertiser, company);
         companyAdvertiserRepository.save(companyAdvertiser);
 
-        return CompanyResponse.fromEntity(company);
+        return companyMapper.fromEntity(company);
     }
 
     @Override
     public CompanyResponse updateCompanyAsAdmin(Long id, CompanyRequest companyRequest) {
         Company company = companyRepository.findById(id).orElseThrow(CompanyNotFoundException::new);
 
-        companyRequest.updateEntity(company);
+        companyMapper.updateEntity(companyRequest, company);
 
-        return CompanyResponse.fromEntity(companyRepository.save(company));
+        return companyMapper.fromEntity(companyRepository.save(company));
     }
 
     @Override
@@ -209,7 +211,7 @@ public class CompanyServiceImpl implements ICompanyService {
 
         company.setActive(false);
 
-        return CompanyResponse.fromEntity(companyRepository.save(company));
+        return companyMapper.fromEntity(companyRepository.save(company));
     }
 
     @Override
@@ -222,6 +224,6 @@ public class CompanyServiceImpl implements ICompanyService {
 
         company.setActive(isActive);
 
-        return CompanyResponse.fromEntity(companyRepository.save(company));
+        return companyMapper.fromEntity(companyRepository.save(company));
     }
 }

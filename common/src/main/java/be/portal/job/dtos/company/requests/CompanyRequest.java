@@ -1,6 +1,5 @@
 package be.portal.job.dtos.company.requests;
 
-import be.portal.job.entities.Company;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -25,14 +24,4 @@ public record CompanyRequest(
 
         @NotBlank(message = "The contact department of the company is required.")
         String contactDepartment
-) {
-
-    public void updateEntity(Company company) {
-        company.setName(name);
-        company.setWebsiteUrl(websiteUrl);
-        company.setEstablishmentDate(establishmentDate);
-        company.setContactName(contactName);
-        company.setContactPhoneNumber(contactPhoneNumber);
-        company.setContactDepartment(contactDepartment);
-    }
-}
+) { }

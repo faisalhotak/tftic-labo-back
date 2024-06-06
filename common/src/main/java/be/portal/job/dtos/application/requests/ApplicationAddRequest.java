@@ -1,8 +1,5 @@
 package be.portal.job.dtos.application.requests;
 
-import be.portal.job.entities.Application;
-import be.portal.job.entities.JobOffer;
-import be.portal.job.entities.JobSeeker;
 import be.portal.job.enums.ApplicationStatus;
 import jakarta.validation.constraints.NotNull;
 
@@ -18,13 +15,4 @@ public record ApplicationAddRequest(
 
         @NotNull(message = "Job offer ID cannot be null")
         Long jobOfferId
-) {
-    public Application toEntity(JobSeeker jobSeeker, JobOffer jobOffer) {
-        return new Application(
-                applyDate,
-                applicationStatus,
-                jobSeeker,
-                jobOffer
-        );
-    }
-}
+) { }

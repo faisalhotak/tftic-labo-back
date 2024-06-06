@@ -5,6 +5,7 @@ import be.portal.job.dtos.certification_detail.responses.CertificationDetailResp
 import be.portal.job.entities.CertificationDetail;
 import be.portal.job.entities.JobSeeker;
 import be.portal.job.exceptions.certification_detail.CertificationDetailNotFoundException;
+import be.portal.job.mappers.certification_detail.CertificationDetailMapper;
 import be.portal.job.repositories.CertificationDetailRepository;
 import be.portal.job.services.ICertificationDetailService;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ import java.util.List;
 public class CertificationDetailServiceImpl implements ICertificationDetailService {
 
     private final CertificationDetailRepository certificationDetailRepository;
+    private final CertificationDetailMapper certificationDetailMapper;
     private final AuthServiceImpl authService;
 
 
@@ -28,7 +30,7 @@ public class CertificationDetailServiceImpl implements ICertificationDetailServi
 
         return certificationDetailRepository.findByJobSeekerId(jobSeeker.getId())
                 .stream()
-                .map(CertificationDetailResponse::fromEntity)
+                .map(certificationDetailMapper::fromEntity)
                 .toList();
     }
 
@@ -40,7 +42,7 @@ public class CertificationDetailServiceImpl implements ICertificationDetailServi
         CertificationDetail certificationDetail = certificationDetailRepository.findByIdAndJobSeekerId(id, jobSeeker.getId())
                 .orElseThrow(CertificationDetailNotFoundException::new);
 
-        return CertificationDetailResponse.fromEntity(certificationDetail);
+        return certificationDetailMapper.fromEntity(certificationDetail);
     }
 
     @Override
@@ -49,9 +51,9 @@ public class CertificationDetailServiceImpl implements ICertificationDetailServi
 
         JobSeeker jobSeeker = authService.getAuthenticatedSeeker();
 
-        CertificationDetail certificationDetail = certificationDetailRequest.toEntity(jobSeeker);
+        CertificationDetail certificationDetail = certificationDetailMapper.toEntity(jobSeeker);
 
-        return CertificationDetailResponse.fromEntity(certificationDetailRepository.save(certificationDetail));
+        return certificationDetailMapper.fromEntity(certificationDetailRepository.save(certificationDetail));
     }
 
     @Override
@@ -67,7 +69,7 @@ public class CertificationDetailServiceImpl implements ICertificationDetailServi
         certificationDetail.setDescription(request.description());
         certificationDetail.setCompletionDate(request.completionDate());
 
-        return CertificationDetailResponse.fromEntity(certificationDetailRepository.save(certificationDetail));
+        return certificationDetailMapper.fromEntity(certificationDetailRepository.save(certificationDetail));
     }
 
     @Override
@@ -81,6 +83,6 @@ public class CertificationDetailServiceImpl implements ICertificationDetailServi
 
         certificationDetailRepository.deleteById(id);
 
-        return CertificationDetailResponse.fromEntity(certificationDetail);
+        return certificationDetailMapper.fromEntity(certificationDetail);
     }
 }

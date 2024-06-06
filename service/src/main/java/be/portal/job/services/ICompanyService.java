@@ -49,23 +49,24 @@ public interface ICompanyService {
 
     /**
      * Adds an advertiser to a company.
-     *
-     * @param request The request object containing the details of the advertiser to be added.
-     * @return A response object containing the details of the added advertiser.
+     * @param companyId the ID of the company to which the advertiser is to be added
+     * @param request the request object containing the details of the advertiser to be added
+     * @return a response object containing the details of the added advertiser
      */
     CompanyAdvertiserResponse addAdvertiserToCompany(Long companyId, CompanyAdvertiserRequest request);
 
     /**
-     * Updates an advertiser for a company.
-     * @param request The request object containing the updated details of the advertiser.
-     * @return A response object containing the details of the updated advertiser.
+     * Updates the details of a company advertiser.
+     * @param agentId the ID of the advertiser to be updated
+     * @param request the request object containing the updated details of the advertiser
+     * @return a response object containing the updated details of the advertiser
      */
     CompanyAdvertiserResponse updateCompanyAdvertiser(Long agentId, CompanyAdvertiserUpdateRequest request);
 
     /**
-     * Deletes an advertiser from a company.
-     * @param agentId The ID of the user who is performing the operation.
-     * @return A response object indicating the result of the deletion operation.
+     * Deletes a company advertiser.
+     * @param agentId the ID of the advertiser to be deleted
+     * @return a response object confirming the deletion of the advertiser
      */
     CompanyAdvertiserResponse deleteCompanyAdvertiser(Long agentId);
 
