@@ -54,12 +54,9 @@ public class ContractTypeServiceImpl implements IContractTypeService {
         ContractType existingContractType = contractTypeRepository.findById(id)
                 .orElseThrow(ContractTypeNotFoundException::new);
 
-        existingContractType.setName(contractTypeRequest.name());
-        existingContractType.setDescription(contractTypeRequest.description());
+        contratTypeMapper.updateEntityFromRequest(contractTypeRequest, existingContractType);
 
-        contractTypeRepository.save(existingContractType);
-
-        return contratTypeMapper.fromEntity(existingContractType);
+        return contratTypeMapper.fromEntity(contractTypeRepository.save(existingContractType));
     }
 
     @Override

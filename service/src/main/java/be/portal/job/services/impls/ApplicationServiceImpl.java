@@ -94,8 +94,7 @@ public class ApplicationServiceImpl implements IApplicationService {
                 .findByIdAndJobSeekerId(id, jobSeeker.getId())
                 .orElseThrow(ApplicationNotFoundException::new);
 
-        application.setApplyDate(request.applyDate());
-        application.setApplicationStatus(request.applicationStatus());
+        applicationMapper.updateEntityFromRequest(request, application);
 
         return applicationMapper.fromEntity(applicationRepository.save(application));
     }

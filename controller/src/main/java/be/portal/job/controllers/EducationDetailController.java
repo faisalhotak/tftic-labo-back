@@ -15,7 +15,6 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/education-details")
-@CrossOrigin("*")
 @PreAuthorize("hasAnyAuthority('SEEKER', 'ADMIN')")
 public class EducationDetailController {
 
