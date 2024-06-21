@@ -15,7 +15,7 @@ COPY domain domain
 COPY config config
 COPY common common
 
-RUN ./mvnw clean install -DskipTests
+RUN ./mvnw install -DskipTests
 
 FROM openjdk:21-slim AS deploy
 
