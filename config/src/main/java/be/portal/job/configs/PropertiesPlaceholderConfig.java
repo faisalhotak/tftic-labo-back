@@ -25,7 +25,7 @@ public class PropertiesPlaceholderConfig {
     public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
         PropertySourcesPlaceholderConfigurer configurer = new PropertySourcesPlaceholderConfigurer();
 
-        configurer.setLocation(new FileSystemResource(".env"));
+        configurer.setLocation(new FileSystemResource("./etc/secrets/.env"));
 
         return configurer;
     }
