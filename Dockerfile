@@ -1,11 +1,9 @@
-FROM openjdk:21-slim AS build
+FROM maven:3.9.7-amazoncorretto-21 AS build
 
 WORKDIR /app
 
 ARG PROFILE=prod
 
-COPY mvnw .
-COPY .mvn .mvn
 COPY pom.xml .
 
 COPY controller controller
@@ -15,9 +13,9 @@ COPY domain domain
 COPY config config
 COPY common common
 
-RUN ./mvnw install -DskipTests
+RUN mvn clean install -DskipTests
 
-FROM openjdk:21-slim AS deploy
+FROM amazoncorretto:21 AS deploy
 
 ARG DEPENDENCY=/app/controller/target
 
