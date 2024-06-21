@@ -1,6 +1,5 @@
 package be.portal.job.mappers.application;
 
-import be.portal.job.dtos.application.requests.ApplicationRequest;
 import be.portal.job.dtos.application.requests.ApplicationUpdateRequest;
 import be.portal.job.dtos.application.responses.ApplicationResponse;
 import be.portal.job.entities.Application;
