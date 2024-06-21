@@ -4,6 +4,21 @@
 
 Java Backend Project Using Spring Boot
 
+## Demo API URL
+
+Check Postman Link Below for API Documentation
+
+### Admin Routes
+```
+https://tftic-labo-back.onrender.com/api/admin/v1
+```
+
+### User Routes
+```
+https://tftic-labo-back.onrender.com/api/v1
+```
+
+
 ## Entity Relationship Diagram - v1
 
 ![ERD](/docs/diagrams/ERD_v1.png)
@@ -18,6 +33,7 @@ Java Backend Project Using Spring Boot
 
 ## Links
 
+* [Postman](https://red-flare-210812.postman.co/workspace/Team-Workspace~fd077c8c-607a-44d8-8194-1144e17e2de4/collection/34945946-9ddb3f05-8812-46d8-8ff1-211624cdeb89)
 * [GitHub Repo](https://github.com/faisalhotak/tftic-labo-back)
 * [Our Jira Kanban Board](https://faisalhotak.atlassian.net/jira/software/projects/TFTIC/boards/1?atlOrigin=eyJpIjoiZjMxNmE3NmY4YTA0NDAwNjg1OGI5ZWUxZWNjOTkwNGYiLCJwIjoiaiJ9)
 * [Teams Group](https://teams.microsoft.com/l/team/19%3ASJQYdSXeaU0iEI-nQ3D-I10jVeCOKtG5zrIUmlqIB7k1%40thread.tacv2/conversations?groupId=5db116f2-8545-4714-8730-1dbf2ae12098&tenantId=9c523e69-1868-4f28-826a-993ddf8f33a8)
