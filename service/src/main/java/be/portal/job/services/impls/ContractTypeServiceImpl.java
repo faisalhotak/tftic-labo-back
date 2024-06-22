@@ -5,7 +5,7 @@ import be.portal.job.dtos.contract_type.responses.ContractTypeResponse;
 import be.portal.job.entities.ContractType;
 import be.portal.job.exceptions.NotAllowedException;
 import be.portal.job.exceptions.contract_type.ContractTypeNotFoundException;
-import be.portal.job.mappers.contrat_type.ContratTypeMapper;
+import be.portal.job.mappers.contract_type.ContractTypeMapper;
 import be.portal.job.repositories.ContractTypeRepository;
 import be.portal.job.services.IContractTypeService;
 import lombok.RequiredArgsConstructor;
@@ -18,13 +18,13 @@ import java.util.List;
 public class ContractTypeServiceImpl implements IContractTypeService {
 
     private final ContractTypeRepository contractTypeRepository;
-    private final ContratTypeMapper contratTypeMapper;
+    private final ContractTypeMapper contractTypeMapper;
 
     @Override
     public List<ContractTypeResponse> getAll() {
         return contractTypeRepository.findAll()
                 .stream()
-                .map(contratTypeMapper::fromEntity)
+                .map(contractTypeMapper::fromEntity)
                 .toList();
     }
 
@@ -33,7 +33,7 @@ public class ContractTypeServiceImpl implements IContractTypeService {
 
         ContractType contractType = contractTypeRepository.findById(id).orElseThrow(ContractTypeNotFoundException::new);
 
-        return contratTypeMapper.fromEntity(contractType);
+        return contractTypeMapper.fromEntity(contractType);
     }
 
     @Override
@@ -43,9 +43,9 @@ public class ContractTypeServiceImpl implements IContractTypeService {
             throw new NotAllowedException("Contract type already exists");
         }
 
-        ContractType contractType = contratTypeMapper.toEntity(contractTypeRequest);
+        ContractType contractType = contractTypeMapper.toEntity(contractTypeRequest);
 
-        return contratTypeMapper.fromEntity(contractTypeRepository.save(contractType));
+        return contractTypeMapper.fromEntity(contractTypeRepository.save(contractType));
     }
 
     @Override
@@ -54,9 +54,9 @@ public class ContractTypeServiceImpl implements IContractTypeService {
         ContractType existingContractType = contractTypeRepository.findById(id)
                 .orElseThrow(ContractTypeNotFoundException::new);
 
-        contratTypeMapper.updateEntityFromRequest(contractTypeRequest, existingContractType);
+        contractTypeMapper.updateEntityFromRequest(contractTypeRequest, existingContractType);
 
-        return contratTypeMapper.fromEntity(contractTypeRepository.save(existingContractType));
+        return contractTypeMapper.fromEntity(contractTypeRepository.save(existingContractType));
     }
 
     @Override
@@ -67,6 +67,6 @@ public class ContractTypeServiceImpl implements IContractTypeService {
 
         contractTypeRepository.delete(existingContractType);
 
-        return contratTypeMapper.fromEntity(existingContractType);
+        return contractTypeMapper.fromEntity(existingContractType);
     }
 }

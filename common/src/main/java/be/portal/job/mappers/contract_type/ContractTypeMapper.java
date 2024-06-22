@@ -1,4 +1,4 @@
-package be.portal.job.mappers.contrat_type;
+package be.portal.job.mappers.contract_type;
 
 import be.portal.job.dtos.contract_type.requests.ContractTypeRequest;
 import be.portal.job.dtos.contract_type.responses.ContractTypeResponse;
@@ -8,7 +8,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
-public interface ContratTypeMapper {
+public interface ContractTypeMapper {
 
     @Mapping(target = "id", ignore= true)
     @Mapping(target = "createdAt", ignore = true)
