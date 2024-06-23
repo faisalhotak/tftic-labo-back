@@ -45,3 +45,45 @@ https://tftic-labo-back.onrender.com/api/v1
 * **Faisal HOTAK** [@faisalhotak](https://github.com/faisalhotak)
 * **Nathan SANCKE** [@nathansancke](https://github.com/Lopidurs)
 * **Tomas MENDES** [@tomasmendes](https://github.com/tomashm9)
+
+## How to run the project
+
+### Add environment variables in your IDE
+
+⚠️ <b><u>Make sure to update the variables according to your setup</u></b> ⚠️
+
+Copy-paste the following environment variables in your IDE:
+
+```
+### Server Configuration ###
+SERVER_PORT=8080
+
+### Database Configuration ###
+DATABASE_URL=jdbc:postgresql://localhost:5432/job_portal
+DATABASE_USERNAME=postgres
+DATABASE_PASSWORD=12345
+DATABASE_DRIVER=org.postgresql.Driver
+
+# This will every time drop and create the database schema
+DATABASE_DDL_AUTO=create
+
+DATABASE_SHOW_SQL=true
+DATABASE_FORMAT_SQL=true
+
+### JWT Configuration ###
+JWT_ALGORITHM=HmacSHA256
+
+# Secret key for JWT that needs to be more than 256 bits (meaning 32 characters or more)
+JWT_SECRET=TFTIC_LABO_SECRET_KEY_1234567890
+
+# 24 hours expiration time for JWT in milliseconds
+JWT_EXPIRE_AT=86400000
+```
+
+In IntelliJ IDEA, you can add environment variables by following these steps:
+
+1. Go to `Run` > `Edit Configurations...`
+2. Click on the `Environment Variables` field
+3. If you don't have any environment variables yet, click on the `Modify options` button
+4. You will see under `Operating System` -> `Environment Variables` click on it
+5. <b>Copy-paste</b> the environment variables there (and possibly update them according to your setup)
