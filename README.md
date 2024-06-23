@@ -10,12 +10,12 @@ Check Postman Link Below for API Documentation
 
 ### Admin Routes
 ```
-https://job-portal.159.69.157.168.sslip.io/api/admin/v1
+https://jobs.flyingdesk.be/api/admin/v1
 ```
 
 ### User Routes
 ```
-https://job-portal.159.69.157.168.sslip.io/api/v1
+https://jobs.flyingdesk.be/api/v1
 ```
 
 
