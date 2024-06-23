@@ -10,12 +10,12 @@ Check Postman Link Below for API Documentation
 
 ### Admin Routes
 ```
-https://tftic-labo-back.onrender.com/api/admin/v1
+https://job-portal.159.69.157.168.sslip.io/api/admin/v1
 ```
 
 ### User Routes
 ```
-https://tftic-labo-back.onrender.com/api/v1
+https://job-portal.159.69.157.168.sslip.io/api/v1
 ```
 
 
@@ -67,7 +67,6 @@ DATABASE_DRIVER=org.postgresql.Driver
 # This will every time drop and create the database schema
 DATABASE_DDL_AUTO=create
 
-DATABASE_DIALECT=org.hibernate.dialect.PostgreSQLDialect
 DATABASE_SHOW_SQL=true
 DATABASE_FORMAT_SQL=true
 
