@@ -67,6 +67,7 @@ DATABASE_DRIVER=org.postgresql.Driver
 # This will every time drop and create the database schema
 DATABASE_DDL_AUTO=create
 
+DATABASE_DIALECT=org.hibernate.dialect.PostgreSQLDialect
 DATABASE_SHOW_SQL=true
 DATABASE_FORMAT_SQL=true
 
