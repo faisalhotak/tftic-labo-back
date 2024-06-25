@@ -12,7 +12,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @PreAuthorize("isAuthenticated()")
-@RequestMapping("/api/v1/contract-types")
+@RequestMapping("/v1/contract-types")
 public class ContractTypeController {
 
     private final IContractTypeService contractTypeService;

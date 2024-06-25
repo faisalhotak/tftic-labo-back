@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/admin/v1/companies")
+@RequestMapping("/admin/v1/companies")
 @PreAuthorize("hasAuthority('ADMIN')")
 @CrossOrigin("*")
 public class AdminCompanyController {

@@ -12,7 +12,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @PreAuthorize("isAuthenticated()")
-@RequestMapping("/api/v1/job-functions")
+@RequestMapping("/v1/job-functions")
 @CrossOrigin("*")
 public class JobFunctionController {
 

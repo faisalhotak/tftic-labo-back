@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/skill-sets")
+@RequestMapping("/v1/skill-sets")
 @PreAuthorize("hasAuthority('SEEKER')")
 public class SkillSetController {
 

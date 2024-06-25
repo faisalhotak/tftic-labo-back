@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/certification-details")
+@RequestMapping("/v1/certification-details")
 @PreAuthorize("hasAuthority('SEEKER')")
 public class CertificationDetailController {
 

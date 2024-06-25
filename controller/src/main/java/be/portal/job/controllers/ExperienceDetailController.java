@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/experience-details")
+@RequestMapping("/v1/experience-details")
 @PreAuthorize("hasAuthority('SEEKER')")
 public class ExperienceDetailController {
 

@@ -12,7 +12,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @PreAuthorize("isAuthenticated()")
-@RequestMapping("/api/v1/socials")
+@RequestMapping("/v1/socials")
 public class SocialController {
 
     private final ISocialService socialService;

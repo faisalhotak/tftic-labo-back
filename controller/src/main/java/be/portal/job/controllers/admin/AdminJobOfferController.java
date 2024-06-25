@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/admin/v1/job-offers")
+@RequestMapping("/admin/v1/job-offers")
 @PreAuthorize("hasAuthority('ADMIN')")
 @CrossOrigin("*")
 public class AdminJobOfferController {

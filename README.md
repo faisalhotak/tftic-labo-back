@@ -10,12 +10,12 @@ Check Postman Link Below for API Documentation
 
 ### Admin Routes
 ```
-https://jobs.flyingdesk.be/api/admin/v1
+https://api.jobs.flyingdesk.be/admin/v1
 ```
 
 ### User Routes
 ```
-https://jobs.flyingdesk.be/api/v1
+https://api.jobs.flyingdesk.be/v1
 ```
 
 

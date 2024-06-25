@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/admin/v1/contract-types")
+@RequestMapping("/admin/v1/contract-types")
 @PreAuthorize("hasAuthority('ADMIN')")
 @CrossOrigin("*")
 public class AdminContractTypeController {

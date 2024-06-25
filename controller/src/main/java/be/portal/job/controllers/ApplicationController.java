@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/applications")
+@RequestMapping("/v1/applications")
 @CrossOrigin("*")
 @PreAuthorize("hasAuthority('SEEKER')")
 public class ApplicationController {
