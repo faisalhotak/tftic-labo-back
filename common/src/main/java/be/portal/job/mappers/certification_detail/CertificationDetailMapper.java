@@ -19,6 +19,7 @@ public interface CertificationDetailMapper {
 
     CertificationDetailResponse fromEntity(CertificationDetail certificationDetail);
 
+    @Mapping(target = "id", ignore= true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
     @Mapping(target = "jobSeeker", ignore = true)

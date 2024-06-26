@@ -17,6 +17,7 @@ public interface ContractTypeMapper {
 
     ContractTypeResponse fromEntity(ContractType contractType);
 
+    @Mapping(target = "id", ignore= true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
     void updateEntityFromRequest(ContractTypeRequest contractTypeRequest, @MappingTarget ContractType contractType);
