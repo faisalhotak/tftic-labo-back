@@ -12,5 +12,4 @@ public record ApplicationUpdateRequest(
 
         @NotNull(message = "Application status cannot be null")
         ApplicationStatus applicationStatus
-) {
-}
+) { }

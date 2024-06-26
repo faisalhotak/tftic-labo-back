@@ -15,7 +15,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/admin/v1/contract-types")
 @PreAuthorize("hasAuthority('ADMIN')")
-@CrossOrigin("*")
 public class AdminContractTypeController {
 
     private final IContractTypeService contractTypeService;

@@ -15,7 +15,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @PreAuthorize("hasAuthority('ADMIN')")
 @RequestMapping("/admin/v1/skill-details")
-@CrossOrigin("*")
 public class AdminSkillDetailController {
 
     private final ISkillDetailService skillDetailService;

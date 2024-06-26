@@ -1,6 +1,6 @@
 package be.portal.job.mappers.experience_detail;
 
-import be.portal.job.dtos.experience_detail.requests.ExperienceDetailAddRequest;
+import be.portal.job.dtos.experience_detail.requests.ExperienceDetailRequest;
 import be.portal.job.dtos.experience_detail.responses.ExperienceDetailResponse;
 import be.portal.job.entities.ExperienceDetail;
 import be.portal.job.entities.JobSeeker;
@@ -15,13 +15,13 @@ public interface ExperienceDetailMapper {
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
     @Mapping(target = "jobSeeker", source = "jobSeeker")
-    ExperienceDetail toEntity(ExperienceDetailAddRequest request, JobSeeker jobSeeker);
+    ExperienceDetail toEntity(ExperienceDetailRequest request, JobSeeker jobSeeker);
 
-    ExperienceDetailResponse fromEntity(ExperienceDetail entity);
+    ExperienceDetailResponse fromEntity(ExperienceDetail experienceDetail);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
     @Mapping(target = "jobSeeker", ignore = true)
-    void updateEntityFromRequest(ExperienceDetailAddRequest request, @MappingTarget ExperienceDetail experienceDetail);
+    void updateEntityFromRequest(ExperienceDetailRequest request, @MappingTarget ExperienceDetail experienceDetail);
 }

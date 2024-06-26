@@ -15,7 +15,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/admin/v1/roles")
 @PreAuthorize("hasAuthority('ADMIN')")
-@CrossOrigin("*")
 public class AdminRoleController {
 
     private final IRoleService roleService;

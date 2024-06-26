@@ -18,7 +18,7 @@ public class JobFunctionInit implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        // Créer quelques fonctions d'emploi avec des valeurs arbitraires
+        // Create a few job functions with arbitrary values
         List<JobFunction> jobFunctions = List.of(
                 new JobFunction("Software Developer"),
                 new JobFunction("Marketing Manager"),

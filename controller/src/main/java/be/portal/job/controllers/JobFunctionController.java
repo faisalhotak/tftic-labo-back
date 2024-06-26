@@ -13,7 +13,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @PreAuthorize("isAuthenticated()")
 @RequestMapping("/v1/job-functions")
-@CrossOrigin("*")
 public class JobFunctionController {
 
     private final IJobFunctionService jobFunctionService;

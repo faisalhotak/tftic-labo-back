@@ -18,7 +18,7 @@ public class ContractTypeInit implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        // Créer quelques types de contrat avec des valeurs arbitraires
+        // Create different types of contracts with arbitrary values
         List<ContractType> contractTypes = List.of(
                 new ContractType("CDI", "Contrat à Durée Indéterminée"),
                 new ContractType("CDD", "Contrat à Durée Déterminée"),

@@ -22,7 +22,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/admin/v1/users")
 @PreAuthorize("hasAuthority('ADMIN')")
-@CrossOrigin("*")
 public class AdminUserController {
 
     private final IUserService userService;
