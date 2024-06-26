@@ -52,6 +52,14 @@ https://api.jobs.flyingdesk.be/v1
 
 ⚠️ <b><u>Make sure to update the variables according to your setup</u></b> ⚠️
 
+In IntelliJ IDEA, you can add environment variables by following these steps:
+
+1. Go to `Run` > `Edit Configurations...`
+2. Click on the `Environment Variables` field
+3. If you don't have any environment variables yet, click on the `Modify options` button
+4. You will see under `Operating System` -> `Environment Variables` click on it
+5. <b>Copy-paste</b> the environment variables there (and possibly update them according to your setup)
+
 Copy-paste the following environment variables in your IDE:
 
 ```
@@ -78,12 +86,7 @@ JWT_SECRET=TFTIC_LABO_SECRET_KEY_1234567890
 
 # 24 hours expiration time for JWT in milliseconds
 JWT_EXPIRE_AT=86400000
+
+# Front End Cors
+ANGULAR_ALLOWED_ORIGINS=http://localhost:4200
 ```
-
-In IntelliJ IDEA, you can add environment variables by following these steps:
-
-1. Go to `Run` > `Edit Configurations...`
-2. Click on the `Environment Variables` field
-3. If you don't have any environment variables yet, click on the `Modify options` button
-4. You will see under `Operating System` -> `Environment Variables` click on it
-5. <b>Copy-paste</b> the environment variables there (and possibly update them according to your setup)
