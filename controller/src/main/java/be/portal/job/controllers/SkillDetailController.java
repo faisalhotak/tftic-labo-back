@@ -13,7 +13,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @PreAuthorize("isAuthenticated()")
 @RequestMapping("/api/v1/skill-details")
-@CrossOrigin("*")
 public class SkillDetailController {
 
     private final ISkillDetailService skillDetailService;

@@ -12,7 +12,6 @@ spring:
       hibernate:
         dialect: ${DATABASE_DIALECT}
         format_sql: ${DATABASE_FORMAT_SQL}
-
 server:
   port: ${SERVER_PORT}
 
@@ -20,3 +19,7 @@ jwt:
   algorithm: ${JWT_ALGORITHM}
   secret: ${JWT_SECRET}
   expireAt: ${JWT_EXPIRE_AT}
+
+angular:
+  cors:
+    allowed-origins: ${ANGULAR_ALLOWED_ORIGINS}

@@ -1,6 +1,6 @@
 package be.portal.job.services;
 
-import be.portal.job.dtos.experience_detail.requests.ExperienceDetailAddRequest;
+import be.portal.job.dtos.experience_detail.requests.ExperienceDetailRequest;
 import be.portal.job.dtos.experience_detail.responses.ExperienceDetailResponse;
 
 import java.util.List;
@@ -23,14 +23,14 @@ public interface IExperienceDetailService {
      * @param experienceDetailRequest the experience détail to add.
      * @return the added experience détail.
      */
-    ExperienceDetailResponse addExperienceDetail(ExperienceDetailAddRequest experienceDetailRequest);
+    ExperienceDetailResponse addExperienceDetail(ExperienceDetailRequest experienceDetailRequest);
 
     /**
      * Update an existing experience détail in the system.
      * @param experienceDetailRequest the experience détail to update.
      * @return the updated experience détail.
      */
-    ExperienceDetailResponse updateExperienceDetail(Long id, ExperienceDetailAddRequest experienceDetailRequest);
+    ExperienceDetailResponse updateExperienceDetail(Long id, ExperienceDetailRequest experienceDetailRequest);
 
     /**
      * Delete an existing experience détail in the system.

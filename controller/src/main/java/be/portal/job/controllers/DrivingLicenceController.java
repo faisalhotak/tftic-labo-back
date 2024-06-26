@@ -14,7 +14,6 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/driving-licences")
-@CrossOrigin("*")
 @PreAuthorize("hasAnyAuthority('SEEKER', 'ADMIN')")
 public class DrivingLicenceController {
 

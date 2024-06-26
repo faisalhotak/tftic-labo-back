@@ -1,6 +1,6 @@
 package be.portal.job.controllers;
 
-import be.portal.job.dtos.experience_detail.requests.ExperienceDetailAddRequest;
+import be.portal.job.dtos.experience_detail.requests.ExperienceDetailRequest;
 import be.portal.job.dtos.experience_detail.responses.ExperienceDetailResponse;
 import be.portal.job.services.IExperienceDetailService;
 import jakarta.validation.Valid;
@@ -25,12 +25,12 @@ public class ExperienceDetailController {
     }
 
     @PostMapping
-    public ResponseEntity<ExperienceDetailResponse> addExperienceDetail(@RequestBody @Valid ExperienceDetailAddRequest experienceDetailRequest) {
+    public ResponseEntity<ExperienceDetailResponse> addExperienceDetail(@RequestBody @Valid ExperienceDetailRequest experienceDetailRequest) {
         return ResponseEntity.ok(experienceDetailService.addExperienceDetail(experienceDetailRequest));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ExperienceDetailResponse> updateExperienceDetail(@PathVariable Long id, @RequestBody @Valid ExperienceDetailAddRequest experienceDetailRequest) {
+    public ResponseEntity<ExperienceDetailResponse> updateExperienceDetail(@PathVariable Long id, @RequestBody @Valid ExperienceDetailRequest experienceDetailRequest) {
         return ResponseEntity.ok(experienceDetailService.updateExperienceDetail(id, experienceDetailRequest));
     }
 

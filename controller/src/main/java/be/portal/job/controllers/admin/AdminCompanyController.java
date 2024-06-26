@@ -15,7 +15,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/admin/v1/companies")
 @PreAuthorize("hasAuthority('ADMIN')")
-@CrossOrigin("*")
 public class AdminCompanyController {
 
     private final ICompanyService companyService;

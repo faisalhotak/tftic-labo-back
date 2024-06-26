@@ -15,7 +15,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/admin/v1/job-functions")
 @PreAuthorize("hasAuthority('ADMIN')")
-@CrossOrigin("*")
 public class AdminJobFunctionController {
 
     public final IJobFunctionService jobFunctionService;

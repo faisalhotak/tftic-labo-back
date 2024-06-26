@@ -1,6 +1,5 @@
 package be.portal.job.dtos.certification_detail.responses;
 
-import be.portal.job.entities.CertificationDetail;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -16,12 +15,4 @@ public record CertificationDetailResponse(
 
         @NotNull(message = "Completion date cannot be blank")
         LocalDate completionDate
-) {
-    public static CertificationDetailResponse fromEntity(CertificationDetail certificationDetail) {
-        return new CertificationDetailResponse(
-                certificationDetail.getName(),
-                certificationDetail.getDescription(),
-                certificationDetail.getCompletionDate()
-        );
-    }
-}
+) { }
