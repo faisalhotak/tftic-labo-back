@@ -28,7 +28,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
     /**
      * Check if the request should not be filtered.
-     * The request should not be filtered if the servlet path starts with "/api/v1/auth/".
+     * The request should not be filtered if the servlet path starts with {@value Constants#AUTH_ENDPOINT}.
      * @param request The request to check.
      * @return True if the request should not be filtered, false otherwise.
      */

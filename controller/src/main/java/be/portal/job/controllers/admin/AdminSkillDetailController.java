@@ -14,7 +14,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @PreAuthorize("hasAuthority('ADMIN')")
-@RequestMapping("/api/admin/v1/skill-details")
+@RequestMapping("/admin/v1/skill-details")
 public class AdminSkillDetailController {
 
     private final ISkillDetailService skillDetailService;

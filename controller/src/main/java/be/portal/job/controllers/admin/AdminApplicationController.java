@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/admin/v1/applications")
+@RequestMapping("/admin/v1/applications")
 @PreAuthorize("hasAuthority('ADMIN')")
 public class AdminApplicationController {
 

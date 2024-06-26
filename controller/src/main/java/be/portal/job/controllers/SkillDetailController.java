@@ -12,7 +12,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @PreAuthorize("isAuthenticated()")
-@RequestMapping("/api/v1/skill-details")
+@RequestMapping("/v1/skill-details")
 public class SkillDetailController {
 
     private final ISkillDetailService skillDetailService;

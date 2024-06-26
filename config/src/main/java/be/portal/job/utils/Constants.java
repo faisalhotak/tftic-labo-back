@@ -3,7 +3,7 @@ package be.portal.job.utils;
 public class Constants {
 
     // AUTH
-    public static final String AUTH_ENDPOINT = "/api/v1/auth/";
+    public static final String AUTH_ENDPOINT = "/v1/auth/";
     public static final String AUTH_HEADER = "Authorization";
     public static final String JWT_TOKEN_PREFIX = "Bearer ";
 

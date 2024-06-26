@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/social-links")
+@RequestMapping("/v1/social-links")
 @PreAuthorize("hasAnyAuthority('SEEKER', 'ADMIN')")
 public class SocialLinkController {
 

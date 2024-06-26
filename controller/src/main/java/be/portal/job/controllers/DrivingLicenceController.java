@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/driving-licences")
+@RequestMapping("/v1/driving-licences")
 @PreAuthorize("hasAnyAuthority('SEEKER', 'ADMIN')")
 public class DrivingLicenceController {
 

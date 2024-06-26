@@ -15,7 +15,7 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/job-offers")
+@RequestMapping("/v1/job-offers")
 public class JobOfferController {
 
     private final IJobOfferService jobOfferService;
