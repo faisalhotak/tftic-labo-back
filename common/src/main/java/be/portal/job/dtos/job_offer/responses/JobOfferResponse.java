@@ -15,6 +15,7 @@ public record JobOfferResponse(
         LocalDateTime publishingDate,
         Integer activeDays,
         LocalDateTime expiringDate,
+        String zipCity,
         Boolean isActive,
         CompanyAdvertiserResponse agent,
         ContractTypeResponse contractType,
