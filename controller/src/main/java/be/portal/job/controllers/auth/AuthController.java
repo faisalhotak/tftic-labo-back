@@ -19,14 +19,8 @@ public class AuthController {
     private final IAuthService authService;
 
     @PreAuthorize("isAnonymous()")
-    @PostMapping("/login/advertisers")
-    public ResponseEntity<UserTokenResponse> loginAdvertiser(@RequestBody @Valid LoginRequest request) {
-        return ResponseEntity.ok(authService.login(request));
-    }
-
-    @PreAuthorize("isAnonymous()")
-    @PostMapping("/login/seekers")
-    public ResponseEntity<UserTokenResponse> loginSeeker(@RequestBody @Valid LoginRequest request) {
+    @PostMapping("/login")
+    public ResponseEntity<UserTokenResponse> login(@RequestBody @Valid LoginRequest request) {
         return ResponseEntity.ok(authService.login(request));
     }
 
