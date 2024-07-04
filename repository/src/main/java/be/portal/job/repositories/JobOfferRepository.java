@@ -22,6 +22,9 @@ public interface JobOfferRepository extends JpaRepository<JobOffer, Long>, JpaSp
     @Query("SELECT jo FROM JobOffer jo WHERE jo.agent.company.id = :id")
     List<JobOffer> findByCompanyId(Long id);
 
+    @Query("SELECT DISTINCT jo.zipCity FROM JobOffer jo")
+    List<String> findAllLocation();
+
     @Modifying
     @Query("UPDATE JobOffer jo SET jo.isActive = :isActive WHERE jo.agent.jobAdvertiser.id = :jobAdvertiserId")
     void updateAllActiveByJobAdvertiserId(Long jobAdvertiserId, boolean isActive);
