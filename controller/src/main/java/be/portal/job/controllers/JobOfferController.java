@@ -35,6 +35,11 @@ public class JobOfferController {
         return ResponseEntity.ok(jobOfferService.getJobOfferById(id));
     }
 
+    @GetMapping("/locations")
+    public ResponseEntity<List<String>> getAllLocations() {
+        return ResponseEntity.ok(jobOfferService.getAllLocations());
+    }
+
     @PreAuthorize("hasAnyAuthority('ADVERTISER', 'ADMIN')")
     @GetMapping("/companies/{id}")
     public ResponseEntity<List<JobOfferResponse>> getAllJobOffersByCompanyId(@PathVariable Long id) {
