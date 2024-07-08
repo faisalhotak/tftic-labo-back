@@ -4,9 +4,7 @@ import be.portal.job.dtos.auth.requests.AbstractRegisterRequest;
 import be.portal.job.dtos.auth.requests.JobAdvertiserRegisterRequest;
 import be.portal.job.dtos.auth.requests.JobSeekerRegisterRequest;
 import be.portal.job.dtos.user.requests.UserUpdateRequest;
-import be.portal.job.dtos.user.responses.UserResponse;
-import be.portal.job.dtos.user.responses.JobAdvertiserResponse;
-import be.portal.job.dtos.user.responses.JobSeekerResponse;
+import be.portal.job.dtos.user.responses.*;
 import be.portal.job.entities.*;
 import be.portal.job.exceptions.auth.InvalidUserTypeException;
 import org.mapstruct.Mapper;
@@ -118,4 +116,18 @@ public interface UserMapper {
     @Mapping(source = "enabled", target = "isEnabled")
     @Mapping(source = "locked", target = "isLocked")
     JobSeekerResponse fromJobSeeker(JobSeeker jobSeeker);
+
+    /**
+     * Map a JobSeeker entity to a JobSeekerProfileResponse.
+     * @param jobSeeker the seeker to map
+     * @return the job seeker profile response
+     */
+    JobSeekerProfileResponse fromJobSeekerProfile(JobSeeker jobSeeker);
+
+    /**
+     * Map a JobAdvertiser entity to a JobAdvertiserProfileResponse.
+     * @param jobAdvertiser the advertiser to map
+     * @return the job advertiser profile response
+     */
+    JobAdvertiserProfileResponse fromJobAdvertiserProfile(JobAdvertiser jobAdvertiser);
 }
