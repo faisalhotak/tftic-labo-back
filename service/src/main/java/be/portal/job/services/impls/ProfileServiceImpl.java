@@ -2,9 +2,7 @@ package be.portal.job.services.impls;
 
 import be.portal.job.dtos.user.requests.JobAdvertiserUpdateRequest;
 import be.portal.job.dtos.user.requests.JobSeekerUpdateRequest;
-import be.portal.job.dtos.user.responses.JobAdvertiserResponse;
-import be.portal.job.dtos.user.responses.JobSeekerResponse;
-import be.portal.job.dtos.user.responses.UserResponse;
+import be.portal.job.dtos.user.responses.*;
 import be.portal.job.entities.*;
 import be.portal.job.enums.AdvertiserRole;
 import be.portal.job.enums.ApplicationStatus;
@@ -30,6 +28,20 @@ public class ProfileServiceImpl implements IProfileService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final AuthServiceImpl authService;
+
+    @Override
+    public JobSeekerProfileResponse getJobSeekerProfile() {
+        JobSeeker jobSeeker = authService.getAuthenticatedSeeker();
+
+        return userMapper.fromJobSeekerProfile(jobSeeker);
+    }
+
+    @Override
+    public JobAdvertiserProfileResponse getJobAdvertiserProfile() {
+        JobAdvertiser jobAdvertiser = authService.getAuthenticatedAdvertiser();
+
+        return userMapper.fromJobAdvertiserProfile(jobAdvertiser);
+    }
 
     @Override
     public JobSeekerResponse updateJobSeekerProfile(JobSeekerUpdateRequest jobSeekerUpdateRequest) {
