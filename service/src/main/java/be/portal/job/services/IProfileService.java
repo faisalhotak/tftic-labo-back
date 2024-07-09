@@ -2,6 +2,7 @@ package be.portal.job.services;
 
 import be.portal.job.dtos.user.requests.JobAdvertiserUpdateRequest;
 import be.portal.job.dtos.user.requests.JobSeekerUpdateRequest;
+import be.portal.job.dtos.user.requests.UserUpdatePasswordRequest;
 import be.portal.job.dtos.user.responses.*;
 import be.portal.job.entities.User;
 
@@ -10,6 +11,13 @@ import be.portal.job.entities.User;
  */
 public interface IProfileService {
 
+
+        /**
+         * User change password
+         * @param request the request containing the user password information
+         * @return user update password response with a message
+         */
+        UserUpdatePasswordResponse userChangePassword(UserUpdatePasswordRequest request);
         /**
          * Disables the profile of the current user.
          * @return the user which was disabled.

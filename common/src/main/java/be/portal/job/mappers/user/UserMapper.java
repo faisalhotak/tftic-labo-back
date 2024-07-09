@@ -130,4 +130,7 @@ public interface UserMapper {
      * @return the job advertiser profile response
      */
     JobAdvertiserProfileResponse fromJobAdvertiserProfile(JobAdvertiser jobAdvertiser);
+
+
+    UserUpdatePasswordResponse fromUserToUserUpdatedPassword(User user, String message);
 }

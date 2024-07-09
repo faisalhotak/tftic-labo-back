@@ -9,6 +9,7 @@ import be.portal.job.dtos.user.responses.JobAdvertiserResponse;
 import be.portal.job.dtos.user.responses.JobSeekerResponse;
 import be.portal.job.dtos.user.responses.UserResponse;
 
+
 import java.util.List;
 
 /**
