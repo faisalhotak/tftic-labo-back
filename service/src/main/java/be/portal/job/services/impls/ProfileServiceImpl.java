@@ -2,16 +2,19 @@ package be.portal.job.services.impls;
 
 import be.portal.job.dtos.user.requests.JobAdvertiserUpdateRequest;
 import be.portal.job.dtos.user.requests.JobSeekerUpdateRequest;
+import be.portal.job.dtos.user.requests.UserUpdatePasswordRequest;
 import be.portal.job.dtos.user.responses.*;
 import be.portal.job.entities.*;
 import be.portal.job.enums.AdvertiserRole;
 import be.portal.job.enums.ApplicationStatus;
+import be.portal.job.exceptions.auth.InvalidPasswordException;
 import be.portal.job.mappers.user.UserMapper;
 import be.portal.job.repositories.*;
 import be.portal.job.services.IProfileService;
 import be.portal.job.services.IUserService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,6 +31,21 @@ public class ProfileServiceImpl implements IProfileService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final AuthServiceImpl authService;
+    private final PasswordEncoder passwordEncoder;
+
+    @Override
+    public UserUpdatePasswordResponse userChangePassword(UserUpdatePasswordRequest request){
+        User user = authService.getAuthenticatedUser();
+
+        if (!passwordEncoder.matches(request.oldPassword(), user.getPassword())) {
+            throw new InvalidPasswordException();
+        }
+
+        user.setPassword(passwordEncoder.encode(request.newPassword()));
+        userRepository.save(user);
+
+        return userMapper.fromUserToUserUpdatedPassword(user, "Updated password successfully");
+    }
 
     @Override
     public JobSeekerProfileResponse getJobSeekerProfile() {

@@ -2,8 +2,10 @@ package be.portal.job.controllers;
 
 import be.portal.job.dtos.user.requests.JobAdvertiserUpdateRequest;
 import be.portal.job.dtos.user.requests.JobSeekerUpdateRequest;
+import be.portal.job.dtos.user.requests.UserUpdatePasswordRequest;
 import be.portal.job.dtos.user.responses.*;
 import be.portal.job.services.IProfileService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,13 +18,21 @@ public class ProfileController {
 
     private final IProfileService profileService;
 
-    @PreAuthorize("hasAnyAuthority('SEEKER')")
+    @PreAuthorize("hasAnyAuthority('SEEKER', 'ADVERTISER')")
+    @PatchMapping("/change-password")
+    public ResponseEntity<UserUpdatePasswordResponse> userChangePassword(
+            @RequestBody @Valid UserUpdatePasswordRequest request
+    ) {
+        return ResponseEntity.ok(profileService.userChangePassword(request));
+    }
+
+    @PreAuthorize("hasAuthority('SEEKER')")
     @GetMapping("/seekers/me")
     public ResponseEntity<JobSeekerProfileResponse> getJobSeekerProfile() {
         return ResponseEntity.ok(profileService.getJobSeekerProfile());
     }
 
-    @PreAuthorize("hasAnyAuthority('ADVERTISER')")
+    @PreAuthorize("hasAuthority('ADVERTISER')")
     @GetMapping("/advertisers/me")
     public ResponseEntity<JobAdvertiserProfileResponse> getJobAdvertiserProfile() {
         return ResponseEntity.ok(profileService.getJobAdvertiserProfile());

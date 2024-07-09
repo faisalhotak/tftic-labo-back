@@ -130,4 +130,12 @@ public interface UserMapper {
      * @return the job advertiser profile response
      */
     JobAdvertiserProfileResponse fromJobAdvertiserProfile(JobAdvertiser jobAdvertiser);
+
+    /**
+     * Map a User entity to a UserUpdatePasswordResponse.
+     * @param user the user to map
+     * @param message the message displayed to the user
+     * @return the user password update response
+     */
+    UserUpdatePasswordResponse fromUserToUserUpdatedPassword(User user, String message);
 }
