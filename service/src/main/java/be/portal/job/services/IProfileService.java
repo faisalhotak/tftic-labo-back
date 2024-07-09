@@ -18,6 +18,7 @@ public interface IProfileService {
          * @return user update password response with a message
          */
         UserUpdatePasswordResponse userChangePassword(UserUpdatePasswordRequest request);
+
         /**
          * Disables the profile of the current user.
          * @return the user which was disabled.
