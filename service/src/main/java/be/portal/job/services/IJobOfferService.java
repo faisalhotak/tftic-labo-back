@@ -3,6 +3,7 @@ package be.portal.job.services;
 import be.portal.job.dtos.job_offer.requests.JobOfferRequest;
 import be.portal.job.dtos.job_offer.requests.JobOfferTransferRequest;
 import be.portal.job.dtos.job_offer.responses.JobOfferResponse;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 import java.util.Map;
@@ -14,11 +15,12 @@ import java.util.Map;
 public interface IJobOfferService {
 
     /**
-     * Retrieves a list of all job offers.
+     * Retrieves a list of all job offers in the system.
      * @param params the parameters to filter the job offers.
-     * @return a list of all job offers.
+     * @param page the page number to retrieve.
+     * @return a page of job offers.
      */
-    List<JobOfferResponse> getAll(Map<String, String> params);
+    Page<JobOfferResponse> getAll(Map<String, String> params, int page);
 
     /**
      * Retrieves a list of all job offers by agent.

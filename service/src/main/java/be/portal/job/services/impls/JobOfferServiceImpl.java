@@ -14,8 +14,12 @@ import be.portal.job.mappers.job_offer.JobOfferMapper;
 import be.portal.job.repositories.*;
 import be.portal.job.services.IJobOfferService;
 import be.portal.job.specifications.JobOfferSpecifications;
+import be.portal.job.utils.Constants;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,12 +38,13 @@ public class JobOfferServiceImpl implements IJobOfferService {
     private final ApplicationRepository applicationRepository;
 
     @Override
-    public List<JobOfferResponse> getAll(Map<String, String> params) {
-        return jobOfferRepository
-                .findAll(JobOfferSpecifications.filterByParams(params))
-                .stream()
-                .map(jobOfferMapper::fromEntity)
-                .toList();
+    public Page<JobOfferResponse> getAll(Map<String, String> params, int page) {
+        Pageable pageable = PageRequest.of(page, Constants.PAGE_SIZE);
+
+        Page<JobOffer> pagedJobOffers = jobOfferRepository
+                .findAll(JobOfferSpecifications.filterByParams(params), pageable);
+
+        return pagedJobOffers.map(jobOfferMapper::fromEntity);
     }
 
     @Override
