@@ -26,16 +26,10 @@ public class ProfileController {
         return ResponseEntity.ok(profileService.userChangePassword(request));
     }
 
-    @PreAuthorize("hasAuthority('SEEKER')")
-    @GetMapping("/seekers/me")
-    public ResponseEntity<JobSeekerProfileResponse> getJobSeekerProfile() {
-        return ResponseEntity.ok(profileService.getJobSeekerProfile());
-    }
-
-    @PreAuthorize("hasAuthority('ADVERTISER')")
-    @GetMapping("/advertisers/me")
-    public ResponseEntity<JobAdvertiserProfileResponse> getJobAdvertiserProfile() {
-        return ResponseEntity.ok(profileService.getJobAdvertiserProfile());
+    @PreAuthorize("hasAnyAuthority('SEEKER', 'ADVERTISER')")
+    @GetMapping("/me")
+    public ResponseEntity<UserProfileResponse> getProfile() {
+        return ResponseEntity.ok(profileService.getProfile());
     }
 
     @PreAuthorize("hasAuthority('SEEKER')")
