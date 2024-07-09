@@ -46,16 +46,10 @@ public interface IProfileService {
         UserResponse deleteProfile(User user);
 
         /**
-         * Gets the profile of the current jobAdvertiser.
-         * @return the profile of the current jobAdvertiser.
+         * Gets the profile of the current user.
+         * @return the profile of the current user.
          */
-        JobSeekerProfileResponse getJobSeekerProfile();
-
-        /**
-         * Gets the profile of the current jobAdvertiser.
-         * @return the profile of the current jobAdvertiser.
-         */
-        JobAdvertiserProfileResponse getJobAdvertiserProfile();
+        UserProfileResponse getProfile();
 
         /**
          * Updates the profile of the current jobA

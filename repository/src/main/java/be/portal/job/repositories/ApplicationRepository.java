@@ -16,6 +16,9 @@ public interface ApplicationRepository extends JpaRepository<Application, Long> 
     @Query("SELECT a FROM Application a WHERE a.jobSeeker.id = :seekerId")
     List<Application> findByJobSeekerId(Long seekerId);
 
+    @Query("SELECT a FROM Application a WHERE a.jobOffer.id = :jobOfferId")
+    List<Application> findByJobOfferId(Long jobOfferId);
+
     @Query("SELECT a FROM Application a WHERE a.id = :id AND a.jobSeeker.id = :seekerId")
     Optional<Application> findByIdAndJobSeekerId(Long id, Long seekerId);
 

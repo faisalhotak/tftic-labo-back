@@ -8,6 +8,7 @@ import be.portal.job.entities.*;
 import be.portal.job.enums.AdvertiserRole;
 import be.portal.job.enums.ApplicationStatus;
 import be.portal.job.exceptions.auth.InvalidPasswordException;
+import be.portal.job.exceptions.auth.InvalidUserTypeException;
 import be.portal.job.mappers.user.UserMapper;
 import be.portal.job.repositories.*;
 import be.portal.job.services.IProfileService;
@@ -48,17 +49,18 @@ public class ProfileServiceImpl implements IProfileService {
     }
 
     @Override
-    public JobSeekerProfileResponse getJobSeekerProfile() {
-        JobSeeker jobSeeker = authService.getAuthenticatedSeeker();
+    public UserProfileResponse getProfile() {
+        User currentUser = authService.getAuthenticatedUser();
 
-        return userMapper.fromJobSeekerProfile(jobSeeker);
-    }
+        if (currentUser instanceof JobSeeker jobSeeker) {
+            return userMapper.fromJobSeekerProfile(jobSeeker);
+        }
 
-    @Override
-    public JobAdvertiserProfileResponse getJobAdvertiserProfile() {
-        JobAdvertiser jobAdvertiser = authService.getAuthenticatedAdvertiser();
+        if (currentUser instanceof JobAdvertiser jobAdvertiser) {
+            return userMapper.fromJobAdvertiserProfile(jobAdvertiser);
+        }
 
-        return userMapper.fromJobAdvertiserProfile(jobAdvertiser);
+        throw new InvalidUserTypeException();
     }
 
     @Override

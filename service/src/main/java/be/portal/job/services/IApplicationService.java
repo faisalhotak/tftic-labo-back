@@ -22,6 +22,13 @@ public interface IApplicationService {
     List<ApplicationResponse> getAllBySeeker();
 
     /**
+     * Retrieves a list of all applications by job offer.
+     * @param id the unique identifier of the job offer.
+     * @return a List of Application objects representing all applications.
+     */
+    List<ApplicationResponse> getAllByJobOfferId(Long id);
+
+    /**
      * Retrieves an application by its unique identifier.
      * @param id the unique identifier of the application.
      * @return the Application object corresponding to the specified id.
