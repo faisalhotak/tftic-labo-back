@@ -4,16 +4,16 @@ import be.portal.job.dtos.application.requests.ApplicationRequest;
 import be.portal.job.dtos.application.requests.ApplicationStatusRequest;
 import be.portal.job.dtos.application.requests.ApplicationUpdateRequest;
 import be.portal.job.dtos.application.responses.ApplicationResponse;
-import be.portal.job.entities.Application;
-import be.portal.job.entities.JobOffer;
-import be.portal.job.entities.JobSeeker;
+import be.portal.job.entities.*;
 import be.portal.job.enums.ApplicationStatus;
 import be.portal.job.exceptions.NotAllowedException;
 import be.portal.job.exceptions.application.ApplicationNotFoundException;
 import be.portal.job.exceptions.application.ApplicationStatusAlreadyDefined;
+import be.portal.job.exceptions.company_advertiser.CompanyAdvertiserNotFoundException;
 import be.portal.job.exceptions.job_offer.JobOfferNotFoundException;
 import be.portal.job.mappers.application.ApplicationMapper;
 import be.portal.job.repositories.ApplicationRepository;
+import be.portal.job.repositories.CompanyAdvertiserRepository;
 import be.portal.job.repositories.JobOfferRepository;
 import be.portal.job.services.IApplicationService;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +28,7 @@ public class ApplicationServiceImpl implements IApplicationService {
 
     private final ApplicationRepository applicationRepository;
     private final JobOfferRepository jobOfferRepository;
+    private final CompanyAdvertiserRepository companyAdvertiserRepository;
     private final ApplicationMapper applicationMapper;
     private final AuthServiceImpl authService;
 
@@ -45,6 +46,24 @@ public class ApplicationServiceImpl implements IApplicationService {
 
         return applicationRepository.findByJobSeekerId(jobSeeker.getId())
                 .stream()
+                .map(applicationMapper::fromEntity)
+                .toList();
+    }
+
+    @Override
+    public List<ApplicationResponse> getAllByJobOfferId(Long id) {
+        JobAdvertiser currentUser = authService.getAuthenticatedAdvertiser();
+
+        Company company = jobOfferRepository.findById(id)
+                .orElseThrow(JobOfferNotFoundException::new)
+                .getAgent()
+                .getCompany();
+
+        if (companyAdvertiserRepository.findByIdAndJobAdvertiserId(company.getId(), currentUser.getId()).isEmpty()) {
+            throw new CompanyAdvertiserNotFoundException();
+        }
+
+        return applicationRepository.findByJobOfferId(id).stream()
                 .map(applicationMapper::fromEntity)
                 .toList();
     }

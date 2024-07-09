@@ -21,13 +21,19 @@ public class ApplicationController {
     private final IApplicationService applicationService;
 
     @GetMapping
-    public ResponseEntity<List<ApplicationResponse>> getAllApplication() {
+    public ResponseEntity<List<ApplicationResponse>> getAllApplications() {
         return ResponseEntity.ok(applicationService.getAllBySeeker());
     }
 
     @GetMapping("/{id:^[0-9]+$}")
     public ResponseEntity<ApplicationResponse> getApplicationById(@PathVariable Long id) {
         return ResponseEntity.ok(applicationService.getApplicationByIdAndJobSeekerId(id));
+    }
+
+    @PreAuthorize("hasAuthority('ADVERTISER')")
+    @GetMapping("/job-offer/{id:^[0-9]+$}")
+    public ResponseEntity<List<ApplicationResponse>> getAllApplicationsByJobOfferId(@PathVariable Long id) {
+        return ResponseEntity.ok(applicationService.getAllByJobOfferId(id));
     }
 
     @PostMapping
