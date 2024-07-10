@@ -15,5 +15,5 @@ public class Constants {
     public static final String SEEKER_ROLE = "SEEKER";
 
     // PAGINATION
-    public static final int PAGE_SIZE = 2;
+    public static final int PAGE_SIZE = 10;
 }
