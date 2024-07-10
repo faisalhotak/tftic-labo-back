@@ -16,17 +16,8 @@ public record JobOfferRequest(
         @NotNull(message = "Annual gross salary max is mandatory")
         Double annualGrossSalaryMax,
 
-        @NotNull(message = "Publishing date is mandatory")
-        LocalDateTime publishingDate,
-
         @NotNull(message = "Active days is mandatory")
         Integer activeDays,
-
-        @NotNull(message = "Expiring date is mandatory")
-        LocalDateTime expiringDate,
-
-        @NotNull(message = "Active is mandatory")
-        Boolean isActive,
 
         @NotBlank(message = "Zip city is mandatory")
         String zipCity,

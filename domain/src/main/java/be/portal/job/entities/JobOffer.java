@@ -6,7 +6,8 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 @Setter
-@NoArgsConstructor @AllArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Entity
 @ToString
@@ -22,9 +23,6 @@ public class JobOffer extends BaseEntity<Long> {
 
     @Column(name = "annual_gross_salary_max", nullable = false)
     private double annualGrossSalaryMax;
-
-    @Column(name = "publishing_date", nullable = false)
-    private LocalDateTime publishingDate;
 
     @Column(name = "active_days", nullable = false)
     private int activeDays;
@@ -49,4 +47,17 @@ public class JobOffer extends BaseEntity<Long> {
     @ManyToOne
     @JoinColumn(nullable = false, name = "job_function_id")
     private JobFunction jobFunction;
+
+    public JobOffer(String description, double annualGrossSalaryMin, double annualGrossSalaryMax, int activeDays, boolean isActive, String zipCity, CompanyAdvertiser agent, ContractType contractType, JobFunction jobFunction) {
+        this.description = description;
+        this.annualGrossSalaryMin = annualGrossSalaryMin;
+        this.annualGrossSalaryMax = annualGrossSalaryMax;
+        this.activeDays = activeDays;
+        this.isActive = isActive;
+        this.zipCity = zipCity;
+        this.agent = agent;
+        this.contractType = contractType;
+        this.jobFunction = jobFunction;
+        this.expiringDate = LocalDateTime.now().plusDays(activeDays);
+    }
 }

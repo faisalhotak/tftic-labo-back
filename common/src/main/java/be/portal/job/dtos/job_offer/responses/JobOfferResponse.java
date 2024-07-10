@@ -11,7 +11,7 @@ public record JobOfferResponse(
         String description,
         Double annualGrossSalaryMin,
         Double annualGrossSalaryMax,
-        LocalDateTime publishingDate,
+        LocalDateTime createdAt,
         Integer activeDays,
         LocalDateTime expiringDate,
         String zipCity,

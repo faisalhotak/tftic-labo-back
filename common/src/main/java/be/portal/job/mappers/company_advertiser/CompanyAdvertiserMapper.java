@@ -9,7 +9,6 @@ import org.mapstruct.*;
 @Mapper(componentModel = "spring")
 public interface CompanyAdvertiserMapper {
 
-    @Mapping(target = "id", ignore= true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
     @Mapping(source = "company", target = "company")
