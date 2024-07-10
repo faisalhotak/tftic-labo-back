@@ -3,6 +3,7 @@ package be.portal.job.services.impls;
 import be.portal.job.dtos.job_offer.requests.JobOfferRequest;
 import be.portal.job.dtos.job_offer.requests.JobOfferTransferRequest;
 import be.portal.job.dtos.job_offer.responses.JobOfferResponse;
+import be.portal.job.dtos.job_offer.responses.PagedJobOfferResponse;
 import be.portal.job.entities.*;
 import be.portal.job.exceptions.NotAllowedException;
 import be.portal.job.exceptions.company_advertiser.CompanyAdvertiserNotFoundException;
@@ -38,13 +39,17 @@ public class JobOfferServiceImpl implements IJobOfferService {
     private final ApplicationRepository applicationRepository;
 
     @Override
-    public Page<JobOfferResponse> getAll(Map<String, String> params, int page) {
+    public PagedJobOfferResponse getAll(Map<String, String> params, int page) {
         Pageable pageable = PageRequest.of(page, Constants.PAGE_SIZE);
 
         Page<JobOffer> pagedJobOffers = jobOfferRepository
                 .findAll(JobOfferSpecifications.filterByParams(params), pageable);
 
-        return pagedJobOffers.map(jobOfferMapper::fromEntity);
+        return new PagedJobOfferResponse(
+                pagedJobOffers.map(jobOfferMapper::fromEntity).getContent(),
+                pagedJobOffers.getTotalElements(),
+                pagedJobOffers.getTotalPages()
+        );
     }
 
     @Override

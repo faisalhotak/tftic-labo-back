@@ -3,9 +3,9 @@ package be.portal.job.controllers;
 import be.portal.job.dtos.job_offer.requests.JobOfferRequest;
 import be.portal.job.dtos.job_offer.requests.JobOfferTransferRequest;
 import be.portal.job.dtos.job_offer.responses.JobOfferResponse;
+import be.portal.job.dtos.job_offer.responses.PagedJobOfferResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +22,7 @@ public class JobOfferController {
     private final IJobOfferService jobOfferService;
 
     @GetMapping
-    public ResponseEntity<Page<JobOfferResponse>> getAllJobOffers(
+    public ResponseEntity<PagedJobOfferResponse> getAllJobOffers(
             @RequestParam Map<String, String> params,
             @RequestParam(defaultValue = "0") int page
     ) {

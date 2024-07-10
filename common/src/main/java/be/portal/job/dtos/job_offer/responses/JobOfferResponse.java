@@ -7,7 +7,6 @@ import be.portal.job.dtos.company_advertiser.responses.CompanyAdvertiserResponse
 import java.time.LocalDateTime;
 
 public record JobOfferResponse(
-
         Long id,
         String description,
         Double annualGrossSalaryMin,
