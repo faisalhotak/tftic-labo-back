@@ -16,6 +16,7 @@ public record UserTokenResponse(
     public static UserTokenResponse fromEntityWithToken(User user, String token) {
         return new UserTokenResponse(
                 new UserShortResponse(
+                        user.getId(),
                         user.getEmail(),
                         user.getFirstname(),
                         user.getLastname(),
