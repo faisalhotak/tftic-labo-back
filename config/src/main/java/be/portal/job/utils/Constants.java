@@ -13,4 +13,7 @@ public class Constants {
     public static final String SUPERVISOR_ROLE = "SUPERVISOR";
     public static final String ADVERTISER_ROLE = "ADVERTISER";
     public static final String SEEKER_ROLE = "SEEKER";
+
+    // PAGINATION
+    public static final int PAGE_SIZE = 10;
 }
