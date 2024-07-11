@@ -45,8 +45,6 @@ public class JobOfferServiceImpl implements IJobOfferService {
         Page<JobOffer> pagedJobOffers = jobOfferRepository
                 .findAll(JobOfferSpecifications.filterByParams(params), pageable);
 
-        System.out.println(pagedJobOffers);
-
         return new PagedJobOfferResponse(
                 pagedJobOffers.map(jobOfferMapper::fromEntity).getContent(),
                 pagedJobOffers.getSize(),
