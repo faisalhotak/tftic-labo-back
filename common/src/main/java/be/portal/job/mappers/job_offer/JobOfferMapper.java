@@ -19,7 +19,6 @@ public interface JobOfferMapper {
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
     @Mapping(source = "request.description", target = "description")
-    @Mapping(source = "request.isActive", target = "active")
     @Mapping(source = "agent", target = "agent")
     @Mapping(source = "contractType", target = "contractType")
     @Mapping(source = "jobFunction", target = "jobFunction")
@@ -39,7 +38,6 @@ public interface JobOfferMapper {
     @Mapping(target = "updatedAt", ignore = true)
     @Mapping(target = "agent", ignore = true)
     @Mapping(source = "request.description", target = "description")
-    @Mapping(source = "request.isActive", target = "active")
     void updateEntityFromRequest(
             JobOfferRequest request,
             ContractType contractType,

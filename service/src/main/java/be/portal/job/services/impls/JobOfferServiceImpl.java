@@ -23,6 +23,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -95,6 +96,7 @@ public class JobOfferServiceImpl implements IJobOfferService {
                 .orElseThrow(JobFunctionNotFoundException::new);
 
         JobOffer jobOffer = jobOfferMapper.toEntity(jobOfferRequest, agent, contractType, jobFunction);
+        jobOffer.setExpiringDate(LocalDateTime.now().plusDays(jobOffer.getActiveDays()));
 
         return jobOfferMapper.fromEntity(jobOfferRepository.save(jobOffer));
     }
