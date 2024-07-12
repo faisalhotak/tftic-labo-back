@@ -26,6 +26,9 @@ public interface CompanyAdvertiserRepository extends JpaRepository<CompanyAdvert
             "AND ca.isActive = true")
     Optional<CompanyAdvertiser> findByCompanyAndAgentIdAndAdvertiserRole(Long companyId, Long agentId, AdvertiserRole advertiserRole);
 
+    @Query("SELECT ca FROM CompanyAdvertiser ca WHERE ca.jobAdvertiser.id = :jobAdvertiserId")
+    List<CompanyAdvertiser> findByJobAdvertiserId(Long jobAdvertiserId);
+
     @Modifying
     @Query("UPDATE CompanyAdvertiser ca SET ca.isActive = :isActive WHERE ca.id IN :ids")
     void updateAllActiveByIds(List<Long> ids, boolean isActive);
