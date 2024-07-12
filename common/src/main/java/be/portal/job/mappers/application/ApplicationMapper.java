@@ -11,6 +11,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -24,6 +25,7 @@ public interface ApplicationMapper {
     @Mapping(source = "jobOffer", target = "jobOffer")
     @Mapping(source = "applicationStatus", target = "applicationStatus")
     Application toEntity(
+            LocalDateTime applyDate,
             JobSeeker jobSeeker,
             JobOffer jobOffer,
             ApplicationStatus applicationStatus
@@ -34,9 +36,7 @@ public interface ApplicationMapper {
     @Mapping(target = "id", ignore= true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
-    @Mapping(target = "jobSeeker",ignore = true)
-    @Mapping(target = "jobOffer", ignore = true)
-    @Mapping(target = "applicationStatus", ignore = true)
+    @Mapping(source = "request.applicationStatus", target = "applicationStatus")
     void updateEntityFromRequest(ApplicationUpdateRequest request, @MappingTarget Application application);
 
     default Set<String> map(Set<Role> roles) {
