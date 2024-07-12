@@ -103,7 +103,7 @@ public class ApplicationServiceImpl implements IApplicationService {
 
         LocalDateTime applyDate = LocalDateTime.now();
 
-        Application application = applicationMapper.toEntity( applyDate, jobSeeker, jobOffer, ApplicationStatus.SUBMITTED);
+        Application application = applicationMapper.toEntity(applyDate, jobSeeker, jobOffer, ApplicationStatus.SUBMITTED);
 
         return applicationMapper.fromEntity(applicationRepository.save(application));
     }

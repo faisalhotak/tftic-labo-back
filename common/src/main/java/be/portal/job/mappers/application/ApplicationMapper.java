@@ -19,9 +19,9 @@ import java.util.stream.Collectors;
 public interface ApplicationMapper {
 
     @Mapping(target = "id", ignore= true)
-    @Mapping(target = "applyDate", ignore = false)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
+    @Mapping(target = "applyDate", ignore = false)
     @Mapping(source = "jobSeeker", target = "jobSeeker")
     @Mapping(source = "jobOffer", target = "jobOffer")
     @Mapping(source = "applicationStatus", target = "applicationStatus")
