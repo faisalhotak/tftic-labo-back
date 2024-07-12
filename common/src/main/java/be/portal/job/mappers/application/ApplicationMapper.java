@@ -21,7 +21,6 @@ public interface ApplicationMapper {
     @Mapping(target = "id", ignore= true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
-    @Mapping(target = "applyDate", ignore = false)
     @Mapping(source = "jobSeeker", target = "jobSeeker")
     @Mapping(source = "jobOffer", target = "jobOffer")
     @Mapping(source = "applicationStatus", target = "applicationStatus")
@@ -37,9 +36,7 @@ public interface ApplicationMapper {
     @Mapping(target = "id", ignore= true)
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
-    @Mapping(target = "jobSeeker",ignore = true)
-    @Mapping(target = "jobOffer", ignore = true)
-    @Mapping(target = "applicationStatus", ignore = true)
+    @Mapping(source = "request.applicationStatus", target = "applicationStatus")
     void updateEntityFromRequest(ApplicationUpdateRequest request, @MappingTarget Application application);
 
     default Set<String> map(Set<Role> roles) {
