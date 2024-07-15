@@ -44,12 +44,6 @@ public interface IJobOfferService {
     List<JobOfferResponse> getAllJobOffersByCompany(Long id);
 
     /**
-     * Retrieves all the locations where there is a jobOffer.
-     * @return a list of Locations
-     */
-    List<String> getAllLocations();
-
-    /**
      * Adds a new job offer to the system.
      * @param jobOfferRequest the job offer to add.
      * @return the added job offer with its generated identifier.

@@ -3,6 +3,7 @@ package be.portal.job.specifications;
 import be.portal.job.entities.ContractType;
 import be.portal.job.entities.JobFunction;
 import be.portal.job.entities.JobOffer;
+import be.portal.job.entities.ZipCity;
 import jakarta.persistence.criteria.Join;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -44,8 +45,15 @@ public interface JobOfferSpecifications {
                     case "activeDays" ->
                         criteriaBuilder.lessThanOrEqualTo(root.get("activeDays"), Integer.parseInt(value));
 
-                    case "zipCity" ->
-                        criteriaBuilder.like(root.get("zipCity"), "%" + value + "%");
+                    case "zip" -> {
+                        Join<JobOffer, ZipCity> zipCityJoin = root.join("zipCity");
+                        yield criteriaBuilder.like(zipCityJoin.get("zip"), "%" + value + "%");
+                    }
+
+                    case "city" -> {
+                        Join<JobOffer, ZipCity> zipCityJoin = root.join("zipCity");
+                        yield criteriaBuilder.like(zipCityJoin.get("city"), "%" + value + "%");
+                    }
 
                     default -> null;
                 };

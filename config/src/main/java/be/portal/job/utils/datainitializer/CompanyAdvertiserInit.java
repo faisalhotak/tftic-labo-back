@@ -16,7 +16,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-@Order(5)
+@Order(10)
 public class CompanyAdvertiserInit implements CommandLineRunner {
 
     private final JobAdvertiserRepository jobAdvertiserRepository;

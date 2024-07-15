@@ -16,7 +16,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-@Order(10)
+@Order(9)
 public class SocialLinkInit implements CommandLineRunner {
 
     private final UserRepository userRepository;

@@ -45,7 +45,7 @@ public interface JobOfferMapper {
             @MappingTarget JobOffer jobOffer
     );
 
-    @Mapping(source = "page.content", target = "jobOffers")
+    @Mapping(source = "page.content", target = "jobOffers", defaultExpression = "java(java.util.Collections.emptyList())")
     @Mapping(source = "page.size", target = "elementsPerPage")
     PagedJobOfferResponse fromPage(Page<JobOffer> page);
 }

@@ -19,7 +19,7 @@ import java.util.Random;
 
 @Component
 @RequiredArgsConstructor
-@Order(11)
+@Order(12)
 public class ApplicationInit implements CommandLineRunner {
 
     private final ApplicationRepository applicationRepository;

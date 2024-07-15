@@ -33,8 +33,9 @@ public class JobOffer extends BaseEntity<Long> {
     @Column(name = "is_active", nullable = false)
     private boolean isActive = true;
 
-    @Column(name = "zip_city", nullable = false)
-    private String zipCity;
+    @ManyToOne
+    @JoinColumn(nullable = false, name = "zip_city_id")
+    private ZipCity zipCity;
 
     @ManyToOne
     @JoinColumn(nullable = false, name = "agent_id")
@@ -48,7 +49,7 @@ public class JobOffer extends BaseEntity<Long> {
     @JoinColumn(nullable = false, name = "job_function_id")
     private JobFunction jobFunction;
 
-    public JobOffer(String description, double annualGrossSalaryMin, double annualGrossSalaryMax, int activeDays, boolean isActive, String zipCity, CompanyAdvertiser agent, ContractType contractType, JobFunction jobFunction) {
+    public JobOffer(String description, double annualGrossSalaryMin, double annualGrossSalaryMax, int activeDays, boolean isActive, ZipCity zipCity, CompanyAdvertiser agent, ContractType contractType, JobFunction jobFunction) {
         this.description = description;
         this.annualGrossSalaryMin = annualGrossSalaryMin;
         this.annualGrossSalaryMax = annualGrossSalaryMax;
