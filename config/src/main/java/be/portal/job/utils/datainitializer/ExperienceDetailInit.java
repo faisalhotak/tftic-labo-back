@@ -14,7 +14,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-@Order(12)
+@Order(13)
 public class ExperienceDetailInit implements CommandLineRunner {
 
     private final ExperienceDetailRepository experienceDetailRepository;
@@ -22,8 +22,8 @@ public class ExperienceDetailInit implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-
         List<JobSeeker> jobSeekers = jobSeekerRepository.findAll();
+
         List<ExperienceDetail> experienceDetails = List.of(
                 new ExperienceDetail( "Société A", "Développement d'applications Java", LocalDate.parse("2020-01-01"), LocalDate.parse("2021-01-01"), jobSeekers.get(0)),
                 new ExperienceDetail( "Société B", "Développement d'applications JS", LocalDate.parse("2019-01-01"), LocalDate.parse("2020-01-01"), jobSeekers.get(0)),

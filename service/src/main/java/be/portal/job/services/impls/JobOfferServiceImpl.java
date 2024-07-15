@@ -71,11 +71,6 @@ public class JobOfferServiceImpl implements IJobOfferService {
     }
 
     @Override
-    public List<String> getAllLocations() {
-        return jobOfferRepository.findAllLocation();
-    }
-
-    @Override
     @Transactional
     public JobOfferResponse addJobOffer(JobOfferRequest jobOfferRequest) {
 

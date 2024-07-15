@@ -34,13 +34,17 @@ public class ProfileController {
 
     @PreAuthorize("hasAuthority('SEEKER')")
     @PutMapping("/update-job-seeker")
-    public ResponseEntity<JobSeekerResponse> updateProfile(JobSeekerUpdateRequest jobSeekerUpdateRequest) {
+    public ResponseEntity<JobSeekerResponse> updateProfile(
+            @RequestBody @Valid JobSeekerUpdateRequest jobSeekerUpdateRequest
+    ) {
         return ResponseEntity.ok(profileService.updateJobSeekerProfile(jobSeekerUpdateRequest));
     }
 
     @PreAuthorize("hasAuthority('ADVERTISER')")
     @PutMapping("/update-job-advertiser")
-    public ResponseEntity<JobAdvertiserResponse> updateProfile(JobAdvertiserUpdateRequest jobAdvertiserUpdateRequest) {
+    public ResponseEntity<JobAdvertiserResponse> updateProfile(
+            @RequestBody @Valid JobAdvertiserUpdateRequest jobAdvertiserUpdateRequest
+    ) {
         return ResponseEntity.ok(profileService.updateJobAdvertiserProfile(jobAdvertiserUpdateRequest));
     }
 

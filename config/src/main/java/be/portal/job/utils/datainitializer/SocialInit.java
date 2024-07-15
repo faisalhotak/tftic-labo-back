@@ -12,7 +12,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-@Order(9)
+@Order(3)
 public class SocialInit implements CommandLineRunner {
 
     private final SocialRepository socialRepository;

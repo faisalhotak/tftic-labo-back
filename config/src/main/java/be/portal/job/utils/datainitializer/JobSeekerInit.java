@@ -19,7 +19,7 @@ import java.util.Set;
 
 @Component
 @RequiredArgsConstructor
-@Order(3)
+@Order(7)
 public class JobSeekerInit implements CommandLineRunner {
 
     private final JobSeekerRepository jobSeekerRepository;

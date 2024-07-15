@@ -26,22 +26,13 @@ public class SkillSetInit implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        List<JobSeeker> jobSeekers = jobSeekerRepository.findAll();
+        List<SkillDetail> skillDetails = skillDetailRepository.findAll();
+
         List<SkillSet> skillSets = new ArrayList<>();
 
-        JobSeeker seeker1 = jobSeekerRepository.findByEmail("seeker1@example.com")
-                .orElseThrow(() -> new RuntimeException("Seeker1 not found"));
-
-        JobSeeker seeker2 = jobSeekerRepository.findByEmail("seeker2@example.com")
-                .orElseThrow(() -> new RuntimeException("Seeker2 not found"));
-
-        SkillDetail skillDetail1 = skillDetailRepository.findByName("Java Programming")
-                .orElseThrow(() -> new RuntimeException("Java Programming skill not found"));
-
-        SkillDetail skillDetail2 = skillDetailRepository.findByName("Project Management")
-                .orElseThrow(() -> new RuntimeException("Project Management skill not found"));
-
-        skillSets.add(new SkillSet(SkillLevel.INTERMEDIATE, 5, seeker1, skillDetail1));
-        skillSets.add(new SkillSet(SkillLevel.EXPERT, 10, seeker2, skillDetail2));
+        skillSets.add(new SkillSet(SkillLevel.INTERMEDIATE, 5, jobSeekers.get(0), skillDetails.get(0)));
+        skillSets.add(new SkillSet(SkillLevel.EXPERT, 10, jobSeekers.get(1), skillDetails.get(1)));
 
         skillSetRepository.saveAll(skillSets);
     }

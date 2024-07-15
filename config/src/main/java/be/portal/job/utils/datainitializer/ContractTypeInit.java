@@ -11,7 +11,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-@Order(6)
+@Order(5)
 public class ContractTypeInit implements CommandLineRunner {
 
     private final ContractTypeRepository contractTypeRepository;

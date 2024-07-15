@@ -17,7 +17,7 @@ import java.util.Set;
 
 @Component
 @RequiredArgsConstructor
-@Order(4)
+@Order(8)
 public class JobAdvertiserInit implements CommandLineRunner {
 
     private final JobAdvertiserRepository jobAdvertiserRepository;
