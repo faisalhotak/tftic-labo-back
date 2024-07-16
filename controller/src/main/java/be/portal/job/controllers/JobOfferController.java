@@ -3,7 +3,7 @@ package be.portal.job.controllers;
 import be.portal.job.dtos.job_offer.requests.JobOfferRequest;
 import be.portal.job.dtos.job_offer.requests.JobOfferTransferRequest;
 import be.portal.job.dtos.job_offer.responses.JobOfferResponse;
-import be.portal.job.dtos.job_offer.responses.PagedJobOfferResponse;
+import be.portal.job.dtos.job_offer.responses.PagedJobOffersResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +22,7 @@ public class JobOfferController {
     private final IJobOfferService jobOfferService;
 
     @GetMapping
-    public ResponseEntity<PagedJobOfferResponse> getAllJobOffers(
+    public ResponseEntity<PagedJobOffersResponse> getAllJobOffers(
             @RequestParam Map<String, String> params,
             @RequestParam(defaultValue = "0") int page
     ) {
@@ -37,11 +37,6 @@ public class JobOfferController {
     @GetMapping("/{id:^[0-9]+$}")
     public ResponseEntity<JobOfferResponse> getJobOfferById(@PathVariable Long id) {
         return ResponseEntity.ok(jobOfferService.getJobOfferById(id));
-    }
-
-    @GetMapping("/locations")
-    public ResponseEntity<List<String>> getAllLocations() {
-        return ResponseEntity.ok(jobOfferService.getAllLocations());
     }
 
     @PreAuthorize("hasAnyAuthority('ADVERTISER', 'ADMIN')")

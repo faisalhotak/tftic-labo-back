@@ -12,7 +12,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-@Order(2)
+@Order(6)
 public class CompanyInit implements CommandLineRunner {
 
     private final CompanyRepository companyRepository;

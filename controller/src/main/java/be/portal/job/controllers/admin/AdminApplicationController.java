@@ -2,6 +2,7 @@ package be.portal.job.controllers.admin;
 
 import be.portal.job.dtos.application.requests.ApplicationStatusRequest;
 import be.portal.job.dtos.application.responses.ApplicationResponse;
+import be.portal.job.dtos.application.responses.PagedApplicationsResponse;
 import be.portal.job.services.IApplicationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -9,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,8 +21,11 @@ public class AdminApplicationController {
     private final IApplicationService applicationService;
 
     @GetMapping
-    public ResponseEntity<List<ApplicationResponse>> getAllApplications() {
-        return ResponseEntity.ok(applicationService.getAll());
+    public ResponseEntity<PagedApplicationsResponse> getAllApplications(
+            @RequestParam Map<String, String> params,
+            @RequestParam(defaultValue = "0") int page
+    ) {
+        return ResponseEntity.ok(applicationService.getAll(params, page));
     }
 
     @GetMapping("/{id:^[0-9]+$}")

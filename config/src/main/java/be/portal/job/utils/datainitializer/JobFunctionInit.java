@@ -11,7 +11,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-@Order(7)
+@Order(2)
 public class JobFunctionInit implements CommandLineRunner {
 
     private final JobFunctionRepository jobFunctionRepository;

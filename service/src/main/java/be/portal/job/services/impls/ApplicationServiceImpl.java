@@ -4,6 +4,7 @@ import be.portal.job.dtos.application.requests.ApplicationRequest;
 import be.portal.job.dtos.application.requests.ApplicationStatusRequest;
 import be.portal.job.dtos.application.requests.ApplicationUpdateRequest;
 import be.portal.job.dtos.application.responses.ApplicationResponse;
+import be.portal.job.dtos.application.responses.PagedApplicationsResponse;
 import be.portal.job.entities.*;
 import be.portal.job.enums.ApplicationStatus;
 import be.portal.job.exceptions.NotAllowedException;
@@ -16,11 +17,17 @@ import be.portal.job.repositories.ApplicationRepository;
 import be.portal.job.repositories.CompanyAdvertiserRepository;
 import be.portal.job.repositories.JobOfferRepository;
 import be.portal.job.services.IApplicationService;
+import be.portal.job.specifications.ApplicationSpecifications;
+import be.portal.job.utils.Constants;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -34,21 +41,26 @@ public class ApplicationServiceImpl implements IApplicationService {
     private final AuthServiceImpl authService;
 
     @Override
-    public List<ApplicationResponse> getAll() {
-        return applicationRepository.findAll()
-                .stream()
-                .map(applicationMapper::fromEntity)
-                .toList();
+    public PagedApplicationsResponse getAll(Map<String, String> params, int page) {
+        Pageable pageable = PageRequest.of(page, Constants.PAGE_SIZE);
+
+        Page<Application> pagedApplications = applicationRepository
+                .findAll(ApplicationSpecifications.filterByParams(params), pageable);
+
+        return applicationMapper.fromPage(pagedApplications);
     }
 
     @Override
-    public List<ApplicationResponse> getAllBySeeker() {
+    public PagedApplicationsResponse getAllBySeeker(Map<String, String> params, int page) {
         JobSeeker jobSeeker = authService.getAuthenticatedSeeker();
+        params.put("jobSeekerId", jobSeeker.getId().toString());
 
-        return applicationRepository.findByJobSeekerId(jobSeeker.getId())
-                .stream()
-                .map(applicationMapper::fromEntity)
-                .toList();
+        Pageable pageable = PageRequest.of(page, Constants.PAGE_SIZE);
+
+        Page<Application> pagedApplications = applicationRepository
+                .findAll(ApplicationSpecifications.filterByParams(params), pageable);
+
+        return applicationMapper.fromPage(pagedApplications);
     }
 
     @Override

@@ -12,14 +12,13 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-@Order(1)
+@Order(0)
 public class RoleInit implements CommandLineRunner {
 
     private final RoleRepository roleRepository;
 
     @Override
     public void run(String... args) throws Exception {
-        // Créer quelques rôles avec des valeurs arbitraires
         List<Role> roles = List.of(
                 new Role(Constants.ADMIN_ROLE, "Administrateur"),
                 new Role(Constants.MANAGER_ROLE, "Manager"),

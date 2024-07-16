@@ -3,8 +3,6 @@ package be.portal.job.dtos.job_offer.requests;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-import java.time.LocalDateTime;
-
 public record JobOfferRequest(
 
         @NotBlank(message = "Description is mandatory")
@@ -19,8 +17,8 @@ public record JobOfferRequest(
         @NotNull(message = "Active days is mandatory")
         Integer activeDays,
 
-        @NotBlank(message = "Zip city is mandatory")
-        String zipCity,
+        @NotNull(message = "Zip city id is mandatory")
+        Long zipCity,
 
         @NotNull(message = "Agent id is mandatory")
         Long agentId,
