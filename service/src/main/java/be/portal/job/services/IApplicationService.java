@@ -4,22 +4,28 @@ import be.portal.job.dtos.application.requests.ApplicationRequest;
 import be.portal.job.dtos.application.requests.ApplicationStatusRequest;
 import be.portal.job.dtos.application.requests.ApplicationUpdateRequest;
 import be.portal.job.dtos.application.responses.ApplicationResponse;
+import be.portal.job.dtos.application.responses.PagedApplicationsResponse;
 
 import java.util.List;
+import java.util.Map;
 
 public interface IApplicationService {
 
     /**
      * Retrieves a list of all applications.
+     * @param params the parameters to filter the applications.
+     * @param page the page number to retrieve.
      * @return a List of Application objects representing all applications.
      */
-    List<ApplicationResponse> getAll();
+    PagedApplicationsResponse getAll(Map<String, String> params, int page);
 
     /**
-     * Retrieves a list of all the seeker's applications.
+     * Retrieves a list of all applications by seeker.
+     * @param params the parameters to filter the applications.
+     * @param page the page number to retrieve.
      * @return a List of Application objects representing all applications.
      */
-    List<ApplicationResponse> getAllBySeeker();
+    PagedApplicationsResponse getAllBySeeker(Map<String, String> params, int page);
 
     /**
      * Retrieves a list of all applications by job offer.

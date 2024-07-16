@@ -3,7 +3,7 @@ package be.portal.job.services.impls;
 import be.portal.job.dtos.job_offer.requests.JobOfferRequest;
 import be.portal.job.dtos.job_offer.requests.JobOfferTransferRequest;
 import be.portal.job.dtos.job_offer.responses.JobOfferResponse;
-import be.portal.job.dtos.job_offer.responses.PagedJobOfferResponse;
+import be.portal.job.dtos.job_offer.responses.PagedJobOffersResponse;
 import be.portal.job.entities.*;
 import be.portal.job.exceptions.NotAllowedException;
 import be.portal.job.exceptions.company_advertiser.CompanyAdvertiserNotFoundException;
@@ -11,6 +11,7 @@ import be.portal.job.exceptions.company.CompanyNotActiveException;
 import be.portal.job.exceptions.contract_type.ContractTypeNotFoundException;
 import be.portal.job.exceptions.job_function.JobFunctionNotFoundException;
 import be.portal.job.exceptions.job_offer.JobOfferNotFoundException;
+import be.portal.job.exceptions.zip_city.ZipCityNotFoundException;
 import be.portal.job.mappers.job_offer.JobOfferMapper;
 import be.portal.job.repositories.*;
 import be.portal.job.services.IJobOfferService;
@@ -38,9 +39,10 @@ public class JobOfferServiceImpl implements IJobOfferService {
     private final AuthServiceImpl authService;
     private final JobOfferMapper jobOfferMapper;
     private final ApplicationRepository applicationRepository;
+    private final ZipCityRepository zipCityRepository;
 
     @Override
-    public PagedJobOfferResponse getAll(Map<String, String> params, int page) {
+    public PagedJobOffersResponse getAll(Map<String, String> params, int page) {
         Pageable pageable = PageRequest.of(page, Constants.PAGE_SIZE);
 
         Page<JobOffer> pagedJobOffers = jobOfferRepository
@@ -90,7 +92,10 @@ public class JobOfferServiceImpl implements IJobOfferService {
         JobFunction jobFunction = jobFunctionRepository.findById(jobOfferRequest.jobFunctionId())
                 .orElseThrow(JobFunctionNotFoundException::new);
 
-        JobOffer jobOffer = jobOfferMapper.toEntity(jobOfferRequest, agent, contractType, jobFunction);
+        ZipCity zipCity = zipCityRepository.findById(jobOfferRequest.zipCity())
+                .orElseThrow(ZipCityNotFoundException::new);
+
+        JobOffer jobOffer = jobOfferMapper.toEntity(jobOfferRequest, agent, contractType, jobFunction, zipCity);
         jobOffer.setExpiringDate(LocalDateTime.now().plusDays(jobOffer.getActiveDays()));
 
         return jobOfferMapper.fromEntity(jobOfferRepository.save(jobOffer));
@@ -110,7 +115,10 @@ public class JobOfferServiceImpl implements IJobOfferService {
         JobFunction jobFunction = jobFunctionRepository.findById(jobOfferRequest.jobFunctionId())
                 .orElseThrow(JobFunctionNotFoundException::new);
 
-        jobOfferMapper.updateEntityFromRequest(jobOfferRequest, contractType, jobFunction, jobOffer);
+        ZipCity zipCity = zipCityRepository.findById(jobOfferRequest.zipCity())
+                .orElseThrow(ZipCityNotFoundException::new);
+
+        jobOfferMapper.updateEntityFromRequest(jobOfferRequest, contractType, jobFunction, zipCity, jobOffer);
 
         return jobOfferMapper.fromEntity(jobOfferRepository.save(jobOffer));
     }

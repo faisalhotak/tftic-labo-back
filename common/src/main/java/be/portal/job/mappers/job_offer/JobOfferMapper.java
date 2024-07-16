@@ -2,11 +2,8 @@ package be.portal.job.mappers.job_offer;
 
 import be.portal.job.dtos.job_offer.requests.JobOfferRequest;
 import be.portal.job.dtos.job_offer.responses.JobOfferResponse;
-import be.portal.job.dtos.job_offer.responses.PagedJobOfferResponse;
-import be.portal.job.entities.CompanyAdvertiser;
-import be.portal.job.entities.ContractType;
-import be.portal.job.entities.JobFunction;
-import be.portal.job.entities.JobOffer;
+import be.portal.job.dtos.job_offer.responses.PagedJobOffersResponse;
+import be.portal.job.entities.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -22,11 +19,13 @@ public interface JobOfferMapper {
     @Mapping(source = "agent", target = "agent")
     @Mapping(source = "contractType", target = "contractType")
     @Mapping(source = "jobFunction", target = "jobFunction")
+    @Mapping(source = "zipCity", target = "zipCity")
     JobOffer toEntity(
             JobOfferRequest request,
             CompanyAdvertiser agent,
             ContractType contractType,
-            JobFunction jobFunction
+            JobFunction jobFunction,
+            ZipCity zipCity
     );
 
     @Mapping(source = "active", target = "isActive")
@@ -38,14 +37,16 @@ public interface JobOfferMapper {
     @Mapping(target = "updatedAt", ignore = true)
     @Mapping(target = "agent", ignore = true)
     @Mapping(source = "request.description", target = "description")
+    @Mapping(source = "zipCity", target = "zipCity")
     void updateEntityFromRequest(
             JobOfferRequest request,
             ContractType contractType,
             JobFunction jobFunction,
+            ZipCity zipCity,
             @MappingTarget JobOffer jobOffer
     );
 
     @Mapping(source = "page.content", target = "jobOffers", defaultExpression = "java(java.util.Collections.emptyList())")
     @Mapping(source = "page.size", target = "elementsPerPage")
-    PagedJobOfferResponse fromPage(Page<JobOffer> page);
+    PagedJobOffersResponse fromPage(Page<JobOffer> page);
 }
