@@ -3,7 +3,7 @@ package be.portal.job.services;
 import be.portal.job.dtos.job_offer.requests.JobOfferRequest;
 import be.portal.job.dtos.job_offer.requests.JobOfferTransferRequest;
 import be.portal.job.dtos.job_offer.responses.JobOfferResponse;
-import be.portal.job.dtos.job_offer.responses.PagedJobOfferResponse;
+import be.portal.job.dtos.job_offer.responses.PagedJobOffersResponse;
 
 import java.util.List;
 import java.util.Map;
@@ -20,7 +20,7 @@ public interface IJobOfferService {
      * @param page the page number to retrieve.
      * @return a paged response containing the job offers.
      */
-    PagedJobOfferResponse getAll(Map<String, String> params, int page);
+    PagedJobOffersResponse getAll(Map<String, String> params, int page);
 
     /**
      * Retrieves a list of all job offers by agent.

@@ -1,6 +1,5 @@
 package be.portal.job.dtos.job_offer.requests;
 
-import be.portal.job.entities.ZipCity;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -18,8 +17,8 @@ public record JobOfferRequest(
         @NotNull(message = "Active days is mandatory")
         Integer activeDays,
 
-        @NotBlank(message = "Zip city is mandatory")
-        ZipCity zipCity,
+        @NotNull(message = "Zip city id is mandatory")
+        Long zipCity,
 
         @NotNull(message = "Agent id is mandatory")
         Long agentId,
